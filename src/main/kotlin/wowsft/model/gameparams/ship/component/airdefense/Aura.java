@@ -3,11 +3,9 @@ package wowsft.model.gameparams.ship.component.airdefense;
 import wowsft.config.WoWSFT;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 
 import java.util.List;
 
-@Data
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Aura

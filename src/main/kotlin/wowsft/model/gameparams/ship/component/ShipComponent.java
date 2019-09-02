@@ -11,11 +11,9 @@ import wowsft.model.gameparams.ship.component.flightcontrol.FlightControl;
 import wowsft.model.gameparams.ship.component.hull.Hull;
 import wowsft.model.gameparams.ship.component.planes.Plane;
 import wowsft.model.gameparams.ship.component.torpedo.Torpedo;
-import lombok.Data;
 
 import java.util.LinkedHashMap;
 
-@Data
 @WoWSFT
 public class ShipComponent
 {

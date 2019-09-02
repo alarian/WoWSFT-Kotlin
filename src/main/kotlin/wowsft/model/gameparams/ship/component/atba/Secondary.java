@@ -4,11 +4,9 @@ import wowsft.config.WoWSFT;
 import wowsft.model.gameparams.TypeInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 
 import java.util.List;
 
-@Data
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Secondary

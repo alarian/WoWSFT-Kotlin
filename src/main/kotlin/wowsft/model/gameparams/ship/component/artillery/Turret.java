@@ -3,12 +3,10 @@ package wowsft.model.gameparams.ship.component.artillery;
 import wowsft.config.WoWSFT;
 import wowsft.model.gameparams.TypeInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.List;
 
-@Data
 @WoWSFT
 @Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)

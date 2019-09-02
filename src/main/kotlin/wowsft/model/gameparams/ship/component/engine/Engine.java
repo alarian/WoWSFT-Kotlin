@@ -2,9 +2,7 @@ package wowsft.model.gameparams.ship.component.engine;
 
 import wowsft.config.WoWSFT;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 
-@Data
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Engine

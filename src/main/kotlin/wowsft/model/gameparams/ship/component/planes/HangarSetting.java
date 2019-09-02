@@ -1,8 +1,6 @@
 package wowsft.model.gameparams.ship.component.planes;
 
-import lombok.Data;
 
-@Data
 public class HangarSetting
 {
     private int maxValue;
