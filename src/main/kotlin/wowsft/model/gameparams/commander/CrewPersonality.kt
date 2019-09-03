@@ -1,29 +1,28 @@
-package wowsft.model.gameparams.commander;
+package wowsft.model.gameparams.commander
 
-import wowsft.config.WoWSFT;
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import wowsft.config.WoWSFT
+import com.fasterxml.jackson.annotation.JsonAlias
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CrewPersonality
-{
-    private boolean dismissable;
-    private boolean hasManyNations;
-    private boolean hasOverlay;
-    private boolean hasRank;
+class CrewPersonality {
+    var dismissable: Boolean = false
+    var hasManyNations: Boolean = false
+    var hasOverlay: Boolean = false
+    var hasRank: Boolean = false
     @JsonAlias("isPerson")
-    private boolean person;
+    var person: Boolean = false
     @JsonAlias("isRetrainable")
-    private boolean retrainable;
+    var retrainable: Boolean = false
     @JsonAlias("isUnique")
-    private boolean unique;
-    private boolean canResetSkillsForFree;
-    private String peculiarity;
-    private String personName;
-    private Ships ships;
-    private int costCR;
-    private int costELXP;
-    private int costGold;
-    private int costXP;
+    var unique: Boolean = false
+    var canResetSkillsForFree: Boolean = false
+    var peculiarity: String = ""
+    var personName: String = ""
+    var ships: Ships? = null
+    var costCR: Int = 0
+    var costELXP: Int = 0
+    var costGold: Int = 0
+    var costXP: Int = 0
 }

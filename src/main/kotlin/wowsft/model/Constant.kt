@@ -6,40 +6,48 @@ import java.util.*
 object Constant {
     val distCoefWG = BigDecimal(100) / BigDecimal(3)
     val smallGun = BigDecimal(0.139)
-    val oneCoeff = 1
 
-    val IDS = "IDS_"
-    val MODIFIER = "PARAMS_MODIFIER_"
-    val CONSUME = "DOCK_CONSUME_"
-    val TITLE = "TITLE_"
-    val DESCRIPTION = "DESCRIPTION_"
-    val DESC = "DESC_"
-
-    val TYPE_SHIP = "ships"
-    val TYPE_SHIP_LIST = "shipsList"
-    val TYPE_WARSHIP = "warship"
-    val TYPE_MODULE = "modules"
-    val TYPE_UPGRADE = "upgrades"
-    val TYPE_CONSUMABLE = "consumables"
-    val TYPE_COMMANDER = "commanders"
-    val TYPE_SKILL = "skills"
-    val TYPE_SHELL = "shells"
-    val TYPE_FLAG = "flags"
-
-    val flightControl = "flightControl"
-    val artillery = "artillery"
-    val hull = "hull"
-    val torpedoes = "torpedoes"
-    val suo = "suo"
-    val fighter = "fighter"
-    val torpedoBomber = "torpedoBomber"
-    val diveBomber = "diveBomber"
-    val engine = "engine"
-
-    val airArmament = "airArmament"
-    val airDefense = "airDefense"
-    val atba = "atba"
-    val fireControl = "fireControl"
+    const val oneCoeff = 1
+    const val IDS = "IDS_"
+    const val MODIFIER = "PARAMS_MODIFIER_"
+    const val CONSUME = "DOCK_CONSUME_"
+    const val TITLE = "TITLE_"
+    const val DESCRIPTION = "DESCRIPTION_"
+    const val DESC = "DESC_"
+    const val TYPE_SHIP = "ships"
+    const val TYPE_SHIP_LIST = "shipsList"
+    const val TYPE_WARSHIP = "warship"
+    const val TYPE_MODULE = "modules"
+    const val TYPE_UPGRADE = "upgrades"
+    const val TYPE_CONSUMABLE = "consumables"
+    const val TYPE_COMMANDER = "commanders"
+    const val TYPE_SKILL = "skills"
+    const val TYPE_SHELL = "shells"
+    const val TYPE_FLAG = "flags"
+    const val flightControl = "flightControl"
+    const val artillery = "artillery"
+    const val hull = "hull"
+    const val torpedoes = "torpedoes"
+    const val suo = "suo"
+    const val fighter = "fighter"
+    const val torpedoBomber = "torpedoBomber"
+    const val diveBomber = "diveBomber"
+    const val engine = "engine"
+    const val airArmament = "airArmament"
+    const val airDefense = "airDefense"
+    const val atba = "atba"
+    const val fireControl = "fireControl"
+    const val maxBitsToInt = 3766517952L
+    const val GENERAL_INTERNAL_ERROR = "GENERAL_INTERNAL_ERROR"
+    const val jsonParser = "jsonParser"
+    const val nameToId = "nameToId"
+    const val idToName = "idToName"
+    const val notification = "notification"
+    const val translation = "translation"
+    const val global = "global"
+    const val gameParamsHM = "gameParamsHM"
+    const val loadFinish = "loadFinish"
+    const val Ability = "Ability"
 
     val componentsList: List<String> = ArrayList(
         listOf(
@@ -93,8 +101,4 @@ object Constant {
     val angle = HashSet(listOf("angle"))
     val time = HashSet(listOf("time"))
     val speed = HashSet(listOf("speedbonus"))
-
-    val maxBitsToInt = 3766517952L
-
-    val GENERAL_INTERNAL_ERROR = "GENERAL_INTERNAL_ERROR"
 }

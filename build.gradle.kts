@@ -13,7 +13,7 @@ plugins {
     kotlin("jvm") version "1.3.50"
     kotlin("plugin.spring") version "1.3.50"
     kotlin("plugin.allopen") version "1.2.71"
-    kotlin("kapt") version "1.3.50"
+//    kotlin("kapt") version "1.3.50"
 }
 
 repositories {
@@ -28,7 +28,7 @@ dependencies {
 
 //    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
 
 sourceSets {

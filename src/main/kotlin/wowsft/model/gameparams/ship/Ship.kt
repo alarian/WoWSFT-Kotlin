@@ -1,121 +1,102 @@
-package wowsft.model.gameparams.ship;
+package wowsft.model.gameparams.ship
 
-import com.fasterxml.jackson.annotation.*;
-import wowsft.config.WoWSFT;
-import wowsft.model.gameparams.TypeInfo;
-import wowsft.model.gameparams.ship.abilities.AbilitySlot;
-import wowsft.model.gameparams.ship.component.ShipComponent;
-import wowsft.model.gameparams.ship.component.airdefense.Aura;
-import wowsft.model.gameparams.ship.component.artillery.Turret;
-import wowsft.model.gameparams.ship.component.torpedo.Launcher;
-import wowsft.model.gameparams.ship.upgrades.ShipUpgradeInfo;
+import com.fasterxml.jackson.annotation.*
+import wowsft.config.WoWSFT
+import wowsft.model.gameparams.TypeInfo
+import wowsft.model.gameparams.commander.Commander
+import wowsft.model.gameparams.consumable.Consumable
+import wowsft.model.gameparams.modernization.Modernization
+import wowsft.model.gameparams.ship.abilities.AbilitySlot
+import wowsft.model.gameparams.ship.component.ShipComponent
+import wowsft.model.gameparams.ship.component.airdefense.Aura
+import wowsft.model.gameparams.ship.component.artillery.Turret
+import wowsft.model.gameparams.ship.component.torpedo.Launcher
+import wowsft.model.gameparams.ship.upgrades.ShipUpgradeInfo
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.ArrayList
+import java.util.LinkedHashMap
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Ship
-{
-    private LinkedHashMap<String, Object> tempComponents = new LinkedHashMap<>();
-    private ShipComponent components = new ShipComponent();
+class Ship {
+    var tempComponents = LinkedHashMap<String, Any>()
+    var components = ShipComponent()
 
     @JsonAlias("ShipAbilities")
-    private LinkedHashMap<String, AbilitySlot> shipAbilities;
+    var shipAbilities: LinkedHashMap<String, AbilitySlot>? = null
     @JsonAlias("ShipUpgradeInfo")
-    private ShipUpgradeInfo shipUpgradeInfo;
+    var shipUpgradeInfo: ShipUpgradeInfo? = null
 
-    private float apDamageLimitCoeff;
-    private BattleLevels battleLevels;
-    private boolean canEquipCamouflage;
-    private String defaultCrew;
-    private String group;
-    private long id;
-    private String index;
+    var apDamageLimitCoeff: Float = 0.toFloat()
+    var battleLevels: BattleLevels? = null
+    var canEquipCamouflage: Boolean = false
+    var defaultCrew: String = ""
+    var group: String = ""
+    var id: Long = 0
+    var index: String = ""
     @JsonAlias("isPaperShip")
-    private boolean paperShip;
-    private int level;
-    private int maxEquippedFlags;
-    private String name;
-    private String navalFlag;
-    private boolean needShowProjectYear;
-    private String peculiarity;
-    private List<Float> steerAngle;
-    private TypeInfo typeinfo;
-    private int weight;
+    var paperShip: Boolean = false
+    var level: Int = 0
+    var maxEquippedFlags: Int = 0
+    var name: String = ""
+    var navalFlag: String = ""
+    var needShowProjectYear: Boolean = false
+    var peculiarity: String = ""
+    var steerAngle: List<Float>? = null
+    var typeinfo: TypeInfo? = null
+    var weight: Int = 0
 
-    private String realShipType;
-    private String realShipTypeId;
-    private String fullName;
-    private boolean research;
-    private String prevShipIndex;
-    private String prevShipName;
-    private int prevShipXP;
-    private int prevShipCompXP;
-    private String typeImage;
-    private String imageSmall;
-
-    private LinkedHashMap<String, String> planes = new LinkedHashMap<>();
-
-    private List<List<Consumable>> consumables = new ArrayList<>();
-    private List<List<Modernization>> upgrades = new ArrayList<>();
-    private int upgradesRow;
-    @JsonIgnore
-    private List<Integer> selectConsumables = new ArrayList<>();
-    @JsonIgnore
-    private List<Integer> selectUpgrades = new ArrayList<>();
-    @JsonIgnore
-    private List<Integer> selectSkills = new ArrayList<>();
-    @JsonIgnore
-    private int selectSkillPts;
-    private LinkedHashMap<String, String> modules = new LinkedHashMap<>();
-    private LinkedHashMap<String, Integer> positions = new LinkedHashMap<>();
-
-    private Commander commander;
-
-    private List<Turret> turrets;
-    private List<Launcher> launchers;
-
-    private List<Aura> auraFar = new ArrayList<>();
-    private List<Aura> auraFarBubble = new ArrayList<>();
-    private List<Aura> auraMedium = new ArrayList<>();
-    private List<Aura> auraNear = new ArrayList<>();
-
-    private float adrenaline;
-    private boolean arUse;
-
-    @JsonSetter
-    public void setRealShipType(String realShipType)
-    {
-        if (StringUtils.isNotEmpty(realShipType)) {
-            this.realShipType = realShipType;
-            this.realShipTypeId = realShipType.toUpperCase();
-            if ("Premium".equalsIgnoreCase(realShipType)) {
-                this.realShipTypeId = "FILTER_PREMIUM";
+    var realShipType: String = ""
+        set(realShipType) {
+            if (!realShipType.isNullOrEmpty()) {
+                field = realShipType
+                realShipTypeId = if ("Premium".equals(realShipType, true)) "FILTER_PREMIUM" else realShipType.toUpperCase()
             }
         }
-    }
+    var realShipTypeId: String = ""
+    var fullName: String = ""
+    var research: Boolean = false
+    var prevShipIndex: String = ""
+    var prevShipName: String = ""
+    var prevShipXP: Int = 0
+    var prevShipCompXP: Int = 0
+    val typeImage: String?
+        get() = if (typeinfo != null && typeinfo!!.species.isNotEmpty() && realShipType!!.isNotEmpty()) {
+            "https://cdn.wowsft.com/images/vehicles/types/" + typeinfo!!.species + (if (realShipType!!.equals("Premium", true)) "/premium" else "/normal") + ".png"
+        } else ""
+    val imageSmall: String?
+        get() = if (index!!.isNotEmpty()) "https://cdn.wowsft.com/images/vehicles/ship_previews/$index.png" else ""
+    var planes = LinkedHashMap<String, String>()
+
+    var consumables = ArrayList<List<Consumable>>()
+    var upgrades = ArrayList<List<Modernization>>()
+    var upgradesRow: Int = 0
+    @JsonIgnore
+    var selectConsumables = ArrayList<Int>()
+    @JsonIgnore
+    var selectUpgrades = ArrayList<Int>()
+    @JsonIgnore
+    var selectSkills = ArrayList<Int>()
+    @JsonIgnore
+    var selectSkillPts: Int = 0
+    var modules = LinkedHashMap<String, String>()
+    var positions = LinkedHashMap<String, Int>()
+
+    var commander: Commander? = null
+
+    var turrets: List<Turret>? = null
+    var launchers: List<Launcher>? = null
+
+    var auraFar = ArrayList<Aura>()
+    var auraFarBubble = ArrayList<Aura>()
+    var auraMedium = ArrayList<Aura>()
+    var auraNear = ArrayList<Aura>()
+
+    var adrenaline: Float = 0.toFloat()
+    var arUse: Boolean = false
 
     @JsonAnySetter
-    public void setUpTempComponents(String name, Object value)
-    {
-        tempComponents.put(name, value);
-    }
-
-    public String getTypeImage()
-    {
-        if (typeinfo != null && StringUtils.isNotEmpty(typeinfo.getSpecies()) && StringUtils.isNotEmpty(realShipType)) {
-            return "https://cdn.wowsft.com/images/vehicles/types/" + typeinfo.getSpecies() + (realShipType.equalsIgnoreCase("Premium") ? "/premium" : "/normal") + ".png";
-        }
-        return "";
-    }
-
-    public String getImageSmall()
-    {
-        if (StringUtils.isNotEmpty(index)) {
-            return "https://cdn.wowsft.com/images/vehicles/ship_previews/" + index + ".png";
-        }
-        return "";
+    fun setUpTempComponents(name: String, value: Any) {
+        tempComponents[name] = value
     }
 }

@@ -11,7 +11,7 @@ import wowsft.model.Constant.componentsList
 
 @WoWSFT
 class ShipUpgradeInfo {
-    var components = LinkedHashMap<String, List<ShipUpgrade>>()
+    var components = LinkedHashMap<String, MutableList<ShipUpgrade>>()
     var cols = LinkedHashMap<String, Int>()
     var maxRows: Int = 0
 
@@ -36,5 +36,10 @@ class ShipUpgradeInfo {
         upgrade.name = name
         upgrade.position = if (upgrade.prev.isEmpty()) 1 else 2
         components[upgrade.ucTypeShort]!!.plus(upgrade)
+    }
+
+    fun setColsAndMaxRows(col: LinkedHashMap<String, Int>, row: Int) {
+        cols = col
+        maxRows = row
     }
 }

@@ -18,16 +18,16 @@ import java.util.LinkedHashMap
 class ShipUpgrade {
     var disabledAbilities: List<String>? = null
     var nextShips = ArrayList<String>()
-    var fullName: String? = null
-    var name: String? = null
+    var fullName: String = ""
+    var name: String = ""
     var prev = ""
-    var ucType: String? = null
+    var ucType: String = ""
     var position: Int = 0
     @JsonInclude
     var elem: Int = 0
 
-    var prevType: String? = null
-        get() = if (prevType.isNullOrEmpty()) ucTypeShort else field
+    var prevType: String = ""
+        get() = if (prevType.isEmpty()) ucTypeShort else field
     @JsonInclude
     var prevPosition: Int = 0
     var prevElem: Int = 0
@@ -36,18 +36,16 @@ class ShipUpgrade {
     @JsonIgnore
     private val mapper = ObjectMapper()
 
-    val ucTypeShort: String?
-        get() = if (!ucType.isNullOrEmpty()) ucType!!.replace("_", "").decapitalize() else ucType
+    val ucTypeShort: String = if (ucType.isNotEmpty()) ucType.replace("_", "").decapitalize() else ucType
 
-    val image: String
-        get() = if (!ucTypeShort.isNullOrEmpty()) "https://cdn.wowsft.com/images/modules/module_" + ucTypeShort!!.toLowerCase() + ".png" else ""
+    val image: String = if (ucTypeShort.isNotEmpty()) "https://cdn.wowsft.com/images/modules/module_" + ucTypeShort.toLowerCase() + ".png" else ""
 
     @JsonSetter
     fun setComponents(value: Any) {
         val temp = mapper.convertValue<LinkedHashMap<String, MutableList<String>>>(value, object : TypeReference<LinkedHashMap<String, MutableList<String>>>() {})
 
         temp.forEach { (key, list) ->
-            val name = if (key.equals(fireControl, ignoreCase = true)) suo else key
+            val name = if (key.equals(fireControl, true)) suo else key
             list.sort()
             components[name] = list
         }
