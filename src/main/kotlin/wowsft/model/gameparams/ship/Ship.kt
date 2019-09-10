@@ -22,55 +22,53 @@ class Ship {
     var tempComponents = LinkedHashMap<String, Any>()
     var components = ShipComponent()
 
-    @JsonAlias("ShipAbilities")
-    var shipAbilities: LinkedHashMap<String, AbilitySlot>? = null
-    @JsonAlias("ShipUpgradeInfo")
-    var shipUpgradeInfo: ShipUpgradeInfo? = null
+    @JsonProperty("ShipAbilities")
+    var shipAbilities = LinkedHashMap<String, AbilitySlot>()
+    @JsonProperty("ShipUpgradeInfo")
+    var shipUpgradeInfo = ShipUpgradeInfo()
 
-    var apDamageLimitCoeff: Float = 0.toFloat()
-    var battleLevels: BattleLevels? = null
-    var canEquipCamouflage: Boolean = false
-    var defaultCrew: String = ""
-    var group: String = ""
-    var id: Long = 0
+    var apDamageLimitCoeff = 0f
+    var battleLevels = BattleLevels()
+    var canEquipCamouflage = false
+    var defaultCrew = ""
+    var group = ""
+    var id = 0L
     var index: String = ""
-    @JsonAlias("isPaperShip")
-    var paperShip: Boolean = false
-    var level: Int = 0
-    var maxEquippedFlags: Int = 0
-    var name: String = ""
-    var navalFlag: String = ""
-    var needShowProjectYear: Boolean = false
-    var peculiarity: String = ""
-    var steerAngle: List<Float>? = null
-    var typeinfo: TypeInfo? = null
-    var weight: Int = 0
+    @JsonProperty("isPaperShip")
+    var paperShip = false
+    var level = 0
+    var maxEquippedFlags = 0
+    var name = ""
+    var navalFlag = ""
+    var needShowProjectYear = false
+    var peculiarity = ""
+    var steerAngle = ArrayList<Float>()
+    var typeinfo = TypeInfo()
+    var weight = 0
 
-    var realShipType: String = ""
+    var realShipType = ""
         set(realShipType) {
-            if (!realShipType.isNullOrEmpty()) {
+            if (realShipType.isNotEmpty()) {
                 field = realShipType
                 realShipTypeId = if ("Premium".equals(realShipType, true)) "FILTER_PREMIUM" else realShipType.toUpperCase()
             }
         }
-    var realShipTypeId: String = ""
-    var fullName: String = ""
-    var research: Boolean = false
-    var prevShipIndex: String = ""
-    var prevShipName: String = ""
-    var prevShipXP: Int = 0
-    var prevShipCompXP: Int = 0
-    val typeImage: String?
-        get() = if (typeinfo != null && typeinfo!!.species.isNotEmpty() && realShipType!!.isNotEmpty()) {
-            "https://cdn.wowsft.com/images/vehicles/types/" + typeinfo!!.species + (if (realShipType!!.equals("Premium", true)) "/premium" else "/normal") + ".png"
+    var realShipTypeId = ""
+    var fullName = ""
+    var research = false
+    var prevShipIndex = ""
+    var prevShipName = ""
+    var prevShipXP = 0
+    var prevShipCompXP = 0
+    val typeImage = if (typeinfo.nation.isNotEmpty() && typeinfo.species.isNotEmpty() && realShipType.isNotEmpty()) {
+            "https://cdn.wowsft.com/images/vehicles/types/" + typeinfo.species + (if (realShipType.equals("Premium", true)) "/premium" else "/normal") + ".png"
         } else ""
-    val imageSmall: String?
-        get() = if (index!!.isNotEmpty()) "https://cdn.wowsft.com/images/vehicles/ship_previews/$index.png" else ""
+    val imageSmall = if (index.isNotEmpty()) "https://cdn.wowsft.com/images/vehicles/ship_previews/$index.png" else ""
     var planes = LinkedHashMap<String, String>()
 
     var consumables = ArrayList<List<Consumable>>()
     var upgrades = ArrayList<List<Modernization>>()
-    var upgradesRow: Int = 0
+    var upgradesRow = 0
     @JsonIgnore
     var selectConsumables = ArrayList<Int>()
     @JsonIgnore
@@ -78,22 +76,22 @@ class Ship {
     @JsonIgnore
     var selectSkills = ArrayList<Int>()
     @JsonIgnore
-    var selectSkillPts: Int = 0
+    var selectSkillPts = 0
     var modules = LinkedHashMap<String, String>()
     var positions = LinkedHashMap<String, Int>()
 
-    var commander: Commander? = null
+    var commander = Commander()
 
-    var turrets: List<Turret>? = null
-    var launchers: List<Launcher>? = null
+    var turrets = ArrayList<Turret>()
+    var launchers = ArrayList<Launcher>()
 
     var auraFar = ArrayList<Aura>()
     var auraFarBubble = ArrayList<Aura>()
     var auraMedium = ArrayList<Aura>()
     var auraNear = ArrayList<Aura>()
 
-    var adrenaline: Float = 0.toFloat()
-    var arUse: Boolean = false
+    var adrenaline = 0f
+    var arUse = false
 
     @JsonAnySetter
     fun setUpTempComponents(name: String, value: Any) {

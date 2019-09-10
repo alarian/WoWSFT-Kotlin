@@ -20,7 +20,7 @@ class ShipUpgradeInfo {
     var costSaleGold: Int = 0
     var costXP: Int = 0
     var lockedConfig: List<Any>? = null
-    var prepareTimeFactor: Float = 0f
+    var prepareTimeFactor = 0f
     var value: Int = 0
 
     @JsonIgnore

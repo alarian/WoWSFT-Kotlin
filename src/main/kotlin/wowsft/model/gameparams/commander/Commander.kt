@@ -16,48 +16,37 @@ import java.util.LinkedHashMap
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Commander {
     @JsonProperty("CrewPersonality")
-    var crewPersonality: CrewPersonality? = null
-    var id: Long = 0
-    var identifier: String = ""
-    var index: String = ""
-    var name: String = ""
-    var typeinfo: TypeInfo? = null
+    var crewPersonality = CrewPersonality()
+    var id = 0L
+    var identifier = ""
+    var index = ""
+    var name = ""
+    var typeinfo = TypeInfo()
+    @JsonProperty("cSkills")
     var cSkills = ArrayList<MutableList<Skill>>()
 
     @JsonIgnore
-    var mapper = ObjectMapper()
+    private val mapper = ObjectMapper()
 
     init {
-        cSkills.add(ArrayList())
-        cSkills.add(ArrayList())
-        cSkills.add(ArrayList())
-        cSkills.add(ArrayList())
-
-        for (s in cSkills) {
-            for (i in 0..7) {
+        for (i in 1..4) {
+            val s = ArrayList<Skill>()
+            for (j in 1..8) {
                 s.add(Skill())
             }
+            cSkills.add(s)
         }
     }
 
     @JsonAnySetter
     fun setSkills(name: String, value: Any) {
         if (name.equals("Skills", true)) {
-            val temp = mapper.convertValue<LinkedHashMap<String, Skill>>(
-                value,
-                object : TypeReference<LinkedHashMap<String, Skill>>() {
-
-                })
+            val temp = mapper.convertValue<LinkedHashMap<String, Skill>>(value, object : TypeReference<LinkedHashMap<String, Skill>>() {})
 
             temp.forEach { (key, value) ->
                 value.modifier = key
                 cSkills[value.tier - 1][value.column] = value
             }
         }
-    }
-
-    @JsonProperty("cSkills")
-    fun getCSkills(): List<List<Skill>> {
-        return cSkills
     }
 }

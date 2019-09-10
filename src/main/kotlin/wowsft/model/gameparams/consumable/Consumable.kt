@@ -12,16 +12,15 @@ import java.util.LinkedHashMap
 class Consumable {
     var subConsumables = LinkedHashMap<String, ConsumableSub>()
 
-    var canBuy: Boolean = false
-    var canBuyCustom: LinkedHashMap<String, Boolean>? = null
-    var costCR: Float = 0.toFloat()
-    var costGold: Float = 0.toFloat()
-    var freeOfCharge: Boolean = false
-    var id: Long = 0
-    var index: String? = null
-    var name: String? = null
-    var typeinfo: TypeInfo? = null
-
+    var canBuy = false
+    var canBuyCustom = LinkedHashMap<String, Boolean>()
+    var costCR = 0f
+    var costGold = 0f
+    var freeOfCharge = false
+    var id = 0L
+    var index = ""
+    var name = ""
+    var typeinfo = TypeInfo()
     var description = ""
 
     @JsonIgnore

@@ -10,42 +10,42 @@ import java.util.LinkedHashMap
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Shell {
-    val alphaDamage: Float = 0f
-    val alphaPiercingCS: Float = 0f
-    var alphaPiercingHE: Float = 0f
+    val alphaDamage = 0f
+    val alphaPiercingCS = 0f
+    var alphaPiercingHE = 0f
         set(alphaPiercingHE) {
             field = alphaPiercingHE
             this.alphaPiercingHEReal = alphaPiercingHE - 1f
         }
-    var alphaPiercingHEReal: Float = 0f
+    var alphaPiercingHEReal = 0f
     val ammoType: String? = null
-    val bulletAirDrag: Float = 0f
-    val bulletAlwaysRicochetAt: Float = 0f
+    val bulletAirDrag = 0f
+    val bulletAlwaysRicochetAt = 0f
     val bulletCap: Boolean = false
-    val bulletCapNormalizeMaxAngle: Float = 0f
-    val bulletDetonator: Float = 0f
-    val bulletDetonatorSpread: Float = 0f
-    val bulletDetonatorThreshold: Float = 0f
-    val bulletDiametr: Float = 0f
-    val bulletKrupp: Float = 0f
-    val bulletMass: Float = 0f
-    val bulletPenetrationSpread: Float = 0f
-    val bulletRicochetAt: Float = 0f
-    val bulletSpeed: Float = 0f
-    val bulletUnderwaterDistFactor: Float = 0f
-    val bulletUnderwaterPenetrationFactor: Float = 0f
-    val bulletWaterDrag: Float = 0f
-    val burnProb: Float = 0f
+    val bulletCapNormalizeMaxAngle = 0f
+    val bulletDetonator = 0f
+    val bulletDetonatorSpread = 0f
+    val bulletDetonatorThreshold = 0f
+    val bulletDiametr = 0f
+    val bulletKrupp = 0f
+    val bulletMass = 0f
+    val bulletPenetrationSpread = 0f
+    val bulletRicochetAt = 0f
+    val bulletSpeed = 0f
+    val bulletUnderwaterDistFactor = 0f
+    val bulletUnderwaterPenetrationFactor = 0f
+    val bulletWaterDrag = 0f
+    val burnProb = 0f
     val costCR: Int = 0
-    val damage: Float = 0f
-    val directDamage: Float = 0f
+    val damage = 0f
+    val directDamage = 0f
     val id: Long = 0
     val index: String? = null
     val name: String? = null
     val typeinfo: TypeInfo? = null
     val uwAbility: Boolean = false
-    val uwCritical: Float = 0f
-    val volume: Float = 0f
+    val uwCritical = 0f
+    val volume = 0f
     val waterRefractionReflectDeltaAngleInterval: List<Float>? = null
 
     //    @JsonIgnore
@@ -62,32 +62,32 @@ class Shell {
     //    LinkedHashMap<String, Float> vertMinus;
     //    @JsonIgnore
     var distanceList: List<String>? = null
-    var minDistV: Float = 0f
-    var penetrationAtFive: Float = 0f
-    var penetrationAtTen: Float = 0f
-    var penetrationAtFifteen: Float = 0f
-    var penetrationAtTwenty: Float = 0f
-    val penetrationAtMax: Float = 0f
-    var flightTimeAtFive: Float = 0f
-    var flightTimeAtTen: Float = 0f
-    var flightTimeAtFifteen: Float = 0f
-    var flightTimeAtTwenty: Float = 0f
-    val flightTimeAtMax: Float = 0f
-    var impactAtFive: Float = 0f
-    var impactAtTen: Float = 0f
-    var impactAtFifteen: Float = 0f
-    var impactAtTwenty: Float = 0f
-    val impactAtMax: Float = 0f
-    val vertPlusAtFive: Float = 0f
-    val vertPlusAtTen: Float = 0f
-    val vertPlusAtFifteen: Float = 0f
-    val vertPlusAtTwenty: Float = 0f
-    val vertPlusAtMax: Float = 0f
-    val vertMinusAtFive: Float = 0f
-    val vertMinusAtTen: Float = 0f
-    val vertMinusAtFifteen: Float = 0f
-    val vertMinusAtTwenty: Float = 0f
-    val vertMinusAtMax: Float = 0f
+    var minDistV = 0f
+    var penetrationAtFive = 0f
+    var penetrationAtTen = 0f
+    var penetrationAtFifteen = 0f
+    var penetrationAtTwenty = 0f
+    val penetrationAtMax = 0f
+    var flightTimeAtFive = 0f
+    var flightTimeAtTen = 0f
+    var flightTimeAtFifteen = 0f
+    var flightTimeAtTwenty = 0f
+    val flightTimeAtMax = 0f
+    var impactAtFive = 0f
+    var impactAtTen = 0f
+    var impactAtFifteen = 0f
+    var impactAtTwenty = 0f
+    val impactAtMax = 0f
+    val vertPlusAtFive = 0f
+    val vertPlusAtTen = 0f
+    val vertPlusAtFifteen = 0f
+    val vertPlusAtTwenty = 0f
+    val vertPlusAtMax = 0f
+    val vertMinusAtFive = 0f
+    val vertMinusAtTen = 0f
+    val vertMinusAtFifteen = 0f
+    val vertMinusAtTwenty = 0f
+    val vertMinusAtMax = 0f
 
     val penetrationIFHE: Int = 0
 
@@ -106,7 +106,7 @@ class Shell {
         impact: LinkedHashMap<String, Float>?,
         distanceList: List<String>?,
         launchAngle: LinkedHashMap<String, Float>?,
-        minDistV: Float,
+        minDistV,
         apShell: Boolean
     ) {
         this.penetration = penetration
@@ -253,11 +253,11 @@ class Shell {
         }
     }
 
-    private fun calcVertDist(dist: Float, vert: Float): Float {
+    private fun calcVertDist(dist, vert) {
         return dist + (vert - dist)
     }
 
-    private fun getVertDist(dist: String, mid: Float, low: Boolean): Float {
+    private fun getVertDist(dist: String, mid, low: Boolean) {
         val minDistVOffset = minDistV / 2f
         var radAtDist = Math.atan((minDistVOffset / mid).toDouble()).toFloat()
 
@@ -287,7 +287,7 @@ class Shell {
 
     }
 
-    private fun setMiddleAtDistance(x1: Float?, y1: Float?, x2: Float?, y2: Float?, mid: Float?): Float {
+    private fun setMiddleAtDistance(x1?, y1?, x2?, y2?, mid?) {
         if (x1 == null || x2 == null || y1 == null || y2 == null) {
             return 0f
         }

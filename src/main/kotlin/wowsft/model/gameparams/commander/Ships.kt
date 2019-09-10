@@ -1,14 +1,11 @@
-package wowsft.model.gameparams.commander;
+package wowsft.model.gameparams.commander
 
-import wowsft.config.WoWSFT;
-
-import java.util.List;
+import wowsft.config.WoWSFT
 
 @WoWSFT
-public class Ships
-{
-    private List<String> nation;
-    private List<String> peculiarity;
-    private List<String> ships;
-    private List<String> groups;
+class Ships {
+    var nation = ArrayList<String>()
+    var peculiarity = ArrayList<String>()
+    var ships = ArrayList<String>()
+    var groups = ArrayList<String>()
 }

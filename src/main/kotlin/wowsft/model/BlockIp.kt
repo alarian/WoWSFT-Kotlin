@@ -2,16 +2,11 @@ package wowsft.model
 
 import java.util.Date
 
-class BlockIp(private val ip: String) {
-    private var created: Date? = null
-    private var count: Int = 0
-    private var blockCount: Int = 0
-    private var blockCreated: Date? = null
-
-    init {
-        this.created = Date()
-        this.count = 1
-    }
+class BlockIp(private val ip : String) {
+    private var count = 0
+    private var created = Date()
+    private var blockCount = 0
+    private var blockCreated : Date? = null
 
     fun doCount() {
         this.count++

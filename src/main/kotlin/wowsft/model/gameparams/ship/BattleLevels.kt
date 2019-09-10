@@ -1,17 +1,14 @@
-package wowsft.model.gameparams.ship;
+package wowsft.model.gameparams.ship
 
-import wowsft.config.WoWSFT;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
+import wowsft.config.WoWSFT
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BattleLevels
-{
+class BattleLevels {
     @JsonProperty("COOPERATIVE")
-    private List<Integer> cooperative;
+    val cooperative = ArrayList<Int>()
     @JsonProperty("PVP")
-    private List<Integer> pvp;
+    val pvp = ArrayList<Int>()
 }

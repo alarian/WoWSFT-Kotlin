@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 open class CommonModifier {
     @JsonProperty("AAExtraBubbles")
-    var aaextraBubbles: Float = 0f
+    var aaextraBubbles = 0f
     @JsonProperty("AANearDamage")
     var aanearDamage = 1f
     @JsonProperty("AAOuterDamage")
@@ -66,14 +66,14 @@ open class CommonModifier {
     var airDefenseDispWorkTime = 1f
     var airplanesDiveBombersHealth = 1f
     var airplanesEmptyReturnSpeed = 1f
-    var airplanesExtraHangarSize: Float = 0f
-    var airplanesFighterAimingTime: Float = 0f
+    var airplanesExtraHangarSize = 0f
+    var airplanesFighterAimingTime = 0f
     var airplanesFightersHealth = 1f
     var airplanesForsageDuration = 1f
     var airplanesHealth = 1f
     var airplanesSpawnTime = 1f
     var airplanesSpeed = 1f
-    var airplanesTorpedoAimingTime: Float = 0f
+    var airplanesTorpedoAimingTime = 0f
     var airplanesTorpedoBombersHealth = 1f
     var burnProb = 1f
     var burnTime = 1f
@@ -109,7 +109,7 @@ open class CommonModifier {
     var visionXRayShipCoeff = 1f
 
     //
-    var modifier: String? = null
+    var modifier = ""
     var diveBomber = 1f
     var fighter = 1f
     var torpedoBomber = 1f
@@ -118,42 +118,42 @@ open class CommonModifier {
     var smallGunRangeCoefficient = 1f
     var consumablePlaneSpeedCoefficient = 1f
     var reloadCoefficient = 1f
-    var alertMinDistance: Float = 0f
+    var alertMinDistance = 0f
     var critTimeCoefficient = 1f
     var atbaIdealRadiusHi = 1f
     var atbaIdealRadiusLo = 1f
     var fightersAmmunitionCoefficient = 1f
     var fightersEfficiencyCoefficient = 1f
-    var probabilityBonus: Float = 0f
+    var probabilityBonus = 0f
     var probabilityCoefficient = 1f
     var switchAmmoReloadCoef = 1f
 
-    var chanceToSetOnFireBonus: Float = 0f
-    var chanceToSetOnFireBonusBig: Float = 0f
-    var chanceToSetOnFireBonusSmall: Float = 0f
+    var chanceToSetOnFireBonus = 0f
+    var chanceToSetOnFireBonusBig = 0f
+    var chanceToSetOnFireBonusSmall = 0f
     var thresholdPenetrationCoefficient = 1f
     var thresholdPenetrationCoefficientBig = 1f
     var thresholdPenetrationCoefficientSmall = 1f
 
     var hpStep = 1f
-    var timeStep: Float = 0f
+    var timeStep = 0f
     var critRudderTimeCoefficient = 1f
-    var bigGunBonus: Float = 0f
-    var smallGunBonus: Float = 0f
+    var bigGunBonus = 0f
+    var smallGunBonus = 0f
     var critProbCoefficient = 1f
     var fightersSpeedCoefficient = 1f
     var fightersVisibCoefficient = 1f
     var fightersVitalCoefficient = 1f
-    var burnTimePenalty: Float = 0f
+    var burnTimePenalty = 0f
     var diveBombersPrepareCoefficient = 1f
     var fightersPrepareCoefficient = 1f
     var torpedoBombersPrepareCoefficient = 1f
     var vitalityCoefficient = 1f
     var fightersPassiveEfficiencyCoefficient = 1f
-    var additionalConsumables: Float = 0f
-    var healthPerLevel: Float = 0f
+    var additionalConsumables = 0f
+    var healthPerLevel = 0f
     var torpedoRangeCoefficient = 1f
-    var torpedoSpeedBonus: Float = 0f
+    var torpedoSpeedBonus = 0f
     var rangeCoefficient = 1f
     var bomberCoefficient = 1f
     var launcherCoefficient = 1f
@@ -165,22 +165,22 @@ open class CommonModifier {
     var squadronCoefficient = 1f
     var nearAuraDamageCoefficient = 1f
     var advancedOuterAuraDamageCoefficient = 1f
-    var extraFighterCount: Float = 0f
+    var extraFighterCount = 0f
     var fighterLifeTimeCoefficient = 1f
-    var hangarSizeBonus: Float = 0f
+    var hangarSizeBonus = 0f
     var planeSpawnTimeCoefficient = 1f
     var prioritySectorStrengthCoefficient = 1f
     var sectorSwitchDelayCoefficient = 1f
-    var bombProbabilityBonus: Float = 0f
-    var rocketProbabilityBonus: Float = 0f
+    var bombProbabilityBonus = 0f
+    var rocketProbabilityBonus = 0f
     var flightSpeedCoefficient = 1f
     var forsageDurationCoefficient = 1f
-    var squadronHealthStep: Float = 0f
+    var squadronHealthStep = 0f
     var squadronSpeedStep = 1f
     var nearAuraDamageTakenCoefficient = 1f
-    var planeHealthPerLevel: Float = 0f
+    var planeHealthPerLevel = 0f
     var planeTorpedoRangeCoefficient = 1f
-    var planeTorpedoSpeedBonus: Float = 0f
+    var planeTorpedoSpeedBonus = 0f
     var planeRangeCoefficient = 1f
     var prioSectorCooldownCoefficient = 1f
     var prioSectorPhaseDurationCoefficient = 1f

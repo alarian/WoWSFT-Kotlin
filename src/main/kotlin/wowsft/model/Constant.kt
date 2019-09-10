@@ -49,7 +49,7 @@ object Constant {
     const val loadFinish = "loadFinish"
     const val Ability = "Ability"
 
-    val componentsList: List<String> = ArrayList(
+    val componentsList : List<String> = ArrayList(
         listOf(
             flightControl,
             artillery,
@@ -62,7 +62,7 @@ object Constant {
             engine
         )
     )
-    val compStatsList: List<String> = ArrayList(
+    val compStatsList : List<String> = ArrayList(
         listOf(
             flightControl,
             airArmament,

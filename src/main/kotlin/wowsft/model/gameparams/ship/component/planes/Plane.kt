@@ -1,46 +1,45 @@
-package wowsft.model.gameparams.ship.component.planes;
+package wowsft.model.gameparams.ship.component.planes
 
-import wowsft.model.gameparams.TypeInfo;
-import wowsft.model.gameparams.consumable.Consumable;
-import wowsft.model.gameparams.ship.abilities.AbilitySlot;
-import wowsft.model.gameparams.ship.component.artillery.Shell;
-import wowsft.model.gameparams.ship.component.torpedo.TorpedoAmmo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import wowsft.model.gameparams.TypeInfo
+import wowsft.model.gameparams.consumable.Consumable
+import wowsft.model.gameparams.ship.abilities.AbilitySlot
+import wowsft.model.gameparams.ship.component.artillery.Shell
+import wowsft.model.gameparams.ship.component.torpedo.TorpedoAmmo
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import wowsft.model.gameparams.CommonModifier
 
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.LinkedHashMap
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Plane
-{
+class Plane {
     @JsonProperty("PlaneAbilities")
-    private LinkedHashMap<String, AbilitySlot> planeAbilities;
+    var planeAbilities = LinkedHashMap<String, AbilitySlot>()
 
-    private int attackCount;
-    private int attackerSize;
-    private String bombName;
-    private float forsageRegeneration;
-    private float fuelTime;
-    private HangarSetting hangarSettings;
-    private long id;
-    private String index;
-    private int level;
-    private float maxForsageAmount;
-    private int maxHealth;
-    private float maxVisibilityFactor;
-    private float maxVisibilityFactorByPlane;
-    private float minVisibilityFactor;
-    private float minVisibilityFactorByPlane;
-    private String name;
-    private int numPlanesInSquadron;
-    private float speedMax;
-    private float speedMin;
-    private float speedMove;
-    private float speedMoveWithBomb;
-    private TypeInfo typeinfo;
-    private Shell rocket;
-    private Shell bomb;
-    private TorpedoAmmo torpedo;
-    private List<Consumable> consumables;
+    var attackCount = 0
+    var attackerSize = 0
+    var bombName = ""
+    var forsageRegeneration = 0f
+    var fuelTime = 0f
+    var hangarSettings = HangarSetting()
+    var id = 0L
+    var index = ""
+    var level = 0
+    var maxForsageAmount = 0f
+    var maxHealth = 0
+    var maxVisibilityFactor = 0f
+    var maxVisibilityFactorByPlane = 0f
+    var minVisibilityFactor = 0f
+    var minVisibilityFactorByPlane = 0f
+    var name = ""
+    var numPlanesInSquadron = 0
+    var speedMax = 0f
+    var speedMin = 0f
+    var speedMove = 0f
+    var speedMoveWithBomb = 0f
+    var typeinfo = TypeInfo()
+    var rocket = Shell()
+    var bomb = Shell()
+    var torpedo = TorpedoAmmo()
+    var consumables = ArrayList<Consumable>()
 }

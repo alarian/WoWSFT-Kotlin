@@ -8,19 +8,19 @@ import java.util.LinkedHashMap
 
 @WoWSFT
 class Flag : CommonModifier() {
-    var canBuy: Boolean = false
-    var canBuyCustom: Any? = null
-    var flags: List<String>? = null
-    var group: Int = 0
-    var hidden: Boolean = false
-    var hiddenCustom: Any? = null
-    var id: Long = 0
-    var index: String = ""
+    var canBuy = false
+    var canBuyCustom = Any()
+    var flags = ArrayList<String>()
+    var group = 0
+    var hidden = false
+    var hiddenCustom = Any()
+    var id = 0L
+    var index = ""
     var name: String = ""
-    var typeinfo: TypeInfo? = null
-    var sortOrder: Int = 0
-    var identifier: String = ""
+    var typeinfo = TypeInfo()
+    var sortOrder = 0
+    var identifier = ""
     var bonus = LinkedHashMap<String, String>()
     var description = ""
-    val image: String = "https://cdn.wowsft.com/images/signal_flags/$name.png"
+    val image = if (name.isNotEmpty()) "https://cdn.wowsft.com/images/signal_flags/$name.png" else ""
 }
