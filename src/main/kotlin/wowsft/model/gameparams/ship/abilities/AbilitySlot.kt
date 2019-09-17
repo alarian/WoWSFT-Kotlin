@@ -1,14 +1,11 @@
-package wowsft.model.gameparams.ship.abilities;
+package wowsft.model.gameparams.ship.abilities
 
-import wowsft.config.WoWSFT;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.List;
+import wowsft.config.WoWSFT
+import com.fasterxml.jackson.annotation.JsonInclude
 
 @WoWSFT
-public class AbilitySlot
-{
-    private List<List<String>> abils;
+class AbilitySlot {
+    var abils = ArrayList<MutableList<String>>()
     @JsonInclude
-    private int slot;
+    var slot = 0
 }
