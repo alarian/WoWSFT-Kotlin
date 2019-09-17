@@ -1,51 +1,48 @@
-package wowsft.model.gameparams.ship.component.torpedo;
+package wowsft.model.gameparams.ship.component.torpedo
 
-import wowsft.config.WoWSFT;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import wowsft.config.WoWSFT
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.ArrayList
+import java.util.HashMap
+import java.util.LinkedHashMap
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Torpedo
-{
-    private List<Launcher> launchers = new ArrayList<>();
-    private LinkedHashMap<Integer, List<Object>> launcherTypes = new LinkedHashMap<>();
+class Torpedo {
+    var launchers = ArrayList<Launcher>()
+    var launcherTypes = LinkedHashMap<Int, MutableList<Any>>()
 
-    private int numTorpsInSalvo;
-    private float oneShotWaitTime;
-    private boolean useGroups;
-    private boolean useOneShot;
+    var numTorpsInSalvo = 0
+    var oneShotWaitTime = 0f
+    var useGroups = false
+    var useOneShot = false
 
-    private TorpedoAmmo ammo;
+    var ammo = TorpedoAmmo()
 
     @JsonIgnore
-    private ObjectMapper mapper = new ObjectMapper();
+    private val mapper = ObjectMapper()
 
     @JsonAnySetter
-    public void setGuns(String name, Object value)
-    {
-        if (value instanceof HashMap) {
-            HashMap<String, Object> tempObject = mapper.convertValue(value, new TypeReference<HashMap<String, Object>>(){});
+    fun setGuns(name: String, value: Any) {
+        if (value is HashMap<*, *>) {
+            val tempObject = mapper.convertValue<HashMap<String, Any>>(value, object : TypeReference<HashMap<String, Any>>() {})
 
             if (tempObject.containsKey("HitLocationTorpedo")) {
-                Launcher launcher = mapper.convertValue(value, Launcher.class);
-                launchers.add(launcher);
+                val launcher = mapper.convertValue(value, Launcher::class.java)
+                launchers.add(launcher)
 
-                if (launcherTypes.containsKey(launcher.getNumBarrels())) {
-                    launcherTypes.get(launcher.getNumBarrels()).set(0, (int) launcherTypes.get(launcher.getNumBarrels()).get(0) + 1);
+                if (launcherTypes.containsKey(launcher.numBarrels)) {
+                    launcherTypes[launcher.numBarrels]?.set(0, launcherTypes[launcher.numBarrels]?.get(0) as Int + 1)
                 } else {
-                    List<Object> tObject = new ArrayList<>();
-                    tObject.add(1);
-                    tObject.add(launcher.getName());
-                    launcherTypes.put(launcher.getNumBarrels(), tObject);
+                    val tObject = ArrayList<Any>()
+                    tObject.add(1)
+                    tObject.add(launcher.name)
+                    launcherTypes[launcher.numBarrels] = tObject
                 }
             }
         }

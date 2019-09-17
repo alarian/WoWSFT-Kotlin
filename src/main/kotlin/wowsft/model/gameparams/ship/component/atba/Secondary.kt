@@ -1,52 +1,47 @@
-package wowsft.model.gameparams.ship.component.atba;
+package wowsft.model.gameparams.ship.component.atba
 
-import wowsft.config.WoWSFT;
-import wowsft.model.gameparams.TypeInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.List;
+import wowsft.config.WoWSFT
+import wowsft.model.gameparams.TypeInfo
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Secondary
-{
-    private List<String> ammoList;
-    private float antiAirAuraDistance;
-    private float antiAirAuraStrength;
-    private float barrelDiameter;
-    private List<List<Float>> deadZone;
-    private float delim;
-    private List<Float> horizSector;
-    private long id;
-    private float idealDistance;
-    private float idealRadius;
-    private String index;
-    private float minRadius;
-    private String name;
-    private int numBarrels;
-    private float radiusOnDelim;
-    private float radiusOnMax;
-    private float radiusOnZero;
-    private List<Float> rotationSpeed;
-    private float shotDelay;
-    private boolean smallGun;
-    private float smokePenalty;
-    private TypeInfo typeinfo;
-    private List<Float> vertSector;
+class Secondary {
+    var ammoList = ArrayList<String>()
+    var antiAirAuraDistance = 0f
+    var antiAirAuraStrength = 0f
+    var barrelDiameter = 0f
+    var deadZone = ArrayList<MutableList<Float>>()
+    var delim = 0f
+    var horizSector = ArrayList<Float>()
+    var id = 0L
+    var idealDistance = 0f
+    var idealRadius = 0f
+    var index = ""
+    var minRadius = 0f
+    var name = ""
+    var numBarrels = 0
+    var radiusOnDelim = 0f
+    var radiusOnMax = 0f
+    var radiusOnZero = 0f
+    var rotationSpeed = ArrayList<Float>()
+    var shotDelay = 0f
+    var smallGun = false
+    var smokePenalty = 0f
+    var typeinfo = TypeInfo()
+    var vertSector = ArrayList<Float>()
     @JsonInclude
-    private float GSIdealRadius = 1f;
+    var GSIdealRadius = 1f
 
-    private int count;
+    var count = 0
 
-    private float alphaDamage;
-    private float alphaPiercingHE;
-    private String ammoType;
-    private float bulletSpeed;
-    private float burnProb;
+    var alphaDamage = 0f
+    var alphaPiercingHE = 0f
+    var ammoType = ""
+    var bulletSpeed = 0f
+    var burnProb = 0f
 
-    public float getAlphaPiercingHEReal()
-    {
-        return alphaPiercingHE - 1f;
-    }
+    val alphaPiercingHEReal
+        get() = alphaPiercingHE - 1f
 }

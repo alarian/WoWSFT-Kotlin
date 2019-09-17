@@ -6,97 +6,98 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 
 import java.util.LinkedHashMap
+import kotlin.math.atan
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Shell {
-    val alphaDamage = 0f
-    val alphaPiercingCS = 0f
+    var alphaDamage = 0f
+    var alphaPiercingCS = 0f
     var alphaPiercingHE = 0f
         set(alphaPiercingHE) {
             field = alphaPiercingHE
             this.alphaPiercingHEReal = alphaPiercingHE - 1f
         }
     var alphaPiercingHEReal = 0f
-    val ammoType: String? = null
-    val bulletAirDrag = 0f
-    val bulletAlwaysRicochetAt = 0f
-    val bulletCap: Boolean = false
-    val bulletCapNormalizeMaxAngle = 0f
-    val bulletDetonator = 0f
-    val bulletDetonatorSpread = 0f
-    val bulletDetonatorThreshold = 0f
-    val bulletDiametr = 0f
-    val bulletKrupp = 0f
-    val bulletMass = 0f
-    val bulletPenetrationSpread = 0f
-    val bulletRicochetAt = 0f
-    val bulletSpeed = 0f
-    val bulletUnderwaterDistFactor = 0f
-    val bulletUnderwaterPenetrationFactor = 0f
-    val bulletWaterDrag = 0f
-    val burnProb = 0f
-    val costCR: Int = 0
-    val damage = 0f
-    val directDamage = 0f
-    val id: Long = 0
-    val index: String? = null
-    val name: String? = null
-    val typeinfo: TypeInfo? = null
-    val uwAbility: Boolean = false
-    val uwCritical = 0f
-    val volume = 0f
-    val waterRefractionReflectDeltaAngleInterval: List<Float>? = null
+    var ammoType = ""
+    var bulletAirDrag = 0f
+    var bulletAlwaysRicochetAt = 0f
+    var bulletCap = false
+    var bulletCapNormalizeMaxAngle = 0f
+    var bulletDetonator = 0f
+    var bulletDetonatorSpread = 0f
+    var bulletDetonatorThreshold = 0f
+    var bulletDiametr = 0f
+    var bulletKrupp = 0f
+    var bulletMass = 0f
+    var bulletPenetrationSpread = 0f
+    var bulletRicochetAt = 0f
+    var bulletSpeed = 0f
+    var bulletUnderwaterDistFactor = 0f
+    var bulletUnderwaterPenetrationFactor = 0f
+    var bulletWaterDrag = 0f
+    var burnProb = 0f
+    var costCR = 0
+    var damage = 0f
+    var directDamage = 0f
+    var id = 0L
+    var index = ""
+    var name = ""
+    var typeinfo = TypeInfo()
+    var uwAbility = false
+    var uwCritical = 0f
+    var volume = 0f
+    var waterRefractionReflectDeltaAngleInterval = ArrayList<Float>()
 
-    //    @JsonIgnore
+//    @JsonIgnore
     var penetration: LinkedHashMap<String, Float>? = null
-    //    @JsonIgnore
-    var flightTime: LinkedHashMap<String, Float>? = null
-    //    @JsonIgnore
+//    @JsonIgnore
+    var flightTime = LinkedHashMap<String, Float>()
+//    @JsonIgnore
     var impact: LinkedHashMap<String, Float>? = null
     @JsonIgnore
-    val launchAngle: LinkedHashMap<String, Float>? = null
-    //    @JsonIgnore
-    //    LinkedHashMap<String, Float> vertPlus;
-    //    @JsonIgnore
-    //    LinkedHashMap<String, Float> vertMinus;
-    //    @JsonIgnore
-    var distanceList: List<String>? = null
+    var launchAngle: LinkedHashMap<String, Float>? = null
+//    @JsonIgnore
+//    LinkedHashMap<String, Float> vertPlus;
+//    @JsonIgnore
+//    LinkedHashMap<String, Float> vertMinus;
+//    @JsonIgnore
+    var distanceList: ArrayList<String>? = null
     var minDistV = 0f
     var penetrationAtFive = 0f
     var penetrationAtTen = 0f
     var penetrationAtFifteen = 0f
     var penetrationAtTwenty = 0f
-    val penetrationAtMax = 0f
+    var penetrationAtMax = 0f
     var flightTimeAtFive = 0f
     var flightTimeAtTen = 0f
     var flightTimeAtFifteen = 0f
     var flightTimeAtTwenty = 0f
-    val flightTimeAtMax = 0f
+    var flightTimeAtMax = 0f
     var impactAtFive = 0f
     var impactAtTen = 0f
     var impactAtFifteen = 0f
     var impactAtTwenty = 0f
-    val impactAtMax = 0f
-    val vertPlusAtFive = 0f
-    val vertPlusAtTen = 0f
-    val vertPlusAtFifteen = 0f
-    val vertPlusAtTwenty = 0f
-    val vertPlusAtMax = 0f
-    val vertMinusAtFive = 0f
-    val vertMinusAtTen = 0f
-    val vertMinusAtFifteen = 0f
-    val vertMinusAtTwenty = 0f
-    val vertMinusAtMax = 0f
+    var impactAtMax = 0f
+    var vertPlusAtFive = 0f
+    var vertPlusAtTen = 0f
+    var vertPlusAtFifteen = 0f
+    var vertPlusAtTwenty = 0f
+    var vertPlusAtMax = 0f
+    var vertMinusAtFive = 0f
+    var vertMinusAtTen = 0f
+    var vertMinusAtFifteen = 0f
+    var vertMinusAtTwenty = 0f
+    var vertMinusAtMax = 0f
 
-    val penetrationIFHE: Int = 0
+    var penetrationIFHE = 0
 
     @JsonIgnore
-    val distFive = 5000f
+    var distFive = 5000f
     @JsonIgnore
-    val distTen = 10000f
+    var distTen = 10000f
     @JsonIgnore
-    val distFifteen = 15000f
+    var distFifteen = 15000f
     @JsonIgnore
     var distTwenty = 20000f
 
@@ -104,16 +105,16 @@ class Shell {
         flightTime: LinkedHashMap<String, Float>,
         penetration: LinkedHashMap<String, Float>?,
         impact: LinkedHashMap<String, Float>?,
-        distanceList: List<String>?,
+        distanceList: ArrayList<String>?,
         launchAngle: LinkedHashMap<String, Float>?,
-        minDistV,
+        minDistV: Float,
         apShell: Boolean
     ) {
         this.penetration = penetration
         this.flightTime = flightTime
         this.impact = impact
         this.distanceList = distanceList
-        //        this.launchAngle = launchAngle;
+//        this.launchAngle = launchAngle;
         this.minDistV = minDistV
 
         var fiveOne = "0"
@@ -125,17 +126,13 @@ class Shell {
         var twentyOne = "0"
         var twentyTwo = ""
 
-        val tempData: LinkedHashMap<String, Float> = if (apShell && !penetration.isNullOrEmpty()) {
-            penetration
-        } else {
-            flightTime
-        }
+        val tempData: LinkedHashMap<String, Float> = if (apShell && !penetration.isNullOrEmpty()) penetration else flightTime
 
         for ((key) in tempData) {
-            val tempFloat = java.lang.Float.parseFloat(key)
+            val tempFloat = key.toFloat()
 
             if (tempFloat < distFive) {
-                if (java.lang.Float.parseFloat(fiveOne) < tempFloat) {
+                if (fiveOne.toFloat() < tempFloat) {
                     fiveOne = key
                 }
             } else if (tempFloat >= distFive && tempFloat < distTen) {
@@ -143,7 +140,7 @@ class Shell {
                     fiveTwo = key
                 }
 
-                if (java.lang.Float.parseFloat(tenOne) < tempFloat) {
+                if (tenOne.toFloat() < tempFloat) {
                     tenOne = key
                 }
             } else if (tempFloat >= distTen && tempFloat < distFifteen) {
@@ -151,7 +148,7 @@ class Shell {
                     tenTwo = key
                 }
 
-                if (java.lang.Float.parseFloat(fifteenOne) < tempFloat) {
+                if (fifteenOne.toFloat() < tempFloat) {
                     fifteenOne = key
                 }
             } else if (tempFloat >= distFifteen && tempFloat < distTwenty) {
@@ -159,7 +156,7 @@ class Shell {
                     fifteenTwo = key
                 }
 
-                if (java.lang.Float.parseFloat(twentyOne) < tempFloat) {
+                if (twentyOne.toFloat() < tempFloat) {
                     twentyOne = key
                 }
             } else if (tempFloat >= distTwenty) {
@@ -171,106 +168,67 @@ class Shell {
 
         if (fiveOne.isNotEmpty() && fiveTwo.isNotEmpty()) {
             if (apShell && !penetration.isNullOrEmpty() && !impact.isNullOrEmpty()) {
-                penetrationAtFive = setMiddleAtDistance(
-                    java.lang.Float.parseFloat(fiveOne),
-                    penetration[fiveOne], java.lang.Float.parseFloat(fiveTwo), penetration[fiveTwo], distFive
-                )
-                impactAtFive = setMiddleAtDistance(
-                    java.lang.Float.parseFloat(fiveOne),
-                    impact[fiveOne], java.lang.Float.parseFloat(fiveTwo), impact[fiveTwo], distFive
-                )
+                penetrationAtFive = setMiddleAtDistance(fiveOne.toFloat(), penetration[fiveOne], fiveTwo.toFloat(), penetration[fiveTwo], distFive)
+                impactAtFive = setMiddleAtDistance(fiveOne.toFloat(), impact[fiveOne], fiveTwo.toFloat(), impact[fiveTwo], distFive)
 
-                //                vertMinusAtFive = calcVertDist(distFive, (getVertDist(fiveOne, distFive, true) + getVertDist(fiveTwo, distFive, true)) / 2f);
-                //                vertPlusAtFive = calcVertDist(distFive, (getVertDist(fiveOne, distFive, false) + getVertDist(fiveTwo, distFive, false)) / 2f);
+//                vertMinusAtFive = calcVertDist(distFive, (getVertDist(fiveOne, distFive, true) + getVertDist(fiveTwo, distFive, true)) / 2f);
+//                vertPlusAtFive = calcVertDist(distFive, (getVertDist(fiveOne, distFive, false) + getVertDist(fiveTwo, distFive, false)) / 2f);
             }
-            flightTimeAtFive = setMiddleAtDistance(
-                java.lang.Float.parseFloat(fiveOne),
-                flightTime[fiveOne], java.lang.Float.parseFloat(fiveTwo), flightTime[fiveTwo], distFive
-            )
+            flightTimeAtFive = setMiddleAtDistance(fiveOne.toFloat(), flightTime[fiveOne], fiveTwo.toFloat(), flightTime[fiveTwo], distFive)
         }
 
         if (tenOne.isNotEmpty() && tenTwo.isNotEmpty()) {
             if (apShell && !penetration.isNullOrEmpty() && !impact.isNullOrEmpty()) {
-                penetrationAtTen = setMiddleAtDistance(
-                    java.lang.Float.parseFloat(tenOne),
-                    penetration[tenOne], java.lang.Float.parseFloat(tenTwo), penetration[tenTwo], distTen
-                )
-                impactAtTen = setMiddleAtDistance(
-                    java.lang.Float.parseFloat(tenOne),
-                    impact[tenOne], java.lang.Float.parseFloat(tenTwo), impact[tenTwo], distTen
-                )
+                penetrationAtTen = setMiddleAtDistance(tenOne.toFloat(), penetration[tenOne], tenTwo.toFloat(), penetration[tenTwo], distTen)
+                impactAtTen = setMiddleAtDistance(tenOne.toFloat(), impact[tenOne], tenTwo.toFloat(), impact[tenTwo], distTen)
 
-                //                vertMinusAtTen = calcVertDist(distTen, (getVertDist(tenOne, distTen, true) + getVertDist(tenTwo, distTen, true)) / 2f);
-                //                vertPlusAtTen = calcVertDist(distTen, (getVertDist(tenOne, distTen, false) + getVertDist(tenTwo, distTen, false)) / 2f);
+//                vertMinusAtTen = calcVertDist(distTen, (getVertDist(tenOne, distTen, true) + getVertDist(tenTwo, distTen, true)) / 2f);
+//                vertPlusAtTen = calcVertDist(distTen, (getVertDist(tenOne, distTen, false) + getVertDist(tenTwo, distTen, false)) / 2f);
             }
-            flightTimeAtTen = setMiddleAtDistance(
-                java.lang.Float.parseFloat(tenOne),
-                flightTime[tenOne], java.lang.Float.parseFloat(tenTwo), flightTime[tenTwo], distTen
-            )
+            flightTimeAtTen = setMiddleAtDistance(tenOne.toFloat(), flightTime[tenOne], tenTwo.toFloat(), flightTime[tenTwo], distTen)
         }
 
         if (fifteenOne.isNotEmpty() && fifteenTwo.isNotEmpty()) {
             if (apShell && !penetration.isNullOrEmpty() && !impact.isNullOrEmpty()) {
-                penetrationAtFifteen = setMiddleAtDistance(
-                    java.lang.Float.parseFloat(fifteenOne),
-                    penetration[fifteenOne],
-                    java.lang.Float.parseFloat(fifteenTwo),
-                    penetration[fifteenTwo],
-                    distFifteen
-                )
-                impactAtFifteen = setMiddleAtDistance(
-                    java.lang.Float.parseFloat(fifteenOne),
-                    impact[fifteenOne], java.lang.Float.parseFloat(fifteenTwo), impact[fifteenTwo], distFifteen
-                )
+                penetrationAtFifteen = setMiddleAtDistance(fifteenOne.toFloat(), penetration[fifteenOne], fifteenTwo.toFloat(), penetration[fifteenTwo], distFifteen)
+                impactAtFifteen = setMiddleAtDistance(fifteenOne.toFloat(), impact[fifteenOne], fifteenTwo.toFloat(), impact[fifteenTwo], distFifteen)
 
-                //                vertMinusAtFifteen = calcVertDist(distFifteen, (getVertDist(fifteenOne, distFifteen, true) + getVertDist(fifteenTwo, distFifteen, true)) / 2f);
-                //                vertPlusAtFifteen = calcVertDist(distFifteen, (getVertDist(fifteenOne, distFifteen, false) + getVertDist(fifteenTwo, distFifteen, false)) / 2f);
+//                vertMinusAtFifteen = calcVertDist(distFifteen, (getVertDist(fifteenOne, distFifteen, true) + getVertDist(fifteenTwo, distFifteen, true)) / 2f);
+//                vertPlusAtFifteen = calcVertDist(distFifteen, (getVertDist(fifteenOne, distFifteen, false) + getVertDist(fifteenTwo, distFifteen, false)) / 2f);
             }
-            flightTimeAtFifteen = setMiddleAtDistance(
-                java.lang.Float.parseFloat(fifteenOne),
-                flightTime[fifteenOne], java.lang.Float.parseFloat(fifteenTwo), flightTime[fifteenTwo], distFifteen
-            )
+            flightTimeAtFifteen = setMiddleAtDistance(fifteenOne.toFloat(), flightTime[fifteenOne], fifteenTwo.toFloat(), flightTime[fifteenTwo], distFifteen)
         }
 
         if (twentyOne.isNotEmpty() && twentyTwo.isNotEmpty()) {
             if (apShell && !penetration.isNullOrEmpty() && !impact.isNullOrEmpty()) {
-                penetrationAtTwenty = setMiddleAtDistance(
-                    java.lang.Float.parseFloat(twentyOne),
-                    penetration[twentyOne], java.lang.Float.parseFloat(twentyTwo), penetration[twentyTwo], distTwenty
-                )
-                impactAtTwenty = setMiddleAtDistance(
-                    java.lang.Float.parseFloat(twentyOne),
-                    impact[twentyOne], java.lang.Float.parseFloat(twentyTwo), impact[twentyTwo], distTwenty
-                )
+                penetrationAtTwenty = setMiddleAtDistance(twentyOne.toFloat(), penetration[twentyOne], twentyTwo.toFloat(), penetration[twentyTwo], distTwenty)
+                impactAtTwenty = setMiddleAtDistance(twentyOne.toFloat(), impact[twentyOne], twentyTwo.toFloat(), impact[twentyTwo], distTwenty)
 
-                //                vertMinusAtTwenty = calcVertDist(distTwenty, (getVertDist(twentyOne, distTwenty, true) + getVertDist(twentyTwo, distTwenty, true)) / 2f);
-                //                vertPlusAtTwenty = calcVertDist(distTwenty, (getVertDist(twentyOne, distTwenty, false) + getVertDist(twentyTwo, distTwenty, false)) / 2f);
+//                vertMinusAtTwenty = calcVertDist(distTwenty, (getVertDist(twentyOne, distTwenty, true) + getVertDist(twentyTwo, distTwenty, true)) / 2f);
+//                vertPlusAtTwenty = calcVertDist(distTwenty, (getVertDist(twentyOne, distTwenty, false) + getVertDist(twentyTwo, distTwenty, false)) / 2f);
             }
-            flightTimeAtTwenty = setMiddleAtDistance(
-                java.lang.Float.parseFloat(twentyOne),
-                flightTime[twentyOne], java.lang.Float.parseFloat(twentyTwo), flightTime[twentyTwo], distTwenty
-            )
+            flightTimeAtTwenty = setMiddleAtDistance(twentyOne.toFloat(), flightTime[twentyOne], twentyTwo.toFloat(), flightTime[twentyTwo], distTwenty)
         }
     }
 
-    private fun calcVertDist(dist, vert) {
+    private fun calcVertDist(dist: Float, vert: Float): Float {
         return dist + (vert - dist)
     }
 
-    private fun getVertDist(dist: String, mid, low: Boolean) {
+    private fun getVertDist(dist: String, mid: Float, low: Boolean): Float {
         val minDistVOffset = minDistV / 2f
-        var radAtDist = Math.atan((minDistVOffset / mid).toDouble()).toFloat()
+        var radAtDist = atan(minDistVOffset / mid)
 
         if (low) {
             radAtDist = -radAtDist
         }
 
-        val arcRad = this.launchAngle!![dist]
+        val arcRad = launchAngle!![dist]
         var e1 = ""
         var e2 = ""
 
         if (arcRad != null) {
-            for ((key, tempFloat) in launchAngle) {
+            for ((key, tempFloat) in launchAngle!!) {
 
                 if (tempFloat < arcRad + radAtDist) {
                     e1 = key
@@ -281,20 +239,18 @@ class Shell {
             }
         }
 
-        return if (e1.isEmpty() || e2.isEmpty()) {
-            0f
-        } else (java.lang.Float.parseFloat(e1) + java.lang.Float.parseFloat(e2)) / 2f
+        return if (e1.isEmpty() || e2.isEmpty()) 0f else (e1.toFloat() + e2.toFloat()) / 2f
 
     }
 
-    private fun setMiddleAtDistance(x1?, y1?, x2?, y2?, mid?) {
-        if (x1 == null || x2 == null || y1 == null || y2 == null) {
+    private fun setMiddleAtDistance(x1: Float?, y1: Float?, x2: Float?, y2: Float?, mid: Float) : Float {
+        if (x1 == null || y1 == null || x2 == null || y2 == null) {
             return 0f
         }
 
         val a = (y2 - y1) / (x2 - x1)
         val c = y1 - a * x1
 
-        return a * mid!! + c
+        return a * mid + c
     }
 }

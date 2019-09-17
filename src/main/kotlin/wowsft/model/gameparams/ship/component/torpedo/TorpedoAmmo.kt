@@ -1,44 +1,41 @@
-package wowsft.model.gameparams.ship.component.torpedo;
+package wowsft.model.gameparams.ship.component.torpedo
 
-import wowsft.config.WoWSFT;
-import wowsft.model.gameparams.TypeInfo;
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty
+import wowsft.config.WoWSFT
+import wowsft.model.gameparams.TypeInfo
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TorpedoAmmo
-{
-    private List<Object> additionalShips;
-    private float alertDist;
-    private float alphaDamage;
-    private float alphaPiercingHE;
-    private String ammoType;
-    private float armingTime;
-    private float bulletDiametr;
-    private float burnProb;
-    private float costCR;
-    private float damage;
-    private float damageUW;
-    private float depth;
-    private float directDamage;
-    private float fallingTimeCoef;
-    private float id;
-    private List<String> ignoreClasses;
-    private String index;
-    @JsonAlias("isDeepWater")
-    private boolean deepWater;
-    private float maxDist;
-    private String name;
-    private String planeAmmoType;
-    private float speed;
-    private float splashArmorCoeff;
-    private float splashCubeSize;
-    private TypeInfo typeinfo;
-    private boolean uwAbility;
-    private float uwCritical;
-    private float visibilityFactor;
-    private float volume;
+class TorpedoAmmo {
+    var additionalShips = ArrayList<Any>()
+    var alertDist = 0f
+    var alphaDamage = 0f
+    var alphaPiercingHE = 0f
+    var ammoType = ""
+    var armingTime = 0f
+    var bulletDiametr = 0f
+    var burnProb = 0f
+    var costCR = 0f
+    var damage = 0f
+    var damageUW = 0f
+    var depth = 0f
+    var directDamage = 0f
+    var fallingTimeCoef = 0f
+    var id = 0L
+    var ignoreClasses = ArrayList<String>()
+    var index = ""
+    @JsonProperty("isDeepWater")
+    var deepWater = false
+    var maxDist = 0f
+    var name = ""
+    var planeAmmoType = ""
+    var speed = 0f
+    var splashArmorCoeff = 0f
+    var splashCubeSize = 0f
+    var typeinfo = TypeInfo()
+    var uwAbility = false
+    var uwCritical = 0f
+    var visibilityFactor = 0f
+    var volume = 0f
 }

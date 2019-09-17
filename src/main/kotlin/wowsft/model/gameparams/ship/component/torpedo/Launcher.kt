@@ -1,37 +1,32 @@
-package wowsft.model.gameparams.ship.component.torpedo;
+package wowsft.model.gameparams.ship.component.torpedo
 
-import wowsft.config.WoWSFT;
-import wowsft.model.gameparams.TypeInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.experimental.Accessors;
-
-import java.util.List;
+import wowsft.config.WoWSFT
+import wowsft.model.gameparams.TypeInfo
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
-@Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Launcher
-{
-    private List<String> ammoList;
-    private float barrelDiameter;
-    private boolean canRotate;
-    private List<List<Float>> deadZone;
-    private List<Float> horizSector;
-    private long id;
-    private String index;
-    private List<Float> mainSector;
-    private String name;
-    private int numAmmos;
-    private int numBarrels;
-    private List<Float> position;
-    private List<Float> rotationSpeed;
-    private List<Float> shootSector;
-    private float shotDelay;
-    private boolean smallGun;
-    private float timeBetweenShots;
-    private float timeToChangeAngle;
-    private float timeToChangeSpeed;
-    private List<Float> torpedoAngles;
-    private TypeInfo typeinfo;
-    private List<Float> vertSector;
+class Launcher {
+    var ammoList = ArrayList<String>()
+    var barrelDiameter = 0f
+    var canRotate = false
+    var deadZone = ArrayList<MutableList<Float>>()
+    var horizSector = ArrayList<Float>()
+    var id = 0L
+    var index = ""
+    var mainSector = ArrayList<Float>()
+    var name = ""
+    var numAmmos = 0
+    var numBarrels = 0
+    var position = ArrayList<Float>()
+    var rotationSpeed = ArrayList<Float>()
+    var shootSector = ArrayList<Float>()
+    var shotDelay = 0f
+    var smallGun = false
+    var timeBetweenShots = 0f
+    var timeToChangeAngle = 0f
+    var timeToChangeSpeed = 0f
+    var torpedoAngles = ArrayList<Float>()
+    var typeinfo = TypeInfo()
+    var vertSector = ArrayList<Float>()
 }

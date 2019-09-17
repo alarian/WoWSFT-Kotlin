@@ -11,5 +11,5 @@ class ShipIndex (
     val prevShipCompXP: Int,
     val arties: List<String>
 ) {
-    var position: Int = 0
+    var position = 0
 }

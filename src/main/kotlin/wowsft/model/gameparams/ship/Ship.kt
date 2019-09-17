@@ -33,7 +33,7 @@ class Ship {
     var defaultCrew = ""
     var group = ""
     var id = 0L
-    var index: String = ""
+    var index = ""
     @JsonProperty("isPaperShip")
     var paperShip = false
     var level = 0
@@ -66,8 +66,8 @@ class Ship {
     val imageSmall = if (index.isNotEmpty()) "https://cdn.wowsft.com/images/vehicles/ship_previews/$index.png" else ""
     var planes = LinkedHashMap<String, String>()
 
-    var consumables = ArrayList<List<Consumable>>()
-    var upgrades = ArrayList<List<Modernization>>()
+    var consumables = ArrayList<MutableList<Consumable>>()
+    var upgrades = ArrayList<MutableList<Modernization>>()
     var upgradesRow = 0
     @JsonIgnore
     var selectConsumables = ArrayList<Int>()

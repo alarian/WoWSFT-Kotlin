@@ -1,10 +1,9 @@
-package wowsft.model.gameparams.ship.component.firecontrol;
+package wowsft.model.gameparams.ship.component.firecontrol
 
-import wowsft.config.WoWSFT;
+import wowsft.config.WoWSFT
 
 @WoWSFT
-public class FireControl
-{
-    private float maxDistCoef;
-    private float sigmaCountCoef;
+class FireControl {
+    var maxDistCoef = 0f
+    var sigmaCountCoef = 0f
 }

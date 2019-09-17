@@ -1,61 +1,58 @@
-package wowsft.model.gameparams.ship.component.atba;
+package wowsft.model.gameparams.ship.component.atba
 
-import wowsft.config.WoWSFT;
-import wowsft.model.gameparams.ship.component.airdefense.Aura;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import wowsft.config.WoWSFT
+import wowsft.model.gameparams.ship.component.airdefense.Aura
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.ArrayList
+import java.util.HashMap
+import java.util.LinkedHashMap
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ATBA
-{
-    private List<Aura> auraFar = new ArrayList<>();
-    private List<Aura> auraMedium = new ArrayList<>();
-    private List<Aura> auraNear = new ArrayList<>();
+class ATBA {
+    var auraFar = ArrayList<Aura>()
+    var auraMedium = ArrayList<Aura>()
+    var auraNear = ArrayList<Aura>()
 
-    private List<Secondary> turrets = new ArrayList<>();
-    private LinkedHashMap<String, Secondary> secondaries = new LinkedHashMap<>();
+    var turrets = ArrayList<Secondary>()
+    var secondaries = LinkedHashMap<String, Secondary>()
 
-    private float maxDist;
-    private float minDistH;
-    private float minDistV;
-    private float sigmaCount;
-    private float taperDist;
+    var maxDist = 0f
+    var minDistH = 0f
+    var minDistV = 0f
+    var sigmaCount = 0f
+    var taperDist = 0f
     @JsonInclude
-    private float GSIdealRadius = 1f;
+    var GSIdealRadius = 1f
 
     @JsonIgnore
-    private ObjectMapper mapper = new ObjectMapper();
+    private val mapper = ObjectMapper()
 
     @JsonAnySetter
-    public void setGuns(String name, Object value)
-    {
-        if (value instanceof HashMap) {
-            HashMap<String, Object> tempObject = mapper.convertValue(value, new TypeReference<HashMap<String, Object>>(){});
+    fun setGuns(name: String, value: Any) {
+        if (value is HashMap<*, *>) {
+            val tempObject = mapper.convertValue<HashMap<String, Any>>(value, object : TypeReference<HashMap<String, Any>>() {})
 
-            if ("far".equalsIgnoreCase((String) tempObject.get("type"))) {
-                auraFar.add(mapper.convertValue(value, Aura.class));
-            } else if ("medium".equalsIgnoreCase((String) tempObject.get("type"))) {
-                auraMedium.add(mapper.convertValue(value, Aura.class));
-            } else if ("near".equalsIgnoreCase((String) tempObject.get("type"))) {
-                auraNear.add(mapper.convertValue(value, Aura.class));
+            if ("far".equals(tempObject["type"] as String, true)) {
+                auraFar.add(mapper.convertValue(value, Aura::class.java))
+            } else if ("medium".equals(tempObject["type"] as String, true)) {
+                auraMedium.add(mapper.convertValue(value, Aura::class.java))
+            } else if ("near".equals(tempObject["type"] as String, true)) {
+                auraNear.add(mapper.convertValue(value, Aura::class.java))
             } else if (tempObject.containsKey("HitLocationATBA")) {
-                Secondary tempS = mapper.convertValue(value, Secondary.class);
+                val tempS = mapper.convertValue(value, Secondary::class.java)
 
-                if (!secondaries.containsKey(tempS.getName())) {
-                    tempS.setCount(1);
-                    secondaries.put(tempS.getName(), tempS);
+                if (secondaries[tempS.name] != null) {
+                    secondaries[tempS.name]!!.count = secondaries[tempS.name]!!.count + 1
                 } else {
-                    secondaries.get(tempS.getName()).setCount(secondaries.get(tempS.getName()).getCount() + 1);
+                    tempS.count = 1
+                    secondaries[tempS.name] = tempS
                 }
             }
         }

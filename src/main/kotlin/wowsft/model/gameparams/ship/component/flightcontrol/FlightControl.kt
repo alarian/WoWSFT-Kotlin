@@ -1,20 +1,18 @@
-package wowsft.model.gameparams.ship.component.flightcontrol;
+package wowsft.model.gameparams.ship.component.flightcontrol
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.LinkedHashMap
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FlightControl
-{
-    private LinkedHashMap<String, Integer> consumablePlanesReserve;
-    private List<Object> consumableSquadrons;
-    private boolean hasConsumablePlanes;
+class FlightControl {
+    var consumablePlanesReserve = LinkedHashMap<String, Int>()
+    var consumableSquadrons = ArrayList<Any>()
+    var hasConsumablePlanes = false
     @JsonProperty("isGroundAttackEnabled")
-    private boolean groundAttackEnabled;
-    private LinkedHashMap<String, Integer> planesReserveAssignment;
-    private float prepareTimeFactor;
-    private List<String> squadrons;
+    var groundAttackEnabled = false
+    var planesReserveAssignment = LinkedHashMap<String, Int>()
+    var prepareTimeFactor = 0f
+    var squadrons = ArrayList<String>()
 }

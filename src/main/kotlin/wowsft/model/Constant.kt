@@ -49,35 +49,8 @@ object Constant {
     const val loadFinish = "loadFinish"
     const val Ability = "Ability"
 
-    val componentsList : List<String> = ArrayList(
-        listOf(
-            flightControl,
-            artillery,
-            hull,
-            torpedoes,
-            suo,
-            fighter,
-            torpedoBomber,
-            diveBomber,
-            engine
-        )
-    )
-    val compStatsList : List<String> = ArrayList(
-        listOf(
-            flightControl,
-            airArmament,
-            airDefense,
-            artillery,
-            atba,
-            hull,
-            suo,
-            torpedoes,
-            fighter,
-            torpedoBomber,
-            diveBomber,
-            engine
-        )
-    )
+    val componentsList = ArrayList(listOf(flightControl, artillery, hull, torpedoes, suo, fighter, torpedoBomber, diveBomber, engine))
+    val compStatsList = ArrayList(listOf(flightControl, airArmament, airDefense, artillery, atba, hull, suo, torpedoes, fighter, torpedoBomber, diveBomber, engine))
 
     val globalLanguage = HashSet(listOf("en", "ko"))
 

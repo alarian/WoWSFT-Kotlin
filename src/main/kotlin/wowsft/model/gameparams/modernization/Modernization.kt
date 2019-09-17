@@ -26,7 +26,7 @@ class Modernization : CommonModifier() {
     var type = 0
     var typeinfo = TypeInfo()
 
-    var fullName: String = ""
+    var fullName = ""
     var image = if (name.isNotEmpty()) "https://cdn.wowsft.com/images/modernization_icons/icon_modernization_$name.png" else ""
 
     var bonus = LinkedHashMap<String, String>()

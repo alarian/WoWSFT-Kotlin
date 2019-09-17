@@ -1,70 +1,67 @@
-package wowsft.model.gameparams.ship.component.artillery;
+package wowsft.model.gameparams.ship.component.artillery
 
-import wowsft.config.WoWSFT;
-import wowsft.model.gameparams.ship.component.airdefense.Aura;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import wowsft.config.WoWSFT
+import wowsft.model.gameparams.ship.component.airdefense.Aura
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.ArrayList
+import java.util.HashMap
+import java.util.LinkedHashMap
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Artillery
-{
-    private List<Aura> auraFar = new ArrayList<>();
-    private List<Aura> auraMedium = new ArrayList<>();
-    private List<Aura> auraNear = new ArrayList<>();
+class Artillery {
+    var auraFar = ArrayList<Aura>()
+    var auraMedium = ArrayList<Aura>()
+    var auraNear = ArrayList<Aura>()
 
-    private List<Turret> turrets = new ArrayList<>();
-    private LinkedHashMap<Integer, List<Object>> turretTypes = new LinkedHashMap<>();
+    var turrets = ArrayList<Turret>()
+    var turretTypes = LinkedHashMap<Int, MutableList<Any>>()
 
-    private float artificialOffset;
-    private float maxDist;
-    private float minDistH;
-    private float minDistV;
-    private boolean normalDistribution;
-    private float sigmaCount;
-    private float taperDist;
+    var artificialOffset = 0f
+    var maxDist = 0f
+    var minDistH = 0f
+    var minDistV = 0f
+    var normalDistribution = false
+    var sigmaCount = 0f
+    var taperDist = 0f
     @JsonInclude
-    private float GMIdealRadius = 1f;
-    private float barrelDiameter;
+    var GMIdealRadius = 1f
+    var barrelDiameter = 0f
 
-    private LinkedHashMap<String, Shell> shells = new LinkedHashMap<>();
+    var shells = LinkedHashMap<String, Shell>()
 
     @JsonIgnore
-    private ObjectMapper mapper = new ObjectMapper();
+    private val mapper = ObjectMapper()
 
     @JsonAnySetter
-    public void setGuns(String name, Object value)
-    {
-        if (value instanceof HashMap) {
-            HashMap<String, Object> tempObject = mapper.convertValue(value, new TypeReference<HashMap<String, Object>>(){});
+    fun setGuns(name: String, value: Any) {
+        if (value is HashMap<*, *>) {
+            val tempObject = mapper.convertValue<HashMap<String, Any>>(value, object : TypeReference<HashMap<String, Any>>() {})
 
-            if ("far".equalsIgnoreCase((String) tempObject.get("type"))) {
-                auraFar.add(mapper.convertValue(value, Aura.class));
-            } else if ("medium".equalsIgnoreCase((String) tempObject.get("type"))) {
-                auraMedium.add(mapper.convertValue(value, Aura.class));
-            } else if ("near".equalsIgnoreCase((String) tempObject.get("type"))) {
-                auraNear.add(mapper.convertValue(value, Aura.class));
+            if ("far".equals(tempObject["type"] as String, true)) {
+                auraFar.add(mapper.convertValue(value, Aura::class.java))
+            } else if ("medium".equals(tempObject["type"] as String, true)) {
+                auraMedium.add(mapper.convertValue(value, Aura::class.java))
+            } else if ("near".equals(tempObject["type"] as String, true)) {
+                auraNear.add(mapper.convertValue(value, Aura::class.java))
             } else if (tempObject.containsKey("HitLocationArtillery")) {
-                Turret turret = mapper.convertValue(value, Turret.class);
-                turrets.add(turret);
-                this.barrelDiameter = turret.getBarrelDiameter();
+                val turret = mapper.convertValue(value, Turret::class.java)
+                turrets.add(turret)
+                this.barrelDiameter = turret.barrelDiameter
 
-                if (turretTypes.containsKey(turret.getNumBarrels())) {
-                    turretTypes.get(turret.getNumBarrels()).set(0, (int) turretTypes.get(turret.getNumBarrels()).get(0) + 1);
+                if (turretTypes.containsKey(turret.numBarrels)) {
+                    turretTypes[turret.numBarrels]?.set(0, turretTypes[turret.numBarrels]?.get(0) as Int + 1)
                 } else {
-                    List<Object> tObject = new ArrayList<>();
-                    tObject.add(1);
-                    tObject.add(turret.getName());
-                    turretTypes.put(turret.getNumBarrels(), tObject);
+                    val tObject = ArrayList<Any>()
+                    tObject.add(1)
+                    tObject.add(turret.name)
+                    turretTypes[turret.numBarrels] = tObject
                 }
             }
         }

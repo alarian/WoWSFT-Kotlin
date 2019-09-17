@@ -16,7 +16,7 @@ class Flag : CommonModifier() {
     var hiddenCustom = Any()
     var id = 0L
     var index = ""
-    var name: String = ""
+    var name = ""
     var typeinfo = TypeInfo()
     var sortOrder = 0
     var identifier = ""

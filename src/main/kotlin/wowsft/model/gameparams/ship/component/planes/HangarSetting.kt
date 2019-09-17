@@ -1,10 +1,9 @@
-package wowsft.model.gameparams.ship.component.planes;
+package wowsft.model.gameparams.ship.component.planes
 
 
-public class HangarSetting
-{
-    private int maxValue;
-    private int restoreAmount;
-    private int startValue;
-    private float timeToRestore;
+class HangarSetting {
+    var maxValue = 0
+    var restoreAmount = 0
+    var startValue = 0
+    var timeToRestore = 0f
 }

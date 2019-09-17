@@ -16,29 +16,29 @@ import java.util.LinkedHashMap
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ShipUpgrade {
-    var disabledAbilities: List<String>? = null
+    var disabledAbilities = ArrayList<String>()
     var nextShips = ArrayList<String>()
-    var fullName: String = ""
-    var name: String = ""
+    var fullName = ""
+    var name = ""
     var prev = ""
-    var ucType: String = ""
-    var position: Int = 0
+    var ucType = ""
+    var position = 0
     @JsonInclude
-    var elem: Int = 0
+    var elem = 0
 
-    var prevType: String = ""
+    var prevType = ""
         get() = if (prevType.isEmpty()) ucTypeShort else field
     @JsonInclude
-    var prevPosition: Int = 0
-    var prevElem: Int = 0
-    var components = LinkedHashMap<String, List<String>>()
+    var prevPosition = 0
+    var prevElem = 0
+    var components = LinkedHashMap<String, MutableList<String>>()
 
     @JsonIgnore
     private val mapper = ObjectMapper()
 
-    val ucTypeShort: String = if (ucType.isNotEmpty()) ucType.replace("_", "").decapitalize() else ucType
+    val ucTypeShort = if (ucType.isNotEmpty()) ucType.replace("_", "").decapitalize() else ucType
 
-    val image: String = if (ucTypeShort.isNotEmpty()) "https://cdn.wowsft.com/images/modules/module_" + ucTypeShort.toLowerCase() + ".png" else ""
+    val image = if (ucTypeShort.isNotEmpty()) "https://cdn.wowsft.com/images/modules/module_" + ucTypeShort.toLowerCase() + ".png" else ""
 
     @JsonSetter
     fun setComponents(value: Any) {

@@ -1,14 +1,13 @@
-package wowsft.model.gameparams.ship.component.airarmament;
+package wowsft.model.gameparams.ship.component.airarmament
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AirArmament
-{
-    private float auraCoeff;
-    private float deckPlaceCount;
-    private boolean isIndependentLaunchpad;
-    private float launchPrepareTime;
-    private String launchpadType;
-    private float planesReserveCapacity;
+class AirArmament {
+    var auraCoeff = 0f
+    var deckPlaceCount = 0f
+    var isIndependentLaunchpad = false
+    var launchPrepareTime = 0f
+    var launchpadType = ""
+    var planesReserveCapacity = 0f
 }

@@ -1,98 +1,88 @@
-package wowsft.model.gameparams.ship.component.hull;
+package wowsft.model.gameparams.ship.component.hull
 
-import wowsft.config.WoWSFT;
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSetter;
-
-import java.math.BigDecimal;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty
+import wowsft.config.WoWSFT
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
+import java.math.BigDecimal
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Hull
-{
-    private float backwardPowerCoef;
-    private float baseUnderwaterPitchAngle;
-    private float buoyancy;
-    private float buoyancyRudderTime;
-    private List<List<Object>> burnNodes;
-    private float burnProb;
-    private float burnDamage;
-    private float burnTime;
-    private float burnSize;
-    private float deckHeight;
-    private float deepwaterVisibilityCoeff;
-    private float dockYOffset;
-    private float draft;
-    private float enginePower;
-    private List<List<Float>> floodNodes;
-    private float floodProb;
-    private float floodProtection;
-    private float floodDamage;
-    private float floodTime;
-    private float floodSize;
-    private float health;
-    @JsonAlias("isBlind")
-    private boolean blind;
-    private float mass;
-    private float maxBuoyancyLevel;
-    private float maxBuoyancySpeed;
-    private float maxRudderAngle;
-    private float maxSpeed;
-    private int numOfParts;
-    private float pushingMaxRudderAngle;
-    private float pushingMinRudderAngle;
-    private float regenerationHPSpeed;
-    private float repairingCoeff;
-    private float rollEffect;
-    private float rudderPower;
-    private float rudderTime;
-    private float sideDragCoef;
-    private List<Float> size;
-    private float smokeScanRadius;
-    private float speedCoef;
-    private float tonnage;
-    private float torpedoImpactMassImpulseCoeff;
-    private float turningRadius;
-    private float underwaterMaxRudderAngle;
-    private float underwaterRollEffect;
-    private float underwaterVisibilityCoeff;
-    private float visibilityCoefATBA;
-    private float visibilityCoefATBAByPlane;
-    private float visibilityCoefFire;
-    private float visibilityCoefFireByPlane;
-    private float visibilityCoefGK;
-    private float visibilityCoefGKByPlane;
-    private float visibilityCoefGKInSmoke;
-    private float visibilityCoeff;
-    private float visibilityCoeffUnderwater;
-    private float visibilityFactor;
-    private float visibilityFactorByPlane;
-    private float visibilityFactorInSmoke;
+class Hull {
+    var backwardPowerCoef = 0f
+    var baseUnderwaterPitchAngle = 0f
+    var buoyancy = 0f
+    var buoyancyRudderTime = 0f
+    var burnNodes = ArrayList<MutableList<Any>>()
+        set(value) {
+            field = value
+            this.burnProb = BigDecimal(burnNodes[0][1] as Double).toFloat()
+            this.burnDamage = BigDecimal(burnNodes[0][2] as Double).toFloat()
+            this.burnTime = BigDecimal(burnNodes[0][3] as Double).toFloat()
+            this.burnSize = burnNodes.size
+        }
+    var burnProb = 0f
+    var burnDamage = 0f
+    var burnTime = 0f
+    var burnSize = 0
+    var deckHeight = 0f
+    var deepwaterVisibilityCoeff = 0f
+    var dockYOffset = 0f
+    var draft = 0f
+    var enginePower = 0f
+    var floodNodes = ArrayList<MutableList<Float>>()
+        set(value) {
+            field = value
+            this.floodProb = floodNodes[0][0]
+            this.floodProtection = 100f - floodNodes[0][0] * 3.0f * 100f
+            this.floodDamage = floodNodes[0][1]
+            this.floodTime = floodNodes[0][2]
+            this.floodSize = floodNodes.size
+        }
+    var floodProb = 0f
+    var floodProtection = 0f
+    var floodDamage = 0f
+    var floodTime = 0f
+    var floodSize = 0
+    var health = 0f
+    @JsonProperty("isBlind")
+    var blind = false
+    var mass = 0f
+    var maxBuoyancyLevel = 0f
+    var maxBuoyancySpeed = 0f
+    var maxRudderAngle = 0f
+    var maxSpeed = 0f
+    var numOfParts = 0
+    var pushingMaxRudderAngle = 0f
+    var pushingMinRudderAngle = 0f
+    var regenerationHPSpeed = 0f
+    var repairingCoeff = 0f
+    var rollEffect = 0f
+    var rudderPower = 0f
+    var rudderTime = 0f
+    var sideDragCoef = 0f
+    var size = ArrayList<Float>()
+    var smokeScanRadius = 0f
+    var speedCoef = 0f
+    var tonnage = 0f
+    var torpedoImpactMassImpulseCoeff = 0f
+    var turningRadius = 0f
+    var underwaterMaxRudderAngle = 0f
+    var underwaterRollEffect = 0f
+    var underwaterVisibilityCoeff = 0f
+    var visibilityCoefATBA = 0f
+    var visibilityCoefATBAByPlane = 0f
+    var visibilityCoefFire = 0f
+    var visibilityCoefFireByPlane = 0f
+    var visibilityCoefGK = 0f
+    var visibilityCoefGKByPlane = 0f
+    var visibilityCoefGKInSmoke = 0f
+    var visibilityCoeff = 0f
+    var visibilityCoeffUnderwater = 0f
+    var visibilityFactor = 0f
+    var visibilityFactorByPlane = 0f
+    var visibilityFactorInSmoke = 0f
 
     @JsonInclude
-    private int burnSizeSkill = 4;
-
-    @JsonSetter
-    public void setFloodNodes(List<List<Float>> floodNodes)
-    {
-        this.floodNodes = floodNodes;
-        this.floodProb = floodNodes.get(0).get(0);
-        this.floodProtection = 100f - (floodNodes.get(0).get(0) * 3.0f * 100f);
-        this.floodDamage = floodNodes.get(0).get(1);
-        this.floodTime = floodNodes.get(0).get(2);
-        this.floodSize = floodNodes.size();
-    }
-
-    @JsonSetter
-    public void setBurnNodes(List<List<Object>> burnNodes)
-    {
-        this.burnNodes = burnNodes;
-        this.burnProb = new BigDecimal((double) burnNodes.get(0).get(1)).floatValue();
-        this.burnDamage = new BigDecimal((double) burnNodes.get(0).get(2)).floatValue();
-        this.burnTime = new BigDecimal((double) burnNodes.get(0).get(3)).floatValue();
-        this.burnSize = burnNodes.size();
-    }
+    var burnSizeSkill = 4
 }

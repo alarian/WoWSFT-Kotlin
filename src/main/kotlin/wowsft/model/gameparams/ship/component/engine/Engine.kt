@@ -1,22 +1,21 @@
-package wowsft.model.gameparams.ship.component.engine;
+package wowsft.model.gameparams.ship.component.engine
 
-import wowsft.config.WoWSFT;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import wowsft.config.WoWSFT
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Engine
-{
-    private float backwardEngineForsag;
-    private float backwardEngineForsagMaxSpeed;
-    private float backwardEngineUpTime;
-    private float backwardSpeedOnFlood;
-    private float damagedEnginePowerMultiplier;
-    private float damagedEnginePowerTimeMultiplier;
-    private float forwardEngineForsag;
-    private float forwardEngineForsagMaxSpeed;
-    private float forwardEngineUpTime;
-    private float forwardSpeedOnFlood;
-    private float histEnginePower;
-    private float speedCoef;
+class Engine {
+    var backwardEngineForsag = 0f
+    var backwardEngineForsagMaxSpeed = 0f
+    var backwardEngineUpTime = 0f
+    var backwardSpeedOnFlood = 0f
+    var damagedEnginePowerMultiplier = 0f
+    var damagedEnginePowerTimeMultiplier = 0f
+    var forwardEngineForsag = 0f
+    var forwardEngineForsagMaxSpeed = 0f
+    var forwardEngineUpTime = 0f
+    var forwardSpeedOnFlood = 0f
+    var histEnginePower = 0f
+    var speedCoef = 0f
 }

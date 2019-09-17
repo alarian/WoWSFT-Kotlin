@@ -1,50 +1,45 @@
-package wowsft.model.gameparams.ship.component.artillery;
+package wowsft.model.gameparams.ship.component.artillery
 
-import wowsft.config.WoWSFT;
-import wowsft.model.gameparams.TypeInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.experimental.Accessors;
-
-import java.util.List;
+import wowsft.config.WoWSFT
+import wowsft.model.gameparams.TypeInfo
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
-@Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Turret
-{
-    private List<String> ammoList;
-    private float antiAirAuraDistance;
-    private float antiAirAuraStrength;
-    private float barrelDiameter;
-    private float coeffPerSecondMin;
-    private List<List<Float>> deadZone;
-    private float delim;
-    private float ellipseRangeMax;
-    private float ellipseRangeMin;
-    private List<Float> horizSector;
-    private long id;
-    private float idealDistance;
-    private float idealRadius;
-    private String index;
-    private float maxEllipseRanging;
-    private float medEllipseRanging;
-    private float minEllipseRanging;
-    private float minRadius;
-    private String name;
-    private int numBarrels;
-    private float onMoveTarPosCoeffDelim;
-    private float onMoveTarPosCoeffMaxDist;
-    private float onMoveTarPosCoeffZero;
-    private float onMoveTarPosDelim;
-    private List<Float> position;
-    private float radiusOnDelim;
-    private float radiusOnMax;
-    private float radiusOnZero;
-    private float reduceTime;
-    private List<Float> rotationSpeed;
-    private float shotDelay;
-    private boolean smallGun;
-    private float smokePenalty;
-    private TypeInfo typeinfo;
-    private List<Float> vertSector;
+class Turret {
+    var ammoList = ArrayList<String>()
+    var antiAirAuraDistance = 0f
+    var antiAirAuraStrength = 0f
+    var barrelDiameter = 0f
+    var coeffPerSecondMin = 0f
+    var deadZone = ArrayList<MutableList<Float>>()
+    var delim = 0f
+    var ellipseRangeMax = 0f
+    var ellipseRangeMin = 0f
+    var horizSector = ArrayList<Float>()
+    var id = 0L
+    var idealDistance = 0f
+    var idealRadius = 0f
+    var index = ""
+    var maxEllipseRanging = 0f
+    var medEllipseRanging = 0f
+    var minEllipseRanging = 0f
+    var minRadius = 0f
+    var name = ""
+    var numBarrels = 0
+    var onMoveTarPosCoeffDelim = 0f
+    var onMoveTarPosCoeffMaxDist = 0f
+    var onMoveTarPosCoeffZero = 0f
+    var onMoveTarPosDelim = 0f
+    var position = ArrayList<Float>()
+    var radiusOnDelim = 0f
+    var radiusOnMax = 0f
+    var radiusOnZero = 0f
+    var reduceTime = 0f
+    var rotationSpeed = ArrayList<Float>()
+    var shotDelay = 0f
+    var smallGun = false
+    var smokePenalty = 0f
+    var typeinfo = TypeInfo()
+    var vertSector = ArrayList<Float>()
 }
