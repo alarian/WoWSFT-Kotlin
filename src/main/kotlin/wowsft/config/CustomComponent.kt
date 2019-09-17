@@ -32,7 +32,7 @@ class CustomComponent {
     private val loadFinish = HashMap<String, Int>()
     private val ships = LinkedHashMap<String, Ship>()
     private val consumables = LinkedHashMap<String, Consumable>()
-    private val shipsList = LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>()
+    private val shipsList = LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, MutableList<ShipIndex>>>>>()
     private val upgrades = LinkedHashMap<Int, LinkedHashMap<String, Modernization>>()
     private val commanders = LinkedHashMap<String, Commander>()
     private val flags = LinkedHashMap<String, Flag>()
@@ -48,7 +48,7 @@ class CustomComponent {
     }
 
     @Bean(value = [Constant.TYPE_SHIP_LIST])
-    fun shipsList(): LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>> {
+    fun shipsList(): LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, MutableList<ShipIndex>>>>> {
         return shipsList
     }
 
