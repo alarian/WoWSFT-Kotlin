@@ -35,8 +35,8 @@ sourceSets {
     main {
         withConvention(KotlinSourceSet::class) {
             kotlin.srcDir("src/main/kotlin")
-            resources.srcDirs(listOf("src/main/resources"))
         }
+        resources.srcDirs(listOf("src/main/resources"))
     }
 }
 
