@@ -14,14 +14,14 @@ class Consumable {
 
     var canBuy = false
     var canBuyCustom = LinkedHashMap<String, Boolean>()
-    var costCR = 0f
-    var costGold = 0f
+    var costCR = 0.toDouble()
+    var costGold = 0.toDouble()
     var freeOfCharge = false
-    var id = 0L
-    var index = ""
-    var name = ""
+    var id: Long = 0
+    var index: String = ""
+    var name: String = ""
     var typeinfo = TypeInfo()
-    var description = ""
+    var description: String = ""
 
     @JsonIgnore
     private val mapper = ObjectMapper()

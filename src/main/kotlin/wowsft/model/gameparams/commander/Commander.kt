@@ -17,10 +17,10 @@ import java.util.LinkedHashMap
 class Commander {
     @JsonProperty("CrewPersonality")
     var crewPersonality = CrewPersonality()
-    var id = 0L
-    var identifier = ""
-    var index = ""
-    var name = ""
+    var id: Long = 0
+    var identifier: String = ""
+    var index: String = ""
+    var name: String = ""
     var typeinfo = TypeInfo()
     @JsonProperty("cSkills")
     var cSkills = ArrayList<MutableList<Skill>>()
@@ -40,7 +40,7 @@ class Commander {
 
     @JsonAnySetter
     fun setSkills(name: String, value: Any) {
-        if (name.equals("Skills", true)) {
+        if (name.equals("Skills", ignoreCase = true)) {
             val temp = mapper.convertValue<LinkedHashMap<String, Skill>>(value, object : TypeReference<LinkedHashMap<String, Skill>>() {})
 
             temp.forEach { (key, value) ->

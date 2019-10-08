@@ -323,7 +323,7 @@ public class ParamService
             } else if (param.toLowerCase().equalsIgnoreCase("affectedClasses")) {
                 List<String> tempList = mapper.convertValue(cVal, new TypeReference<List<String>>(){});
                 if (CollectionUtils.isNotEmpty(tempList)) {
-                    String affected = "";
+                    String affected: String = "";
                     for (String tl : tempList) {
                         affected = affected.concat(IDS + tl.toUpperCase() + " ");
                     }

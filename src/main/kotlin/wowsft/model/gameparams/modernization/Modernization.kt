@@ -14,9 +14,9 @@ class Modernization : CommonModifier() {
     var costGold = 0
     var excludes = ArrayList<String>()
     var group = ArrayList<String>()
-    var id = 0L
-    var index = ""
-    var name = ""
+    var id: Long = 0
+    var index: String = ""
+    var name: String = ""
     var nation = ArrayList<String>()
     var shiplevel = ArrayList<Int>()
     var ships = ArrayList<String>()
@@ -26,9 +26,9 @@ class Modernization : CommonModifier() {
     var type = 0
     var typeinfo = TypeInfo()
 
-    var fullName = ""
+    var fullName: String = ""
     var image = if (name.isNotEmpty()) "https://cdn.wowsft.com/images/modernization_icons/icon_modernization_$name.png" else ""
 
     var bonus = LinkedHashMap<String, String>()
-    var description = ""
+    var description: String = ""
 }

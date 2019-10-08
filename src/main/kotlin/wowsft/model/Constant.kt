@@ -3,9 +3,10 @@ package wowsft.model
 import java.math.BigDecimal
 import java.util.*
 
-object Constant {
-    val distCoefWG = BigDecimal(100) / BigDecimal(3)
-    val smallGun = BigDecimal(0.139)
+object Constant
+{
+    @JvmStatic val distCoefWG = BigDecimal(100) / BigDecimal(3)
+    const val smallGun: Double = 0.139
 
     const val oneCoeff = 1
     const val IDS = "IDS_"
@@ -49,29 +50,29 @@ object Constant {
     const val loadFinish = "loadFinish"
     const val Ability = "Ability"
 
-    val componentsList = ArrayList(listOf(flightControl, artillery, hull, torpedoes, suo, fighter, torpedoBomber, diveBomber, engine))
-    val compStatsList = ArrayList(listOf(flightControl, airArmament, airDefense, artillery, atba, hull, suo, torpedoes, fighter, torpedoBomber, diveBomber, engine))
+    @JvmStatic val componentsList = ArrayList(listOf(flightControl, artillery, hull, torpedoes, suo, fighter, torpedoBomber, diveBomber, engine))
+    @JvmStatic val compStatsList = ArrayList(listOf(flightControl, airArmament, airDefense, artillery, atba, hull, suo, torpedoes, fighter, torpedoBomber, diveBomber, engine))
 
-    val globalLanguage = HashSet(listOf("en", "ko"))
+    @JvmStatic val globalLanguage = HashSet(listOf("en", "ko"))
 
-    val excludeShipGroups = HashSet(listOf("unavailable", "disabled", "preserved", "clan"))
-    val supertestShipGroups = HashSet(listOf("demoWithoutStats"))
-    val researchShipGroups = HashSet(listOf("upgradeable", "start"))
-    val premiumShipGroups = HashSet(listOf("special", "specialUnsellable", "upgradeableExclusive", "ultimate", "earlyAccess"))
-    val excludeShipNations = HashSet(listOf("Events", "disabled", "preserved", "clan"))
-    val excludeShipSpecies = HashSet(listOf("Auxiliary", "Submarine"))
-    val excludeCompStats = HashSet(listOf("directors", "finders", "radars"))
-    val excludeModernization = HashSet(listOf("extra", "aimingtime"))
+    @JvmStatic val excludeShipGroups = HashSet(listOf("unavailable", "disabled", "preserved", "clan"))
+    @JvmStatic val supertestShipGroups = HashSet(listOf("demoWithoutStats"))
+    @JvmStatic val researchShipGroups = HashSet(listOf("upgradeable", "start"))
+    @JvmStatic val premiumShipGroups = HashSet(listOf("special", "specialUnsellable", "upgradeableExclusive", "ultimate", "earlyAccess"))
+    @JvmStatic val excludeShipNations = HashSet(listOf("Events", "disabled", "preserved", "clan"))
+    @JvmStatic val excludeShipSpecies = HashSet(listOf("Auxiliary", "Submarine"))
+    @JvmStatic val excludeCompStats = HashSet(listOf("directors", "finders", "radars"))
+    @JvmStatic val excludeModernization = HashSet(listOf("extra", "aimingtime"))
 
-    val coeff = HashSet(listOf("coef", "maxdist", "idealradius"))
-    val noUnit = HashSet(listOf("num"))
-    val extra = HashSet(listOf("count", "level", "additional"))
-    val meter = HashSet(listOf("radius", "height", "dist"))
-    val rate = HashSet(listOf("regeneration", "probabilitybonus", "chance"))
-    val rateNoSym = HashSet(listOf("step"))
-    val multiple = HashSet(listOf("multiplier"))
-    val extraAngle = HashSet(listOf("gunbonus"))
-    val angle = HashSet(listOf("angle"))
-    val time = HashSet(listOf("time"))
-    val speed = HashSet(listOf("speedbonus"))
+    @JvmStatic val coeff = HashSet(listOf("coef", "maxdist", "idealradius"))
+    @JvmStatic val noUnit = HashSet(listOf("num"))
+    @JvmStatic val extra = HashSet(listOf("count", "level", "additional"))
+    @JvmStatic val meter = HashSet(listOf("radius", "height", "dist"))
+    @JvmStatic val rate = HashSet(listOf("regeneration", "probabilitybonus", "chance"))
+    @JvmStatic val rateNoSym = HashSet(listOf("step"))
+    @JvmStatic val multiple = HashSet(listOf("multiplier"))
+    @JvmStatic val extraAngle = HashSet(listOf("gunbonus"))
+    @JvmStatic val angle = HashSet(listOf("angle"))
+    @JvmStatic val time = HashSet(listOf("time"))
+    @JvmStatic val speed = HashSet(listOf("speedbonus"))
 }

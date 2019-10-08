@@ -20,7 +20,7 @@ class ShipUpgradeInfo {
     var costSaleGold = 0
     var costXP = 0
     var lockedConfig = ArrayList<Any>()
-    var prepareTimeFactor = 0f
+    var prepareTimeFactor = 0.toDouble()
     var value = 0
 
     @JsonIgnore

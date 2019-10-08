@@ -6,16 +6,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Engine {
-    var backwardEngineForsag = 0f
-    var backwardEngineForsagMaxSpeed = 0f
-    var backwardEngineUpTime = 0f
-    var backwardSpeedOnFlood = 0f
-    var damagedEnginePowerMultiplier = 0f
-    var damagedEnginePowerTimeMultiplier = 0f
-    var forwardEngineForsag = 0f
-    var forwardEngineForsagMaxSpeed = 0f
-    var forwardEngineUpTime = 0f
-    var forwardSpeedOnFlood = 0f
-    var histEnginePower = 0f
-    var speedCoef = 0f
+    var backwardEngineForsag = 0.toDouble()
+    var backwardEngineForsagMaxSpeed = 0.toDouble()
+    var backwardEngineUpTime = 0.toDouble()
+    var backwardSpeedOnFlood = 0.toDouble()
+    var damagedEnginePowerMultiplier = 0.toDouble()
+    var damagedEnginePowerTimeMultiplier = 0.toDouble()
+    var forwardEngineForsag = 0.toDouble()
+    var forwardEngineForsagMaxSpeed = 0.toDouble()
+    var forwardEngineUpTime = 0.toDouble()
+    var forwardSpeedOnFlood = 0.toDouble()
+    var histEnginePower = 0.toDouble()
+    var speedCoef = 0.toDouble()
 }

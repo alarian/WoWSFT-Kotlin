@@ -13,6 +13,6 @@ class FlightControl {
     @JsonProperty("isGroundAttackEnabled")
     var groundAttackEnabled = false
     var planesReserveAssignment = LinkedHashMap<String, Int>()
-    var prepareTimeFactor = 0f
+    var prepareTimeFactor = 0.toDouble()
     var squadrons = ArrayList<String>()
 }

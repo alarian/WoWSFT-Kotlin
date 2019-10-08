@@ -8,182 +8,182 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 open class CommonModifier {
     @JsonProperty("AAExtraBubbles")
-    var aaextraBubbles = 0f
+    var aaextraBubbles = 0.toDouble()
     @JsonProperty("AANearDamage")
-    var aanearDamage = 1f
+    var aanearDamage: Double = 1.0
     @JsonProperty("AAOuterDamage")
-    var aaouterDamage = 1f
+    var aaouterDamage: Double = 1.0
     @JsonProperty("ADMaxHP")
-    var admaxHP = 1f
+    var admaxHP: Double = 1.0
     @JsonProperty("GMCritProb")
-    var gmcritProb = 1f
+    var gmcritProb: Double = 1.0
     @JsonProperty("GMIdealRadius")
-    var gmidealRadius = 1f
+    var gmidealRadius: Double = 1.0
     @JsonProperty("GMMaxDist")
-    var gmmaxDist = 1f
+    var gmmaxDist: Double = 1.0
     @JsonProperty("GMMaxHP")
-    var gmmaxHP = 1f
+    var gmmaxHP: Double = 1.0
     @JsonProperty("GMRepairTime")
-    var gmrepairTime = 1f
+    var gmrepairTime: Double = 1.0
     @JsonProperty("GMRotationSpeed")
-    var gmrotationSpeed = 1f
+    var gmrotationSpeed: Double = 1.0
     @JsonProperty("GMShotDelay")
-    var gmshotDelay = 1f
+    var gmshotDelay: Double = 1.0
     @JsonProperty("GMSigmaCount")
-    var gmsigmaCount = 1f
+    var gmsigmaCount: Double = 1.0
     @JsonProperty("GSIdealRadius")
-    var gsidealRadius = 1f
+    var gsidealRadius: Double = 1.0
     @JsonProperty("GSMaxDist")
-    var gsmaxDist = 1f
+    var gsmaxDist: Double = 1.0
     @JsonProperty("GSMaxHP")
-    var gsmaxHP = 1f
+    var gsmaxHP: Double = 1.0
     @JsonProperty("GSShotDelay")
-    var gsshotDelay = 1f
+    var gsshotDelay: Double = 1.0
     @JsonProperty("GSSigmaCount")
-    var gssigmaCount = 1f
+    var gssigmaCount: Double = 1.0
     @JsonProperty("GTCritProb")
-    var gtcritProb = 1f
+    var gtcritProb: Double = 1.0
     @JsonProperty("GTMaxHP")
-    var gtmaxHP = 1f
+    var gtmaxHP: Double = 1.0
     @JsonProperty("GTRepairTime")
-    var gtrepairTime = 1f
+    var gtrepairTime: Double = 1.0
     @JsonProperty("GTRotationSpeed")
-    var gtrotationSpeed = 1f
+    var gtrotationSpeed: Double = 1.0
     @JsonProperty("GTShotDelay")
-    var gtshotDelay = 1f
+    var gtshotDelay: Double = 1.0
     @JsonProperty("PMCritProb")
-    var pmcritProb = 1f
+    var pmcritProb: Double = 1.0
     @JsonProperty("PMDetonationProb")
-    var pmdetonationProb = 1f
+    var pmdetonationProb: Double = 1.0
     @JsonProperty("PMRepairTime")
-    var pmrepairTime = 1f
+    var pmrepairTime: Double = 1.0
     @JsonProperty("SGCritProb")
-    var sgcritProb = 1f
+    var sgcritProb: Double = 1.0
     @JsonProperty("SGRepairTime")
-    var sgrepairTime = 1f
+    var sgrepairTime: Double = 1.0
     @JsonProperty("SGRudderTime")
-    var sgrudderTime = 1f
-    var airDefenseDispWorkTime = 1f
-    var airplanesDiveBombersHealth = 1f
-    var airplanesEmptyReturnSpeed = 1f
-    var airplanesExtraHangarSize = 0f
-    var airplanesFighterAimingTime = 0f
-    var airplanesFightersHealth = 1f
-    var airplanesForsageDuration = 1f
-    var airplanesHealth = 1f
-    var airplanesSpawnTime = 1f
-    var airplanesSpeed = 1f
-    var airplanesTorpedoAimingTime = 0f
-    var airplanesTorpedoBombersHealth = 1f
-    var burnProb = 1f
-    var burnTime = 1f
-    var crashCrewWorkTime = 1f
-    var engineBackwardForsageMaxSpeed = 1f
-    var engineBackwardForsagePower = 1f
-    var engineBackwardUpTime = 1f
-    var engineCritProb = 1f
-    var engineForwardForsageMaxSpeed = 1f
-    var engineForwardForsagePower = 1f
-    var engineForwardUpTime = 1f
-    var engineRepairTime = 1f
-    var floodProb = 1f
-    var floodTime = 1f
-    var invulnerableWorkTime = 1f
-    var rlsSearchWorkTime = 1f
-    var scoutWorkTime = 1f
-    var shootShift = 1f
-    var smokeGeneratorLifeTime = 1f
-    var smokeGeneratorWorkTime = 1f
-    var sonarSearchWorkTime = 1f
-    var speedBoosterWorkTime = 1f
-    var squadronVisibilityDistCoeff = 1f
-    var trigger1SearchWorkTime = 1f
-    var trigger2SearchWorkTime = 1f
-    var trigger3SearchWorkTime = 1f
-    var trigger4SearchWorkTime = 1f
-    var trigger5SearchWorkTime = 1f
-    var trigger6SearchWorkTime = 1f
-    var visibilityDistCoeff = 1f
-    var visionDistCoeff = 1f
-    var visionTorpedoCoeff = 1f
-    var visionXRayShipCoeff = 1f
+    var sgrudderTime: Double = 1.0
+    var airDefenseDispWorkTime: Double = 1.0
+    var airplanesDiveBombersHealth: Double = 1.0
+    var airplanesEmptyReturnSpeed: Double = 1.0
+    var airplanesExtraHangarSize = 0.toDouble()
+    var airplanesFighterAimingTime = 0.toDouble()
+    var airplanesFightersHealth: Double = 1.0
+    var airplanesForsageDuration: Double = 1.0
+    var airplanesHealth: Double = 1.0
+    var airplanesSpawnTime: Double = 1.0
+    var airplanesSpeed: Double = 1.0
+    var airplanesTorpedoAimingTime = 0.toDouble()
+    var airplanesTorpedoBombersHealth: Double = 1.0
+    var burnProb: Double = 1.0
+    var burnTime: Double = 1.0
+    var crashCrewWorkTime: Double = 1.0
+    var engineBackwardForsageMaxSpeed: Double = 1.0
+    var engineBackwardForsagePower: Double = 1.0
+    var engineBackwardUpTime: Double = 1.0
+    var engineCritProb: Double = 1.0
+    var engineForwardForsageMaxSpeed: Double = 1.0
+    var engineForwardForsagePower: Double = 1.0
+    var engineForwardUpTime: Double = 1.0
+    var engineRepairTime: Double = 1.0
+    var floodProb: Double = 1.0
+    var floodTime: Double = 1.0
+    var invulnerableWorkTime: Double = 1.0
+    var rlsSearchWorkTime: Double = 1.0
+    var scoutWorkTime: Double = 1.0
+    var shootShift: Double = 1.0
+    var smokeGeneratorLifeTime: Double = 1.0
+    var smokeGeneratorWorkTime: Double = 1.0
+    var sonarSearchWorkTime: Double = 1.0
+    var speedBoosterWorkTime: Double = 1.0
+    var squadronVisibilityDistCoeff: Double = 1.0
+    var trigger1SearchWorkTime: Double = 1.0
+    var trigger2SearchWorkTime: Double = 1.0
+    var trigger3SearchWorkTime: Double = 1.0
+    var trigger4SearchWorkTime: Double = 1.0
+    var trigger5SearchWorkTime: Double = 1.0
+    var trigger6SearchWorkTime: Double = 1.0
+    var visibilityDistCoeff: Double = 1.0
+    var visionDistCoeff: Double = 1.0
+    var visionTorpedoCoeff: Double = 1.0
+    var visionXRayShipCoeff: Double = 1.0
 
     //
-    var modifier = ""
-    var diveBomber = 1f
-    var fighter = 1f
-    var torpedoBomber = 1f
-    var radiusCoefficient = 1f
-    var smallGunReloadCoefficient = 1f
-    var smallGunRangeCoefficient = 1f
-    var consumablePlaneSpeedCoefficient = 1f
-    var reloadCoefficient = 1f
-    var alertMinDistance = 0f
-    var critTimeCoefficient = 1f
-    var atbaIdealRadiusHi = 1f
-    var atbaIdealRadiusLo = 1f
-    var fightersAmmunitionCoefficient = 1f
-    var fightersEfficiencyCoefficient = 1f
-    var probabilityBonus = 0f
-    var probabilityCoefficient = 1f
-    var switchAmmoReloadCoef = 1f
+    var modifier: String = ""
+    var diveBomber: Double = 1.0
+    var fighter: Double = 1.0
+    var torpedoBomber: Double = 1.0
+    var radiusCoefficient: Double = 1.0
+    var smallGunReloadCoefficient: Double = 1.0
+    var smallGunRangeCoefficient: Double = 1.0
+    var consumablePlaneSpeedCoefficient: Double = 1.0
+    var reloadCoefficient: Double = 1.0
+    var alertMinDistance = 0.toDouble()
+    var critTimeCoefficient: Double = 1.0
+    var atbaIdealRadiusHi: Double = 1.0
+    var atbaIdealRadiusLo: Double = 1.0
+    var fightersAmmunitionCoefficient: Double = 1.0
+    var fightersEfficiencyCoefficient: Double = 1.0
+    var probabilityBonus = 0.toDouble()
+    var probabilityCoefficient: Double = 1.0
+    var switchAmmoReloadCoef: Double = 1.0
 
-    var chanceToSetOnFireBonus = 0f
-    var chanceToSetOnFireBonusBig = 0f
-    var chanceToSetOnFireBonusSmall = 0f
-    var thresholdPenetrationCoefficient = 1f
-    var thresholdPenetrationCoefficientBig = 1f
-    var thresholdPenetrationCoefficientSmall = 1f
+    var chanceToSetOnFireBonus = 0.toDouble()
+    var chanceToSetOnFireBonusBig = 0.toDouble()
+    var chanceToSetOnFireBonusSmall = 0.toDouble()
+    var thresholdPenetrationCoefficient: Double = 1.0
+    var thresholdPenetrationCoefficientBig: Double = 1.0
+    var thresholdPenetrationCoefficientSmall: Double = 1.0
 
-    var hpStep = 1f
-    var timeStep = 0f
-    var critRudderTimeCoefficient = 1f
-    var bigGunBonus = 0f
-    var smallGunBonus = 0f
-    var critProbCoefficient = 1f
-    var fightersSpeedCoefficient = 1f
-    var fightersVisibCoefficient = 1f
-    var fightersVitalCoefficient = 1f
-    var burnTimePenalty = 0f
-    var diveBombersPrepareCoefficient = 1f
-    var fightersPrepareCoefficient = 1f
-    var torpedoBombersPrepareCoefficient = 1f
-    var vitalityCoefficient = 1f
-    var fightersPassiveEfficiencyCoefficient = 1f
-    var additionalConsumables = 0f
-    var healthPerLevel = 0f
-    var torpedoRangeCoefficient = 1f
-    var torpedoSpeedBonus = 0f
-    var rangeCoefficient = 1f
-    var bomberCoefficient = 1f
-    var launcherCoefficient = 1f
-    var aircraftCarrierCoefficient = 1f
-    var battleshipCoefficient = 1f
-    var cruiserCoefficient = 1f
-    var destroyerCoefficient = 1f
-    var submarineCoefficient = 1f
-    var squadronCoefficient = 1f
-    var nearAuraDamageCoefficient = 1f
-    var advancedOuterAuraDamageCoefficient = 1f
-    var extraFighterCount = 0f
-    var fighterLifeTimeCoefficient = 1f
-    var hangarSizeBonus = 0f
-    var planeSpawnTimeCoefficient = 1f
-    var prioritySectorStrengthCoefficient = 1f
-    var sectorSwitchDelayCoefficient = 1f
-    var bombProbabilityBonus = 0f
-    var rocketProbabilityBonus = 0f
-    var flightSpeedCoefficient = 1f
-    var forsageDurationCoefficient = 1f
-    var squadronHealthStep = 0f
-    var squadronSpeedStep = 1f
-    var nearAuraDamageTakenCoefficient = 1f
-    var planeHealthPerLevel = 0f
-    var planeTorpedoRangeCoefficient = 1f
-    var planeTorpedoSpeedBonus = 0f
-    var planeRangeCoefficient = 1f
-    var prioSectorCooldownCoefficient = 1f
-    var prioSectorPhaseDurationCoefficient = 1f
-    var prioSectorStartPhaseStrengthCoefficient = 1f
-    var prioSectorStrengthCoefficient = 1f
+    var hpStep: Double = 1.0
+    var timeStep = 0.toDouble()
+    var critRudderTimeCoefficient: Double = 1.0
+    var bigGunBonus = 0.toDouble()
+    var smallGunBonus = 0.toDouble()
+    var critProbCoefficient: Double = 1.0
+    var fightersSpeedCoefficient: Double = 1.0
+    var fightersVisibCoefficient: Double = 1.0
+    var fightersVitalCoefficient: Double = 1.0
+    var burnTimePenalty = 0.toDouble()
+    var diveBombersPrepareCoefficient: Double = 1.0
+    var fightersPrepareCoefficient: Double = 1.0
+    var torpedoBombersPrepareCoefficient: Double = 1.0
+    var vitalityCoefficient: Double = 1.0
+    var fightersPassiveEfficiencyCoefficient: Double = 1.0
+    var additionalConsumables = 0.toDouble()
+    var healthPerLevel = 0.toDouble()
+    var torpedoRangeCoefficient: Double = 1.0
+    var torpedoSpeedBonus = 0.toDouble()
+    var rangeCoefficient: Double = 1.0
+    var bomberCoefficient: Double = 1.0
+    var launcherCoefficient: Double = 1.0
+    var aircraftCarrierCoefficient: Double = 1.0
+    var battleshipCoefficient: Double = 1.0
+    var cruiserCoefficient: Double = 1.0
+    var destroyerCoefficient: Double = 1.0
+    var submarineCoefficient: Double = 1.0
+    var squadronCoefficient: Double = 1.0
+    var nearAuraDamageCoefficient: Double = 1.0
+    var advancedOuterAuraDamageCoefficient: Double = 1.0
+    var extraFighterCount = 0.toDouble()
+    var fighterLifeTimeCoefficient: Double = 1.0
+    var hangarSizeBonus = 0.toDouble()
+    var planeSpawnTimeCoefficient: Double = 1.0
+    var prioritySectorStrengthCoefficient: Double = 1.0
+    var sectorSwitchDelayCoefficient: Double = 1.0
+    var bombProbabilityBonus = 0.toDouble()
+    var rocketProbabilityBonus = 0.toDouble()
+    var flightSpeedCoefficient: Double = 1.0
+    var forsageDurationCoefficient: Double = 1.0
+    var squadronHealthStep = 0.toDouble()
+    var squadronSpeedStep: Double = 1.0
+    var nearAuraDamageTakenCoefficient: Double = 1.0
+    var planeHealthPerLevel = 0.toDouble()
+    var planeTorpedoRangeCoefficient: Double = 1.0
+    var planeTorpedoSpeedBonus = 0.toDouble()
+    var planeRangeCoefficient: Double = 1.0
+    var prioSectorCooldownCoefficient: Double = 1.0
+    var prioSectorPhaseDurationCoefficient: Double = 1.0
+    var prioSectorStartPhaseStrengthCoefficient: Double = 1.0
+    var prioSectorStrengthCoefficient: Double = 1.0
 }

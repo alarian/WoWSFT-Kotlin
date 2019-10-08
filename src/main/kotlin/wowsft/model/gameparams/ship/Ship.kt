@@ -27,41 +27,41 @@ class Ship {
     @JsonProperty("ShipUpgradeInfo")
     var shipUpgradeInfo = ShipUpgradeInfo()
 
-    var apDamageLimitCoeff = 0f
+    var apDamageLimitCoeff = 0.toDouble()
     var battleLevels = BattleLevels()
     var canEquipCamouflage = false
-    var defaultCrew = ""
-    var group = ""
-    var id = 0L
-    var index = ""
+    var defaultCrew: String = ""
+    var group: String = ""
+    var id: Long = 0
+    var index: String = ""
     @JsonProperty("isPaperShip")
     var paperShip = false
     var level = 0
     var maxEquippedFlags = 0
-    var name = ""
-    var navalFlag = ""
+    var name: String = ""
+    var navalFlag: String = ""
     var needShowProjectYear = false
-    var peculiarity = ""
+    var peculiarity: String = ""
     var steerAngle = ArrayList<Float>()
     var typeinfo = TypeInfo()
     var weight = 0
 
-    var realShipType = ""
+    var realShipType: String = ""
         set(realShipType) {
             if (realShipType.isNotEmpty()) {
                 field = realShipType
-                realShipTypeId = if ("Premium".equals(realShipType, true)) "FILTER_PREMIUM" else realShipType.toUpperCase()
+                realShipTypeId = if ("Premium".equals(realShipType, ignoreCase = true)) "FILTER_PREMIUM" else realShipType.toUpperCase()
             }
         }
-    var realShipTypeId = ""
-    var fullName = ""
+    var realShipTypeId: String = ""
+    var fullName: String = ""
     var research = false
-    var prevShipIndex = ""
-    var prevShipName = ""
+    var prevShipIndex: String = ""
+    var prevShipName: String = ""
     var prevShipXP = 0
     var prevShipCompXP = 0
     val typeImage = if (typeinfo.nation.isNotEmpty() && typeinfo.species.isNotEmpty() && realShipType.isNotEmpty()) {
-            "https://cdn.wowsft.com/images/vehicles/types/" + typeinfo.species + (if (realShipType.equals("Premium", true)) "/premium" else "/normal") + ".png"
+            "https://cdn.wowsft.com/images/vehicles/types/" + typeinfo.species + (if (realShipType.equals("Premium", ignoreCase = true)) "/premium" else "/normal") + ".png"
         } else ""
     val imageSmall = if (index.isNotEmpty()) "https://cdn.wowsft.com/images/vehicles/ship_previews/$index.png" else ""
     var planes = LinkedHashMap<String, String>()
@@ -90,7 +90,7 @@ class Ship {
     var auraMedium = ArrayList<Aura>()
     var auraNear = ArrayList<Aura>()
 
-    var adrenaline = 0f
+    var adrenaline = 0.toDouble()
     var arUse = false
 
     @JsonAnySetter

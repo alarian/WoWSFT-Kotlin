@@ -22,6 +22,6 @@ class Skill : CommonModifier() {
     var epic = false
 
     var bonus = LinkedHashMap<String, String>()
-    var description = ""
+    var description: String = ""
     val image = if (modifier.isNotEmpty()) "https://cdn.wowsft.com/images/crew_commander/skills/icon_perk_$modifier.png" else ""
 }

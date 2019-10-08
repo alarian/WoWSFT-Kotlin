@@ -14,13 +14,13 @@ class Flag : CommonModifier() {
     var group = 0
     var hidden = false
     var hiddenCustom = Any()
-    var id = 0L
-    var index = ""
-    var name = ""
+    var id: Long = 0
+    var index: String = ""
+    var name: String = ""
     var typeinfo = TypeInfo()
     var sortOrder = 0
-    var identifier = ""
+    var identifier: String = ""
     var bonus = LinkedHashMap<String, String>()
-    var description = ""
+    var description: String = ""
     val image = if (name.isNotEmpty()) "https://cdn.wowsft.com/images/signal_flags/$name.png" else ""
 }

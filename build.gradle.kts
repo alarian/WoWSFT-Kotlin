@@ -22,7 +22,11 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.apache.commons:commons-lang3")
+    implementation("org.apache.commons:commons-collections4:4.4")
+
     implementation(kotlin("reflect"))
     implementation(kotlin("stdlib-jdk8"))
 

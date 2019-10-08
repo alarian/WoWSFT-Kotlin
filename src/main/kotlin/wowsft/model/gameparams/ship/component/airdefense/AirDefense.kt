@@ -17,29 +17,29 @@ class AirDefense {
     var auraMedium = ArrayList<Aura>()
     var auraNear = ArrayList<Aura>()
 
-    var ownerlessTracesScatterCoefficient = 0f
-    var prioritySectorChangeDelay = 0f
-    var prioritySectorDisableDelay = 0f
-    var prioritySectorEnableDelay = 0f
-    var prioritySectorStrength = 0f
+    var ownerlessTracesScatterCoefficient = 0.toDouble()
+    var prioritySectorChangeDelay = 0.toDouble()
+    var prioritySectorDisableDelay = 0.toDouble()
+    var prioritySectorEnableDelay = 0.toDouble()
+    var prioritySectorStrength = 0.toDouble()
     var sectors = ArrayList<MutableList<Float>>()
     var prioritySectorPhases = ArrayList<MutableList<Any>>()
         set(value) {
             field = value
 
             if (prioritySectorPhases.size == 2) {
-                prioritySectorPreparation = prioritySectorPhases[0][0].toString().toFloat()
-                prioritySectorDuration = prioritySectorPhases[1][0].toString().toFloat()
-                prioritySectorDamageInitial = prioritySectorPhases[0][2].toString().toFloat()
-                prioritySectorCoefficientInitial = prioritySectorPhases[0][3].toString().toFloat()
-                prioritySectorCoefficientDuring = prioritySectorPhases[0][4].toString().toFloat()
+                prioritySectorPreparation = prioritySectorPhases[0][0].toString().toDouble()
+                prioritySectorDuration = prioritySectorPhases[1][0].toString().toDouble()
+                prioritySectorDamageInitial = prioritySectorPhases[0][2].toString().toDouble()
+                prioritySectorCoefficientInitial = prioritySectorPhases[0][3].toString().toDouble()
+                prioritySectorCoefficientDuring = prioritySectorPhases[0][4].toString().toDouble()
             }
         }
-    var prioritySectorPreparation = 0f
-    var prioritySectorDuration = 0f
-    var prioritySectorDamageInitial = 0f
-    var prioritySectorCoefficientInitial = 0f
-    var prioritySectorCoefficientDuring = 0f
+    var prioritySectorPreparation = 0.toDouble()
+    var prioritySectorDuration = 0.toDouble()
+    var prioritySectorDamageInitial = 0.toDouble()
+    var prioritySectorCoefficientInitial = 0.toDouble()
+    var prioritySectorCoefficientDuring = 0.toDouble()
 
     @JsonIgnore
     private val mapper = ObjectMapper()
@@ -49,11 +49,11 @@ class AirDefense {
         if (value is HashMap<*, *>) {
             val tempObject = mapper.convertValue<HashMap<String, Any>>(value, object : TypeReference<HashMap<String, Any>>() {})
 
-            if ("far".equals(tempObject["type"] as String, true)) {
+            if ("far".equals(tempObject["type"] as String, ignoreCase = true)) {
                 auraFar.add(mapper.convertValue(value, Aura::class.java))
-            } else if ("medium".equals(tempObject["type"] as String, true)) {
+            } else if ("medium".equals(tempObject["type"] as String, ignoreCase = true)) {
                 auraMedium.add(mapper.convertValue(value, Aura::class.java))
-            } else if ("near".equals(tempObject["type"] as String, true)) {
+            } else if ("near".equals(tempObject["type"] as String, ignoreCase = true)) {
                 auraNear.add(mapper.convertValue(value, Aura::class.java))
             }
         }

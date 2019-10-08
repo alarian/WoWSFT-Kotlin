@@ -18,15 +18,15 @@ import java.util.LinkedHashMap
 class ShipUpgrade {
     var disabledAbilities = ArrayList<String>()
     var nextShips = ArrayList<String>()
-    var fullName = ""
-    var name = ""
-    var prev = ""
-    var ucType = ""
+    var fullName: String = ""
+    var name: String = ""
+    var prev: String = ""
+    var ucType: String = ""
     var position = 0
     @JsonInclude
     var elem = 0
 
-    var prevType = ""
+    var prevType: String = ""
         get() = if (prevType.isEmpty()) ucTypeShort else field
     @JsonInclude
     var prevPosition = 0
@@ -45,7 +45,7 @@ class ShipUpgrade {
         val temp = mapper.convertValue<LinkedHashMap<String, MutableList<String>>>(value, object : TypeReference<LinkedHashMap<String, MutableList<String>>>() {})
 
         temp.forEach { (key, list) ->
-            val name = if (key.equals(fireControl, true)) suo else key
+            val name = if (key.equals(fireControl, ignoreCase = true)) suo else key
             list.sort()
             components[name] = list
         }

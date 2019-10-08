@@ -27,7 +27,6 @@ import static wowsft.model.Constant.*;
  * Created by Aesis on 2016-12-05.
  */
 @Service
-@Slf4j
 public class GPService
 {
     @Autowired

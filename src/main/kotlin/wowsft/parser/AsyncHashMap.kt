@@ -13,29 +13,26 @@ import java.util.HashMap
  * Created by Aesis on 2016-11-15.
  */
 @Component
-class AsyncHashMap : CommandLineRunner {
+class AsyncHashMap(
+        @Autowired @Qualifier(value = "jsonParser") private val jsonParser: JsonParser,
+        @Autowired @Qualifier(value = "loadFinish") private val loadFinish: HashMap<String, Int>
+) : CommandLineRunner
+{
     companion object {
         private val log = LoggerFactory.getLogger(AsyncHashMap::class.java)
     }
 
-    @Autowired
-    @Qualifier(value = "jsonParser")
-    private val jsonParser: JsonParser? = null
-
-    @Autowired
-    @Qualifier(value = "loadFinish")
-    private val loadFinish: HashMap<String, Int>? = null
-
     @Throws(IOException::class)
-    override fun run(vararg strings: String) {
+    override fun run(vararg strings: String)
+    {
         log.info("Start")
 
-        jsonParser!!.setTranslation()
+        jsonParser.setTranslation()
         jsonParser.setNotification()
         jsonParser.setGlobal()
         jsonParser.setGameParams()
 
-        loadFinish!!["loadFinish"] = 1
+        loadFinish["loadFinish"] = 1
         log.info("finish")
     }
 }

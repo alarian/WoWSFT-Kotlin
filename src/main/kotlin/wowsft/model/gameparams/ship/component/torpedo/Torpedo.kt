@@ -18,7 +18,7 @@ class Torpedo {
     var launcherTypes = LinkedHashMap<Int, MutableList<Any>>()
 
     var numTorpsInSalvo = 0
-    var oneShotWaitTime = 0f
+    var oneShotWaitTime = 0.toDouble()
     var useGroups = false
     var useOneShot = false
 

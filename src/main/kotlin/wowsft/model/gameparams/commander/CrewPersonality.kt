@@ -18,8 +18,8 @@ class CrewPersonality {
     @JsonProperty("unique")
     var unique = false
     var canResetSkillsForFree = false
-    var peculiarity = ""
-    var personName = ""
+    var peculiarity: String = ""
+    var personName: String = ""
     var ships = Ships()
     var costCR = 0
     var costELXP = 0

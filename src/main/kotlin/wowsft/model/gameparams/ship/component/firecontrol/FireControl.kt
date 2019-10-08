@@ -4,6 +4,6 @@ import wowsft.config.WoWSFT
 
 @WoWSFT
 class FireControl {
-    var maxDistCoef = 0f
-    var sigmaCountCoef = 0f
+    var maxDistCoef = 0.toDouble()
+    var sigmaCountCoef = 0.toDouble()
 }
