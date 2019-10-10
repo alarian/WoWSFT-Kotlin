@@ -55,7 +55,6 @@ class GPController(
             model.addAttribute("lang", "en")
         } else {
             var l = "en"
-            l.toInt()
             for (s in lang) {
                 if (Constant.globalLanguage.contains(s.toLowerCase())) {
                     l = s
@@ -176,7 +175,7 @@ class GPController(
         parserService.parseSkills(ship, skills, ar)
         paramService.setAA(ship)
 
-        if ("PCW001" != commander && (commanders[commander] == null || !commanders[commander]!!.crewPersonality.ships.nation.contains(ship.typeinfo.nation))) {
+        if ("PCW001" != commander && (commanders[commander] == null || !commanders[commander]!!.crewPersonality?.ships?.nation?.contains(ship.typeinfo!!.nation)!!)) {
             tCommander = "PCW001"
         }
         ship.commander = commanders[tCommander]!!

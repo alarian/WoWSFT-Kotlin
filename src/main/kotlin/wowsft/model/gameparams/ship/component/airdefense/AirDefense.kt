@@ -12,17 +12,18 @@ import java.util.HashMap
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class AirDefense {
+class AirDefense
+{
     var auraFar = ArrayList<Aura>()
     var auraMedium = ArrayList<Aura>()
     var auraNear = ArrayList<Aura>()
 
-    var ownerlessTracesScatterCoefficient = 0.toDouble()
-    var prioritySectorChangeDelay = 0.toDouble()
-    var prioritySectorDisableDelay = 0.toDouble()
-    var prioritySectorEnableDelay = 0.toDouble()
-    var prioritySectorStrength = 0.toDouble()
-    var sectors = ArrayList<MutableList<Float>>()
+    var ownerlessTracesScatterCoefficient = 0.0
+    var prioritySectorChangeDelay = 0.0
+    var prioritySectorDisableDelay = 0.0
+    var prioritySectorEnableDelay = 0.0
+    var prioritySectorStrength = 0.0
+    var sectors = ArrayList<MutableList<Double>>()
     var prioritySectorPhases = ArrayList<MutableList<Any>>()
         set(value) {
             field = value
@@ -35,11 +36,11 @@ class AirDefense {
                 prioritySectorCoefficientDuring = prioritySectorPhases[0][4].toString().toDouble()
             }
         }
-    var prioritySectorPreparation = 0.toDouble()
-    var prioritySectorDuration = 0.toDouble()
-    var prioritySectorDamageInitial = 0.toDouble()
-    var prioritySectorCoefficientInitial = 0.toDouble()
-    var prioritySectorCoefficientDuring = 0.toDouble()
+    var prioritySectorPreparation = 0.0
+    var prioritySectorDuration = 0.0
+    var prioritySectorDamageInitial = 0.0
+    var prioritySectorCoefficientInitial = 0.0
+    var prioritySectorCoefficientDuring = 0.0
 
     @JsonIgnore
     private val mapper = ObjectMapper()
@@ -49,11 +50,11 @@ class AirDefense {
         if (value is HashMap<*, *>) {
             val tempObject = mapper.convertValue<HashMap<String, Any>>(value, object : TypeReference<HashMap<String, Any>>() {})
 
-            if ("far".equals(tempObject["type"] as String, ignoreCase = true)) {
+            if ("far".equals(tempObject["type"] as String?, ignoreCase = true)) {
                 auraFar.add(mapper.convertValue(value, Aura::class.java))
-            } else if ("medium".equals(tempObject["type"] as String, ignoreCase = true)) {
+            } else if ("medium".equals(tempObject["type"] as String?, ignoreCase = true)) {
                 auraMedium.add(mapper.convertValue(value, Aura::class.java))
-            } else if ("near".equals(tempObject["type"] as String, ignoreCase = true)) {
+            } else if ("near".equals(tempObject["type"] as String?, ignoreCase = true)) {
                 auraNear.add(mapper.convertValue(value, Aura::class.java))
             }
         }

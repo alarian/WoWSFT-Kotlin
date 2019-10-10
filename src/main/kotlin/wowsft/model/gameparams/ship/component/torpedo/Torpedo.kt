@@ -18,7 +18,7 @@ class Torpedo {
     var launcherTypes = LinkedHashMap<Int, MutableList<Any>>()
 
     var numTorpsInSalvo = 0
-    var oneShotWaitTime = 0.toDouble()
+    var oneShotWaitTime = 0.0
     var useGroups = false
     var useOneShot = false
 
@@ -41,7 +41,7 @@ class Torpedo {
                 } else {
                     val tObject = ArrayList<Any>()
                     tObject.add(1)
-                    tObject.add(launcher.name)
+                    tObject.add(launcher.name!!)
                     launcherTypes[launcher.numBarrels] = tObject
                 }
             }

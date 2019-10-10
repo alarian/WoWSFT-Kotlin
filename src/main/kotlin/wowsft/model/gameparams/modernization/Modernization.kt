@@ -9,14 +9,15 @@ import java.util.ArrayList
 import java.util.LinkedHashMap
 
 @WoWSFT
-class Modernization : CommonModifier() {
+class Modernization : CommonModifier()
+{
     var costCR = 0
     var costGold = 0
     var excludes = ArrayList<String>()
     var group = ArrayList<String>()
     var id: Long = 0
-    var index: String = ""
-    var name: String = ""
+    var index: String? = null
+    var name: String? = null
     var nation = ArrayList<String>()
     var shiplevel = ArrayList<Int>()
     var ships = ArrayList<String>()
@@ -24,11 +25,11 @@ class Modernization : CommonModifier() {
     @JsonInclude
     var slot = 0
     var type = 0
-    var typeinfo = TypeInfo()
+    var typeinfo : TypeInfo? = null
 
-    var fullName: String = ""
-    var image = if (name.isNotEmpty()) "https://cdn.wowsft.com/images/modernization_icons/icon_modernization_$name.png" else ""
+    var fullName: String? = null
+    var image = if (!name.isNullOrBlank()) "https://cdn.wowsft.com/images/modernization_icons/icon_modernization_$name.png" else ""
 
     var bonus = LinkedHashMap<String, String>()
-    var description: String = ""
+    var description: String? = null
 }

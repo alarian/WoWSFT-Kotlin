@@ -9,39 +9,39 @@ import com.fasterxml.jackson.annotation.JsonInclude
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Secondary {
     var ammoList = ArrayList<String>()
-    var antiAirAuraDistance = 0.toDouble()
-    var antiAirAuraStrength = 0.toDouble()
-    var barrelDiameter = 0.toDouble()
-    var deadZone = ArrayList<MutableList<Float>>()
-    var delim = 0.toDouble()
-    var horizSector = ArrayList<Float>()
+    var antiAirAuraDistance = 0.0
+    var antiAirAuraStrength = 0.0
+    var barrelDiameter = 0.0
+    var deadZone = ArrayList<MutableList<Double>>()
+    var delim = 0.0
+    var horizSector = ArrayList<Double>()
     var id: Long = 0
-    var idealDistance = 0.toDouble()
-    var idealRadius = 0.toDouble()
-    var index: String = ""
-    var minRadius = 0.toDouble()
-    var name: String = ""
+    var idealDistance = 0.0
+    var idealRadius = 0.0
+    var index: String? = null
+    var minRadius = 0.0
+    var name: String? = null
     var numBarrels = 0
-    var radiusOnDelim = 0.toDouble()
-    var radiusOnMax = 0.toDouble()
-    var radiusOnZero = 0.toDouble()
-    var rotationSpeed = ArrayList<Float>()
-    var shotDelay = 0.toDouble()
+    var radiusOnDelim = 0.0
+    var radiusOnMax = 0.0
+    var radiusOnZero = 0.0
+    var rotationSpeed = ArrayList<Double>()
+    var shotDelay = 0.0
     var smallGun = false
-    var smokePenalty = 0.toDouble()
-    var typeinfo = TypeInfo()
-    var vertSector = ArrayList<Float>()
+    var smokePenalty = 0.0
+    var typeinfo : TypeInfo? = null
+    var vertSector = ArrayList<Double>()
     @JsonInclude
     var GSIdealRadius: Double = 1.0
 
     var count = 0
 
-    var alphaDamage = 0.toDouble()
-    var alphaPiercingHE = 0.toDouble()
-    var ammoType: String = ""
-    var bulletSpeed = 0.toDouble()
-    var burnProb = 0.toDouble()
+    var alphaDamage = 0.0
+    var alphaPiercingHE = 0.0
+    var ammoType: String? = null
+    var bulletSpeed = 0.0
+    var burnProb = 0.0
 
     val alphaPiercingHEReal
-        get() = alphaPiercingHE - 1f
+        get() = alphaPiercingHE - 1.0
 }

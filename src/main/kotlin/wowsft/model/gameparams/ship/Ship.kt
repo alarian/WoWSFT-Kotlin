@@ -18,52 +18,55 @@ import java.util.LinkedHashMap
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Ship {
+class Ship
+{
     var tempComponents = LinkedHashMap<String, Any>()
     var components = ShipComponent()
 
-    @JsonProperty("ShipAbilities")
+    @JsonAlias("ShipAbilities")
     var shipAbilities = LinkedHashMap<String, AbilitySlot>()
-    @JsonProperty("ShipUpgradeInfo")
+    @JsonAlias("ShipUpgradeInfo")
     var shipUpgradeInfo = ShipUpgradeInfo()
 
-    var apDamageLimitCoeff = 0.toDouble()
+    var apDamageLimitCoeff = 0.0
     var battleLevels = BattleLevels()
     var canEquipCamouflage = false
-    var defaultCrew: String = ""
-    var group: String = ""
+    var defaultCrew: String? = null
+    var group: String? = null
     var id: Long = 0
-    var index: String = ""
-    @JsonProperty("isPaperShip")
+    var index: String? = null
+    @JsonAlias("isPaperShip")
     var paperShip = false
     var level = 0
     var maxEquippedFlags = 0
-    var name: String = ""
-    var navalFlag: String = ""
+    var name: String? = null
+    var navalFlag: String? = null
     var needShowProjectYear = false
-    var peculiarity: String = ""
-    var steerAngle = ArrayList<Float>()
-    var typeinfo = TypeInfo()
+    var peculiarity: String? = null
+    var steerAngle = ArrayList<Double>()
+    var typeinfo : TypeInfo? = null
     var weight = 0
 
-    var realShipType: String = ""
+    var realShipType: String? = null
         set(realShipType) {
-            if (realShipType.isNotEmpty()) {
+            if (!realShipType.isNullOrBlank()) {
                 field = realShipType
                 realShipTypeId = if ("Premium".equals(realShipType, ignoreCase = true)) "FILTER_PREMIUM" else realShipType.toUpperCase()
             }
         }
-    var realShipTypeId: String = ""
-    var fullName: String = ""
+    var realShipTypeId: String? = null
+    var fullName: String? = null
     var research = false
-    var prevShipIndex: String = ""
-    var prevShipName: String = ""
+    var prevShipIndex: String? = null
+    var prevShipName: String? = null
     var prevShipXP = 0
     var prevShipCompXP = 0
-    val typeImage = if (typeinfo.nation.isNotEmpty() && typeinfo.species.isNotEmpty() && realShipType.isNotEmpty()) {
-            "https://cdn.wowsft.com/images/vehicles/types/" + typeinfo.species + (if (realShipType.equals("Premium", ignoreCase = true)) "/premium" else "/normal") + ".png"
+    val typeImage: String
+        get() = if (!typeinfo?.nation.isNullOrBlank() && !typeinfo?.species.isNullOrBlank() && !realShipType.isNullOrBlank()) {
+            "https://cdn.wowsft.com/images/vehicles/types/" + typeinfo?.species + (if (realShipType.equals("Premium", ignoreCase = true)) "/premium" else "/normal") + ".png"
         } else ""
-    val imageSmall = if (index.isNotEmpty()) "https://cdn.wowsft.com/images/vehicles/ship_previews/$index.png" else ""
+    val imageSmall: String
+        get() = if (!index.isNullOrBlank()) "https://cdn.wowsft.com/images/vehicles/ship_previews/$index.png" else ""
     var planes = LinkedHashMap<String, String>()
 
     var consumables = ArrayList<MutableList<Consumable>>()
@@ -90,8 +93,9 @@ class Ship {
     var auraMedium = ArrayList<Aura>()
     var auraNear = ArrayList<Aura>()
 
-    var adrenaline = 0.toDouble()
+    var adrenaline = 0.0
     var arUse = false
+    var steerDist = 0.0
 
     @JsonAnySetter
     fun setUpTempComponents(name: String, value: Any) {

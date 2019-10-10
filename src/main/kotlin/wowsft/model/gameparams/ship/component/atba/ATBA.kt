@@ -23,11 +23,11 @@ class ATBA {
     var turrets = ArrayList<Secondary>()
     var secondaries = LinkedHashMap<String, Secondary>()
 
-    var maxDist = 0.toDouble()
-    var minDistH = 0.toDouble()
-    var minDistV = 0.toDouble()
-    var sigmaCount = 0.toDouble()
-    var taperDist = 0.toDouble()
+    var maxDist = 0.0
+    var minDistH = 0.0
+    var minDistV = 0.0
+    var sigmaCount = 0.0
+    var taperDist = 0.0
     @JsonInclude
     var GSIdealRadius: Double = 1.0
 
@@ -39,11 +39,11 @@ class ATBA {
         if (value is HashMap<*, *>) {
             val tempObject = mapper.convertValue<HashMap<String, Any>>(value, object : TypeReference<HashMap<String, Any>>() {})
 
-            if ("far".equals(tempObject["type"] as String, ignoreCase = true)) {
+            if ("far".equals(tempObject["type"] as String?, ignoreCase = true)) {
                 auraFar.add(mapper.convertValue(value, Aura::class.java))
-            } else if ("medium".equals(tempObject["type"] as String, ignoreCase = true)) {
+            } else if ("medium".equals(tempObject["type"] as String?, ignoreCase = true)) {
                 auraMedium.add(mapper.convertValue(value, Aura::class.java))
-            } else if ("near".equals(tempObject["type"] as String, ignoreCase = true)) {
+            } else if ("near".equals(tempObject["type"] as String?, ignoreCase = true)) {
                 auraNear.add(mapper.convertValue(value, Aura::class.java))
             } else if (tempObject.containsKey("HitLocationATBA")) {
                 val tempS = mapper.convertValue(value, Secondary::class.java)
@@ -52,7 +52,7 @@ class ATBA {
                     secondaries[tempS.name]!!.count = secondaries[tempS.name]!!.count + 1
                 } else {
                     tempS.count = 1
-                    secondaries[tempS.name] = tempS
+                    secondaries[tempS.name!!] = tempS
                 }
             }
         }

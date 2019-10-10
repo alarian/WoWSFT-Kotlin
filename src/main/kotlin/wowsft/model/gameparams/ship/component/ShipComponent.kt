@@ -15,7 +15,8 @@ import wowsft.model.gameparams.ship.component.torpedo.Torpedo
 import java.util.LinkedHashMap
 
 @WoWSFT
-class ShipComponent {
+class ShipComponent
+{
     val flightControl = LinkedHashMap<String, FlightControl>()
     val airArmament = LinkedHashMap<String, AirArmament>()
     val airDefense = LinkedHashMap<String, AirDefense>()

@@ -10,7 +10,8 @@ import java.util.LinkedHashMap
 import wowsft.model.Constant.componentsList
 
 @WoWSFT
-class ShipUpgradeInfo {
+class ShipUpgradeInfo
+{
     var components = LinkedHashMap<String, MutableList<ShipUpgrade>>()
     var cols = LinkedHashMap<String, Int>()
     var maxRows = 0
@@ -20,7 +21,7 @@ class ShipUpgradeInfo {
     var costSaleGold = 0
     var costXP = 0
     var lockedConfig = ArrayList<Any>()
-    var prepareTimeFactor = 0.toDouble()
+    var prepareTimeFactor = 0.0
     var value = 0
 
     @JsonIgnore
@@ -34,8 +35,8 @@ class ShipUpgradeInfo {
     fun setShipUpgrades(name: String, value: Any) {
         val upgrade = mapper.convertValue(value, ShipUpgrade::class.java)
         upgrade.name = name
-        upgrade.position = if (upgrade.prev.isEmpty()) 1 else 2
-        components[upgrade.ucTypeShort]?.plus(upgrade)
+        upgrade.position = if (!upgrade.prev.isNullOrBlank()) 1 else 2
+        components[upgrade.ucTypeShort]?.add(upgrade)
     }
 
     fun setColsAndMaxRows(col: LinkedHashMap<String, Int>, row: Int) {

@@ -8,12 +8,12 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 plugins {
     id("war")
-    id("org.springframework.boot") version "2.1.7.RELEASE"
+    id("org.springframework.boot") version "2.1.8.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
-    kotlin("jvm") version "1.3.50"
-    kotlin("plugin.spring") version "1.3.50"
-    kotlin("plugin.allopen") version "1.2.71"
-//    kotlin("kapt") version "1.3.50"
+    kotlin("jvm") version "1.3.41"
+    kotlin("plugin.spring") version "1.3.41"
+    kotlin("plugin.allopen") version "1.3.41"
+//    kotlin("kapt") version "1.3.41"
 }
 
 repositories {
@@ -22,6 +22,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.apache.commons:commons-lang3")

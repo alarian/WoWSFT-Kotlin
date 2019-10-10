@@ -10,43 +10,44 @@ import kotlin.math.atan
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Shell {
-    var alphaDamage: Double = 0.toDouble()
-    var alphaPiercingCS: Double = 0.toDouble()
-    var alphaPiercingHE: Double = 0.toDouble()
+class Shell
+{
+    var alphaDamage: Double = 0.0
+    var alphaPiercingCS: Double = 0.0
+    var alphaPiercingHE: Double = 0.0
         set(alphaPiercingHE) {
             field = alphaPiercingHE
-            this.alphaPiercingHEReal = alphaPiercingHE - 1.toDouble()
+            this.alphaPiercingHEReal = alphaPiercingHE - 1.0
         }
-    var alphaPiercingHEReal: Double = 0.toDouble()
-    var ammoType: String = ""
-    var bulletAirDrag: Double = 0.toDouble()
-    var bulletAlwaysRicochetAt: Double = 0.toDouble()
+    var alphaPiercingHEReal: Double = 0.0
+    var ammoType: String? = null
+    var bulletAirDrag: Double = 0.0
+    var bulletAlwaysRicochetAt: Double = 0.0
     var bulletCap = false
-    var bulletCapNormalizeMaxAngle: Double = 0.toDouble()
-    var bulletDetonator: Double = 0.toDouble()
-    var bulletDetonatorSpread: Double = 0.toDouble()
-    var bulletDetonatorThreshold: Double = 0.toDouble()
-    var bulletDiametr: Double = 0.toDouble()
-    var bulletKrupp: Double = 0.toDouble()
-    var bulletMass: Double = 0.toDouble()
-    var bulletPenetrationSpread: Double = 0.toDouble()
-    var bulletRicochetAt: Double = 0.toDouble()
-    var bulletSpeed: Double = 0.toDouble()
-    var bulletUnderwaterDistFactor: Double = 0.toDouble()
-    var bulletUnderwaterPenetrationFactor: Double = 0.toDouble()
-    var bulletWaterDrag: Double = 0.toDouble()
-    var burnProb: Double = 0.toDouble()
+    var bulletCapNormalizeMaxAngle: Double = 0.0
+    var bulletDetonator: Double = 0.0
+    var bulletDetonatorSpread: Double = 0.0
+    var bulletDetonatorThreshold: Double = 0.0
+    var bulletDiametr: Double = 0.0
+    var bulletKrupp: Double = 0.0
+    var bulletMass: Double = 0.0
+    var bulletPenetrationSpread: Double = 0.0
+    var bulletRicochetAt: Double = 0.0
+    var bulletSpeed: Double = 0.0
+    var bulletUnderwaterDistFactor: Double = 0.0
+    var bulletUnderwaterPenetrationFactor: Double = 0.0
+    var bulletWaterDrag: Double = 0.0
+    var burnProb: Double = 0.0
     var costCR = 0
-    var damage: Double = 0.toDouble()
-    var directDamage: Double = 0.toDouble()
+    var damage: Double = 0.0
+    var directDamage: Double = 0.0
     var id: Long = 0
-    var index: String = ""
-    var name: String = ""
-    var typeinfo = TypeInfo()
+    var index: String? = null
+    var name: String? = null
+    var typeinfo : TypeInfo? = null
     var uwAbility = false
-    var uwCritical: Double = 0.toDouble()
-    var volume: Double = 0.toDouble()
+    var uwCritical: Double = 0.0
+    var volume: Double = 0.0
     var waterRefractionReflectDeltaAngleInterval = ArrayList<Double>()
 
 //    @JsonIgnore
@@ -63,43 +64,43 @@ class Shell {
 //    LinkedHashMap<String, Double> vertMinus;
 //    @JsonIgnore
     var distanceList: ArrayList<String>? = null
-    var minDistV: Double = 0.toDouble()
-    var penetrationAtFive: Double = 0.toDouble()
-    var penetrationAtTen: Double = 0.toDouble()
-    var penetrationAtFifteen: Double = 0.toDouble()
-    var penetrationAtTwenty: Double = 0.toDouble()
-    var penetrationAtMax: Double = 0.toDouble()
-    var flightTimeAtFive: Double = 0.toDouble()
-    var flightTimeAtTen: Double = 0.toDouble()
-    var flightTimeAtFifteen: Double = 0.toDouble()
-    var flightTimeAtTwenty: Double = 0.toDouble()
-    var flightTimeAtMax: Double = 0.toDouble()
-    var impactAtFive: Double = 0.toDouble()
-    var impactAtTen: Double = 0.toDouble()
-    var impactAtFifteen: Double = 0.toDouble()
-    var impactAtTwenty: Double = 0.toDouble()
-    var impactAtMax: Double = 0.toDouble()
-    var vertPlusAtFive: Double = 0.toDouble()
-    var vertPlusAtTen: Double = 0.toDouble()
-    var vertPlusAtFifteen: Double = 0.toDouble()
-    var vertPlusAtTwenty: Double = 0.toDouble()
-    var vertPlusAtMax: Double = 0.toDouble()
-    var vertMinusAtFive: Double = 0.toDouble()
-    var vertMinusAtTen: Double = 0.toDouble()
-    var vertMinusAtFifteen: Double = 0.toDouble()
-    var vertMinusAtTwenty: Double = 0.toDouble()
-    var vertMinusAtMax: Double = 0.toDouble()
+    var minDistV: Double = 0.0
+    var penetrationAtFive: Double = 0.0
+    var penetrationAtTen: Double = 0.0
+    var penetrationAtFifteen: Double = 0.0
+    var penetrationAtTwenty: Double = 0.0
+    var penetrationAtMax: Double = 0.0
+    var flightTimeAtFive: Double = 0.0
+    var flightTimeAtTen: Double = 0.0
+    var flightTimeAtFifteen: Double = 0.0
+    var flightTimeAtTwenty: Double = 0.0
+    var flightTimeAtMax: Double = 0.0
+    var impactAtFive: Double = 0.0
+    var impactAtTen: Double = 0.0
+    var impactAtFifteen: Double = 0.0
+    var impactAtTwenty: Double = 0.0
+    var impactAtMax: Double = 0.0
+    var vertPlusAtFive: Double = 0.0
+    var vertPlusAtTen: Double = 0.0
+    var vertPlusAtFifteen: Double = 0.0
+    var vertPlusAtTwenty: Double = 0.0
+    var vertPlusAtMax: Double = 0.0
+    var vertMinusAtFive: Double = 0.0
+    var vertMinusAtTen: Double = 0.0
+    var vertMinusAtFifteen: Double = 0.0
+    var vertMinusAtTwenty: Double = 0.0
+    var vertMinusAtMax: Double = 0.0
 
     var penetrationIFHE = 0
 
     @JsonIgnore
-    val distFive = 5000.toDouble()
+    val distFive = 5000.0
     @JsonIgnore
-    val distTen = 10000.toDouble()
+    val distTen = 10000.0
     @JsonIgnore
-    val distFifteen = 15000.toDouble()
+    val distFifteen = 15000.0
     @JsonIgnore
-    val distTwenty = 20000.toDouble()
+    val distTwenty = 20000.0
 
     fun setShell(
         flightTime: LinkedHashMap<String, Double>,
@@ -240,12 +241,12 @@ class Shell {
             }
         }
 
-        return if (e1.isEmpty() || e2.isEmpty()) 0.toDouble() else (e1.toDouble() + e2.toDouble()) / 2.toDouble()
+        return if (e1.isEmpty() || e2.isEmpty()) 0.0 else (e1.toDouble() + e2.toDouble()) / 2.0
     }
 
     private fun setMiddleAtDistance(x1: Double?, y1: Double?, x2: Double?, y2: Double?, mid: Double) : Double {
         if (x1 == null || y1 == null || x2 == null || y2 == null) {
-            return 0.toDouble()
+            return 0.0
         }
 
         val a = (y2 - y1) / (x2 - x1)

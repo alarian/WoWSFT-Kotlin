@@ -9,19 +9,19 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.LinkedHashMap
 
 @WoWSFT
-class Consumable {
+class Consumable
+{
     var subConsumables = LinkedHashMap<String, ConsumableSub>()
-
     var canBuy = false
     var canBuyCustom = LinkedHashMap<String, Boolean>()
-    var costCR = 0.toDouble()
-    var costGold = 0.toDouble()
+    var costCR = 0.0
+    var costGold = 0.0
     var freeOfCharge = false
     var id: Long = 0
-    var index: String = ""
-    var name: String = ""
-    var typeinfo = TypeInfo()
-    var description: String = ""
+    var index: String? = null
+    var name: String? = null
+    var typeinfo : TypeInfo? = null
+    var description: String? = null
 
     @JsonIgnore
     private val mapper = ObjectMapper()

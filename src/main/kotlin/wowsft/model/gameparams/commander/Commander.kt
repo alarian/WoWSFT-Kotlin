@@ -5,7 +5,7 @@ import wowsft.model.gameparams.TypeInfo
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 
@@ -14,15 +14,16 @@ import java.util.LinkedHashMap
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Commander {
-    @JsonProperty("CrewPersonality")
-    var crewPersonality = CrewPersonality()
+class Commander
+{
+    @JsonAlias("CrewPersonality")
+    var crewPersonality: CrewPersonality? = null
     var id: Long = 0
-    var identifier: String = ""
-    var index: String = ""
-    var name: String = ""
-    var typeinfo = TypeInfo()
-    @JsonProperty("cSkills")
+    var identifier: String? = null
+    var index: String? = null
+    var name: String? = null
+    var typeinfo : TypeInfo? = null
+    @JsonAlias("cSkills")
     var cSkills = ArrayList<MutableList<Skill>>()
 
     @JsonIgnore

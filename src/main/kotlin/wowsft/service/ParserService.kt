@@ -93,7 +93,8 @@ class ParserService(
         }
     }
 
-    fun parseUpgrades(ship: Ship, bits: String) {
+    fun parseUpgrades(ship: Ship, bits: String)
+    {
         val list = ArrayList<Int>()
 
         if (StringUtils.isNotEmpty(bits)) {
@@ -109,7 +110,8 @@ class ParserService(
         }
     }
 
-    fun parseConsumables(ship: Ship, bits: String) {
+    fun parseConsumables(ship: Ship, bits: String)
+    {
         val list = ArrayList<Int>()
 
         if (StringUtils.isNotEmpty(bits)) {
@@ -159,54 +161,44 @@ class ParserService(
     }
 
     @Throws(Exception::class)
-    fun parseLegacyUrl(request: HttpServletRequest): String {
+    fun parseLegacyUrl(request: HttpServletRequest): String
+    {
         var url = "/ship"
 
-        if (request.parameterMap != null && request.parameterMap.size > 0) {
+        if (!request.parameterMap.isNullOrEmpty()) {
             val shipName = getParameter(request.parameterMap["ship"])
             if (StringUtils.isNotEmpty(shipName)) {
-                val index = nameToId!![shipName.replace("+", " ")]
+                val index = nameToId[shipName.replace("+", " ")]
 
-                if (StringUtils.isNotEmpty(index)) {
-                    url = url + ("?index=" + index.toUpperCase())
+                if (!index.isNullOrBlank()) {
+                    url += ("?index=" + index.toUpperCase())
 
                     val modules = getParameter(request.parameterMap["moduleN"])
-                    url = url + if (StringUtils.isNotEmpty(modules)) "&modules=$modules" else ""
+                    url += if (StringUtils.isNotEmpty(modules)) "&modules=$modules" else ""
 
                     val upgrades = getParameter(request.parameterMap["upgradeN"])
-                    url = url + if (StringUtils.isNotEmpty(upgrades)) "&upgrades=$upgrades" else ""
+                    url += if (StringUtils.isNotEmpty(upgrades)) "&upgrades=$upgrades" else ""
 
                     val skills = getParameter(request.parameterMap["skillN"])
                     if (StringUtils.isNotEmpty(skills)) {
                         var bits = ""
-                        for (i in Math.min(skills.length, 32) - 1 downTo 0) {
-                            if (Character.isDigit(skills[i])) {
-                                val tempBit = Character.getNumericValue(skills[i])
-                                if (tempBit == 1) {
-                                    bits = bits + tempBit.toString()
-                                } else {
-                                    bits = bits + 0.toString()
-                                }
-                            } else {
-                                break
-                            }
+                        for (i in skills.length.coerceAtMost(32) - 1 downTo 0) {
+                            bits += if (skills[i].toString().toIntOrNull() == 1) 1.toString() else 0.toString()
                         }
 
                         if (StringUtils.isNotEmpty(bits)) {
-                            url = url + ("&skills=" + BigInteger(bits, 2).toLong())
+                            url += ("&skills=" + BigInteger(bits, 2).toLong())
                         }
                     }
                 }
             }
         }
-
         return url
     }
 
     @Throws(Exception::class)
-    private fun getParameter(temp: Array<String>?): String {
-        return if (temp != null && temp.size > 0 && StringUtils.isNotEmpty(temp[0])) {
-            URLDecoder.decode(temp[0], StandardCharsets.UTF_8.name())
-        } else ""
+    private fun getParameter(temp: Array<String>?): String
+    {
+        return if (!temp.isNullOrEmpty() && StringUtils.isNotEmpty(temp[0])) URLDecoder.decode(temp[0], StandardCharsets.UTF_8.name()) else ""
     }
 }

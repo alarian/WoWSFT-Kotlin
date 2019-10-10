@@ -2,38 +2,40 @@ package wowsft.model.gameparams.ship.component.airdefense
 
 import wowsft.config.WoWSFT
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonAlias
+import wowsft.model.gameparams.ship.component.artillery.Shell
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Aura {
-    var areaDamage = 0.toDouble()
-    var areaDamageFrequency = 0.toDouble()
-    var bubbleDamage = 0.toDouble()
-    var bubbleDuration = 0.toDouble()
-    var bubbleRadius = 0.toDouble()
+class Aura
+{
+    var areaDamage = 0.0
+    var areaDamageFrequency = 0.0
+    var bubbleDamage = 0.0
+    var bubbleDuration = 0.0
+    var bubbleRadius = 0.0
     var enableBarrage = false
     var enableCrewSelectedTargetCoeff = false
-    var explosionCount = 0.toDouble()
+    var explosionCount = 0.0
     var guns = ArrayList<String>()
-    var halfOuterBubbleZone = 0.toDouble()
-    var hitChance = 0.toDouble()
-    var innerBubbleCount = 0.toDouble()
-    var innerBubbleSpawnTimeRange = ArrayList<Float>()
-    var innerBubbleZone = 0.toDouble()
-    @JsonProperty("isJoint")
+    var halfOuterBubbleZone = 0.0
+    var hitChance = 0.0
+    var innerBubbleCount = 0.0
+    var innerBubbleSpawnTimeRange = ArrayList<Double>()
+    var innerBubbleZone = 0.0
+    @JsonAlias("isJoint")
     var joint = false
-    var maxBubbleActivationDelay = 0.toDouble()
-    var maxDistance = 0.toDouble()
-    var maxDistanceStartWorkGap = 0.toDouble()
-    var minBubbleActivationDelay = 0.toDouble()
-    var minDistance = 0.toDouble()
-    var outerBubbleCount = 0.toDouble()
-    var outerBubbleSpawnTimeRange = ArrayList<Float>()
-    var shotDelay = 0.toDouble()
-    var shotTravelTime = 0.toDouble()
-    var timeUniversalsOff = 0.toDouble()
-    var timeUniversalsOn = 0.toDouble()
-    var type: String = ""
-    var bubbleDamageModifier = 7.0f
+    var maxBubbleActivationDelay = 0.0
+    var maxDistance = 0.0
+    var maxDistanceStartWorkGap = 0.0
+    var minBubbleActivationDelay = 0.0
+    var minDistance = 0.0
+    var outerBubbleCount = 0.0
+    var outerBubbleSpawnTimeRange = ArrayList<Double>()
+    var shotDelay = 0.0
+    var shotTravelTime = 0.0
+    var timeUniversalsOff = 0.0
+    var timeUniversalsOn = 0.0
+    var type: String? = null
+    var bubbleDamageModifier = 7.0
 }

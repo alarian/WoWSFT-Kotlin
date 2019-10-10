@@ -1,7 +1,7 @@
 package wowsft.model.gameparams.ship.component.flightcontrol
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonAlias
 
 import java.util.LinkedHashMap
 
@@ -10,9 +10,9 @@ class FlightControl {
     var consumablePlanesReserve = LinkedHashMap<String, Int>()
     var consumableSquadrons = ArrayList<Any>()
     var hasConsumablePlanes = false
-    @JsonProperty("isGroundAttackEnabled")
+    @JsonAlias("isGroundAttackEnabled")
     var groundAttackEnabled = false
     var planesReserveAssignment = LinkedHashMap<String, Int>()
-    var prepareTimeFactor = 0.toDouble()
+    var prepareTimeFactor = 0.0
     var squadrons = ArrayList<String>()
 }

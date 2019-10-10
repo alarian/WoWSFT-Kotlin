@@ -37,7 +37,7 @@ class CustomMJ2HMC(customObjectMapper: CustomObjectMapper): MappingJackson2HttpM
         objectWriter.writeValue(jsonGenerator, returnMessage)
     }
 
-    private fun convert(o: Any): Any{
+    private fun convert(o: Any): Any {
         val lhm = LinkedHashMap<String, Any>()
 
         if (o is CustomMessage) {

@@ -15,19 +15,24 @@ import java.util.LinkedHashMap
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class ShipUpgrade {
+class ShipUpgrade
+{
     var disabledAbilities = ArrayList<String>()
     var nextShips = ArrayList<String>()
-    var fullName: String = ""
-    var name: String = ""
-    var prev: String = ""
-    var ucType: String = ""
+    var fullName: String? = null
+    var name: String? = null
+    var prev: String? = null
+    var ucType: String? = null
+        set(value) {
+            field = value
+            ucTypeShort = if (!value.isNullOrBlank()) value.replace("_", "").decapitalize() else value
+        }
     var position = 0
     @JsonInclude
     var elem = 0
 
-    var prevType: String = ""
-        get() = if (prevType.isEmpty()) ucTypeShort else field
+    var prevType: String? = null
+        get() = if (field.isNullOrBlank()) ucTypeShort else field
     @JsonInclude
     var prevPosition = 0
     var prevElem = 0
@@ -36,9 +41,10 @@ class ShipUpgrade {
     @JsonIgnore
     private val mapper = ObjectMapper()
 
-    val ucTypeShort = if (ucType.isNotEmpty()) ucType.replace("_", "").decapitalize() else ucType
+    var ucTypeShort: String? = null
 
-    val image = if (ucTypeShort.isNotEmpty()) "https://cdn.wowsft.com/images/modules/module_" + ucTypeShort.toLowerCase() + ".png" else ""
+    val image: String
+        get() = if (!ucTypeShort.isNullOrBlank()) "https://cdn.wowsft.com/images/modules/module_" + ucTypeShort!!.toLowerCase() + ".png" else ""
 
     @JsonSetter
     fun setComponents(value: Any) {

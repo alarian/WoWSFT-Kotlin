@@ -1,0 +1,568 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video, u, button {
+    margin: 0;
+    padding: 0;
+    border: 0 solid inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+    color: inherit;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: none;
+}
+table {
+    /*border-collapse: collapse;*/
+    border-spacing: 0;
+}
+
+body {
+    cursor: default;
+    /*height: 100%;*/
+    line-height: 22px;
+    font-size: 14px;
+    box-sizing: border-box;
+    min-width: 1408px;
+    max-width: 1792px;
+    background: rgba(0, 0, 0, 0.1);
+    color: black;
+    text-align: center;
+    margin: 0 auto;
+    list-style: none;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+select {
+    background: inherit;
+}
+
+/*body::-webkit-scrollbar {*/
+    /*width: 0 !important*/
+/*}*/
+
+nav {
+    text-align: left;
+}
+
+a {
+    text-decoration: none;
+    padding: inherit;
+    display: block;
+}
+
+ul {
+    font-size: 0;
+    position: relative;
+}
+
+li {
+    font-size: 14px;
+}
+
+.bottom-fix {
+    text-align: center;
+    padding: 10px 0;
+    word-break: keep-all;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+    font-size: 14px;
+}
+
+#notification {
+    padding: 0 10%;
+}
+
+#notification li {
+    text-align: left;
+}
+
+.top {
+    display: inline-block;
+    background: rgba(173, 216, 230, 0.9);
+    width: 100%;
+    z-index: 10;
+    text-align: left;
+}
+
+.top li {
+    background: rgba(173, 216, 230, 0);
+    display: inline-block;
+    padding: 8px 14px;
+    z-index: 10;
+}
+
+.link {
+    padding: 0 12px;
+    font-size: 14px;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.shipsList {
+    text-align: left;
+    display: block;
+}
+
+.dropdown_main {
+    text-align: left;
+    display: none;
+    position: absolute;
+    padding: inherit;
+}
+
+.dropdown_main li {
+    padding: 0;
+    margin: 0;
+    width:150px;
+    height: 38px;
+    vertical-align: middle;
+    float:none;
+    display:flex;
+    position: relative;
+    background: rgba(173, 216, 230, 0.9);
+}
+
+.dropdown_sub {
+    text-align: left;
+    display: none;
+    position: absolute;
+    padding: inherit;
+}
+
+.dropdown_sub li {
+    width:200px;
+    float:none;
+    display:list-item;
+    position: relative;
+}
+
+.dropdown_main span {
+    display: block;
+    width: inherit;
+    padding: 8px 10px;
+}
+
+.dropdown_sub span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+nav li:hover {
+    background: deepskyblue;
+    cursor: pointer;
+}
+
+nav li:active {
+    background: deepskyblue;
+    cursor: pointer;
+}
+
+nav ul li:hover > ul {
+    display: block;
+    cursor: pointer;
+}
+
+nav ul li:active > ul {
+    display: block;
+    cursor: pointer;
+}
+
+.dropdown_main li:hover > .dropdown_main {
+    cursor: pointer;
+    left: 150px;
+}
+
+.dropdown_main li:active > .dropdown_main {
+    cursor: pointer;
+    left: 150px;
+}
+
+.dropdown_main li:hover > .dropdown_sub {
+    display:block;
+    cursor: pointer;
+    left: 150px;
+}
+
+.dropdown_main li:active > .dropdown_sub {
+    display:block;
+    cursor: pointer;
+    left: 150px;
+}
+
+.main {
+    /*padding-bottom: 10px;*/
+}
+
+.ship {
+    padding-top: 10px;
+    text-align: center;
+    /*transform: translate(0%, -3%) scale(0.96, 0.96);*/
+}
+
+.hide {
+    display: none;
+}
+
+.info_box {
+    text-align: center;
+    margin: 0 auto;
+    border: 0;
+    vertical-align: top;
+    padding-bottom: 10px;
+    /*display: table;*/
+}
+
+.tabs {
+    /*display: table-cell;*/
+    display: inline-block;
+    vertical-align: top;
+}
+
+.info_box_inner {
+    display: inline-block;
+    vertical-align: top;
+    /*background: white;*/
+    text-decoration: none;
+    opacity: 1;
+    text-align: center;
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+    white-space: normal;
+    padding: 4px;
+}
+
+.info_box_inner::-webkit-scrollbar {
+    width: 0 !important
+}
+
+.button_tab {
+    /*background: white;*/
+    margin-bottom: 2px;
+    text-align: center;
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+    max-width: 140px;
+    padding: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.button_module, .button_upgrade,
+.button_skill, .button_uSkill,
+.button_flag, .button_consumable,
+.button_plane_consumable {
+    background: transparent;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 5px;
+    font-size: 10px;
+    width: 60px;
+    height: 60px;
+    word-wrap: normal;
+    cursor: pointer;
+    vertical-align: top;
+    overflow: hidden;
+    white-space: normal;
+    margin: 2px;
+    z-index: 2;
+    padding: 0;
+}
+
+.button_module {
+    width: 72px;
+    height: 72px;
+}
+
+.button_module img {
+    vertical-align: middle;
+}
+
+.button_upgrade, .button_consumable {
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+}
+
+.disable {
+    display: none;
+}
+
+button img {
+    width: 40px;
+}
+
+.button_skill img {
+    width: 50px;
+    vertical-align: middle;
+}
+
+.overlay {
+    position: absolute;
+    top: 7px;
+    left: 4px;
+    background-image: url(https://cdn.wowsft.com/images/Icon/skill_special.png);
+    background-repeat: no-repeat;
+    opacity: 1;
+    padding: 12px;
+    font-size: 0;
+    text-align: center;
+}
+
+td {
+    vertical-align: middle;
+}
+
+.button_ship {
+    /*width: 120px;*/
+    height: 92px;
+    background-color: transparent;
+    text-align: center;
+    border: 0 solid black;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.button_ship img {
+    width: 124px;
+}
+
+.button_nation
+{
+    background-color: transparent;
+    text-align: center;
+    border: 0 solid black;
+    border-radius: 5px;
+    font-size: 12px;
+    /*min-width: 140px;*/
+    /*max-width: 140px;*/
+    /*min-height: 140px;*/
+    /*max-height: 140px;*/
+    word-wrap: normal;
+    cursor: pointer;
+    vertical-align: top;
+    margin: 2px;
+}
+
+.button_nation img
+{
+    width: 120px;
+    margin-bottom: 0;
+}
+
+.select {
+    border:1px solid rgb(256,0,0);
+    border-radius: 5px;
+}
+
+.switch {
+    cursor: pointer;
+}
+
+.panel_left {
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+}
+
+.panel_left[data-type=upgrades] {
+    padding: 4px;
+}
+
+.panel_left[data-type=upgrades] ul {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.panel_left table {
+    /*text-align: left;*/
+    /*width: 100%;*/
+    margin: 0 auto;
+    padding: 4px;
+}
+
+.panel_left:not(:last-of-type), .panel_right:not(:last-of-type) {
+    margin-bottom: 4px;
+}
+
+.panel_right {
+    width: 360px;
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+}
+
+.panel_right div {
+    vertical-align: top;
+    margin: 0 auto;
+    padding: 4px;
+}
+
+.panel_right table {
+    text-align: left;
+    width: 100%;
+    padding: 4px;
+}
+
+.panel_right table tr td:first-of-type {
+    width: 236px;
+}
+
+.panel_right table tr td[colspan="2"] {
+    width: 352px;
+}
+
+.panel_right table tbody tr td:nth-of-type(2) {
+    width: 116px;
+    text-align: right;
+}
+
+.panel_right tr.subsystem {
+    background: rgba(0, 0, 0, 0.1)
+}
+
+button .tooltip {
+    font-size: 12px;
+    visibility: hidden;
+    position: absolute;
+    z-index: 3;
+    width: 200px;
+    border-collapse: collapse;
+    -webkit-transform: translate(40%, -100%);
+    -moz-transform: translate(40%, -100%);
+    -ms-transform: translate(40%, -100%);
+    -o-transform: translate(40%, -100%);
+    transform: translate(40%, -100%);
+}
+
+button .tooltip.invert {
+    -webkit-transform: translate(-100%, -120%);
+    -moz-transform: translate(-100%, -120%);
+    -ms-transform: translate(-100%, -120%);
+    -o-transform: translate(-100%, -120%);
+    transform: translate(-100%, -120%);
+}
+
+button .tooltip tr td:first-of-type {
+    width: 130px;
+    word-break: keep-all;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+button .tooltip tr td:nth-of-type(2) {
+    vertical-align: middle;
+    width: 50px;
+    padding: 0 0 0 20px;
+}
+
+button:hover > .tooltip {
+    /*display: inline-table;*/
+    visibility: visible;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0.9;
+    border: 1px solid black;
+}
+
+.switch {
+    vertical-align: top;
+    margin: 0 auto;
+    padding: 8px;
+}
+
+button .tooltip_desc {
+    border: 1px solid black;
+}
+
+.panel_right[data-type=consumables] {
+    padding: 4px 0;
+}
+
+.panel_right[data-type=consumables] ul {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.panel_left[data-type=crewSkills] td {
+    /*padding: 4px;*/
+    position: relative;
+}
+
+#chart_div1 circle, #chart_div2 circle {
+    r: 3
+}
+
+.research_nation {
+    padding: 20px 0;
+}
+
+.research_reset {
+    padding-bottom: 20px;
+}
+
+.research_list {
+    text-align: center;
+    display: inline-table;
+    padding: 50px 0;
+}
+
+.research_list table tr:not(:first-child) td:not(:first-child) {
+    border-top: 1px solid black;
+}
+
+.research_list table td:nth-child(even) {
+    background-color: rgb(210,210,210);
+}
+
+.research_list td {
+    width: 130px;
+    vertical-align: middle;
+}
+
+.arSlider {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    height: 22px;
+}

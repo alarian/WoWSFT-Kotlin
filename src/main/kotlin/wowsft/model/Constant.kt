@@ -8,7 +8,7 @@ object Constant
     @JvmStatic val distCoefWG = BigDecimal(100) / BigDecimal(3)
     const val smallGun: Double = 0.139
 
-    const val oneCoeff = 1
+    const val oneCoeff = 1.0
     const val IDS = "IDS_"
     const val MODIFIER = "PARAMS_MODIFIER_"
     const val CONSUME = "DOCK_CONSUME_"

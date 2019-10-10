@@ -112,7 +112,7 @@ open class JsonParser
 
             if (typeInfo.type.equals("Ship", ignoreCase = true) && !Constant.excludeShipNations.contains(typeInfo.nation) && !Constant.excludeShipSpecies.contains(typeInfo.species)) {
                 val ship = mapper.convertValue(value, Ship::class.java)
-                if (!Constant.excludeShipGroups.contains(ship.group) && ship.defaultCrew.isEmpty()) {
+                if (!Constant.excludeShipGroups.contains(ship.group) && (ship.defaultCrew.isNullOrEmpty() || ship.defaultCrew!!.contains("PWW"))) {
                     ship.shipUpgradeInfo.components.forEach { (cType, c) ->
                         c.forEach { su ->
                             for (s in Constant.excludeCompStats) {
@@ -127,28 +127,28 @@ open class JsonParser
                 val modernization = mapper.convertValue(value, Modernization::class.java)
                 if (modernization.slot >= 0) {
                     paramService.setBonusParams(key, mapper.convertValue(modernization, object : TypeReference<LinkedHashMap<String, Any>>() {}), modernization.bonus)
-                    upgrades[modernization.slot]?.set(modernization.name, modernization)
+                    upgrades[modernization.slot]?.set(modernization.name!!, modernization)
                 }
             } else if (typeInfo.type.equals(Constant.Ability, ignoreCase = true) && !Constant.excludeShipNations.contains(typeInfo.nation) && !key.contains("Super")) {
                 val consumable = mapper.convertValue(value, Consumable::class.java)
                 consumables[key] = consumable
             } else if (typeInfo.type.equals("Crew", ignoreCase = true)) {
                 val commander = mapper.convertValue(value, Commander::class.java)
-                if (!"Events".equals(commander.typeinfo.nation, ignoreCase = true)) {
-                    if (!commander.crewPersonality.unique && commander.typeinfo.nation.equals("Common", ignoreCase = true)) {
+                if (!"Events".equals(commander.typeinfo!!.nation, ignoreCase = true)) {
+                    if (!commander.crewPersonality!!.unique && commander?.typeinfo?.nation.equals("Common", ignoreCase = true)) {
                         commander.identifier = "IDS_CREW_LASTNAME_DEFAULT"
-                        commanders[commander.index.toUpperCase()] = commander
-                    } else if (commander.crewPersonality.unique) {
-                        commander.identifier = Constant.IDS + commander.crewPersonality.personName.toUpperCase()
-                        commanders[commander.index.toUpperCase()] = commander
+                        commanders[commander.index!!.toUpperCase()] = commander
+                    } else if (commander.crewPersonality!!.unique) {
+                        commander.identifier = Constant.IDS + commander.crewPersonality!!.personName!!.toUpperCase()
+                        commanders[commander.index!!.toUpperCase()] = commander
                     }
                 }
             } else if (typeInfo.type.equals("Exterior", true) && typeInfo.species.equals("Flags", ignoreCase = true)) {
                 val flag = mapper.convertValue(value, Flag::class.java)
                 if (flag.group == 0) {
-                    flag.identifier = Constant.IDS + flag.name.toUpperCase()
+                    flag.identifier = Constant.IDS + flag.name!!.toUpperCase()
                     paramService.setBonusParams(key, mapper.convertValue(flag, object : TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus)
-                    flags[flag.name] = flag
+                    flags[flag.name!!] = flag
                 }
             } else {
                 gameParamsHM[key] = value
@@ -174,9 +174,9 @@ open class JsonParser
         setRealShipType(ship)
         setRows(ship)
 
-        ships[ship.index] = ship
-        idToName[ship.name] = ship.index
-        nameToId[global["en"]!![Constant.IDS + ship.index.toUpperCase() + "_FULL"].toString()] = ship.index.toUpperCase()
+        ships[ship.index!!] = ship
+        idToName[ship.name!!] = ship.index!!
+        nameToId[global["en"]!![Constant.IDS + ship.index!!.toUpperCase() + "_FULL"].toString()] = ship.index!!.toUpperCase()
     }
 
     private fun sortShipUpgradeInfo(ship: Ship)
@@ -221,7 +221,7 @@ open class JsonParser
 
         ship.shipUpgradeInfo.components.forEach { (_, value) ->
             value.forEach { upgrade ->
-                if (upgrade.prev.isNotEmpty()) {
+                if (!upgrade.prev.isNullOrBlank()) {
                     for (entry in ship.shipUpgradeInfo.components.entries) {
                         val tSU = entry.value.stream().filter{ v -> v.name.equals(upgrade.prev, ignoreCase = true) }.findFirst().orElse(null)
                         if (tSU != null) {
@@ -246,7 +246,7 @@ open class JsonParser
     {
         when {
             Constant.researchShipGroups.contains(ship.group) -> {
-                ship.realShipType = ship.typeinfo.species
+                ship.realShipType = ship.typeinfo!!.species
                 ship.research = true
             }
             Constant.premiumShipGroups.contains(ship.group) -> ship.realShipType = "Premium"
@@ -294,7 +294,7 @@ open class JsonParser
                                 var prev = component.prev
                                 var prevType = component.prevType
                                 var compXP = 0
-                                while (currentPosition > 1 && prev.isNotEmpty() && prevType.isNotEmpty() && gameParamsHM.containsKey(current)) {
+                                while (currentPosition > 1 && !prev.isNullOrBlank() && !prevType.isNullOrBlank() && gameParamsHM.containsKey(current)) {
                                     val comp = mapper.convertValue<HashMap<String, Any>>(gameParamsHM[current], object : TypeReference<HashMap<String, Any>>() {})
                                     compXP += comp["costXP"] as Int
 
@@ -327,22 +327,16 @@ open class JsonParser
         }
 
         ships.forEach { (_, ship) ->
-            shipsList.putIfAbsent(ship.typeinfo.nation, LinkedHashMap())
-            shipsList[ship.typeinfo.nation]?.putIfAbsent(ship.realShipTypeId.toUpperCase(), LinkedHashMap())
-            (shipsList[ship.typeinfo.nation]?.get(ship.realShipTypeId.toUpperCase()) as MutableMap<String, LinkedHashMap<Int, MutableList<ShipIndex>>>).putIfAbsent(
-                ship.typeinfo.species.toUpperCase(),
-                LinkedHashMap()
-            )
-            (shipsList[ship.typeinfo.nation]?.get(ship.realShipTypeId.toUpperCase())?.get(ship.typeinfo.species.toUpperCase()) as MutableMap<Int, MutableList<ShipIndex>>).putIfAbsent(
-                ship.level,
-                ArrayList()
-            )
+            shipsList.putIfAbsent(ship.typeinfo!!.nation!!, LinkedHashMap())
+            shipsList[ship.typeinfo!!.nation]?.putIfAbsent(ship.realShipTypeId!!.toUpperCase(), LinkedHashMap())
+            (shipsList[ship.typeinfo!!.nation]?.get(ship.realShipTypeId!!.toUpperCase()) as MutableMap<String, LinkedHashMap<Int, MutableList<ShipIndex>>>).putIfAbsent(ship.typeinfo!!.species!!.toUpperCase(), LinkedHashMap())
+            (shipsList[ship.typeinfo!!.nation]?.get(ship.realShipTypeId!!.toUpperCase())?.get(ship.typeinfo!!.species!!.toUpperCase()) as MutableMap<Int, MutableList<ShipIndex>>).putIfAbsent(ship.level, ArrayList())
 
             val arties = ArrayList<String>()
-            ship.shipUpgradeInfo.components[Constant.artillery]?.forEach { arty -> arties.add(arty.name) }
+            ship.shipUpgradeInfo.components[Constant.artillery]?.forEach { arty -> arties.add(arty.name!!) }
 
-            shipsList[ship.typeinfo.nation]?.get(ship.realShipTypeId.toUpperCase())?.get(ship.typeinfo.species.toUpperCase())?.get(ship.level)
-                    ?.add(ShipIndex(ship.name, ship.index, ship.prevShipIndex, ship.prevShipName, ship.research, ship.shipUpgradeInfo.costXP, ship.prevShipXP, ship.prevShipCompXP, arties))
+            shipsList[ship.typeinfo!!.nation]?.get(ship.realShipTypeId!!.toUpperCase())?.get(ship.typeinfo!!.species!!.toUpperCase())?.get(ship.level)
+                    ?.add(ShipIndex(ship.name!!, ship.index!!, ship.prevShipIndex, ship.prevShipName, ship.research, ship.shipUpgradeInfo.costXP, ship.prevShipXP, ship.prevShipCompXP, arties))
         }
 
         shipsList.toSortedMap().forEach { nation ->
@@ -362,12 +356,12 @@ open class JsonParser
                             val cTier = tier
                             val pos = AtomicInteger(1)
                             tiers[tier]?.forEach { ship ->
-                                if (ship.research) {
+                                if (ship.research!!) {
                                     if (ship.position == 0) {
                                         ship.position = pos.getAndIncrement()
                                     }
 
-                                    if (shipsList[nation.key]?.get(realShipType.key)?.get(shipType)?.get(cTier - 1)?.isNotEmpty()!!) {
+                                    if (!shipsList[nation.key]?.get(realShipType.key)?.get(shipType)?.get(cTier - 1).isNullOrEmpty()) {
                                         shipsList[nation.key]?.get(realShipType.key)?.get(shipType)?.get(cTier - 1)?.forEach { tShip ->
                                             if (ships[tShip.index]?.typeinfo?.species.equals(shipType, ignoreCase = true)) {
                                                 ships[tShip.index]?.shipUpgradeInfo?.components?.forEach { (_, list) ->
@@ -417,9 +411,9 @@ open class JsonParser
 
     private fun sortFlags()
     {
-        flags.values.stream().sorted().forEach { flag ->
+        flags.toSortedMap().forEach { (_, flag) ->
             flags.remove(flag.name)
-            flags[flag.name] = flag
+            flags[flag.name!!] = flag
         }
     }
 
