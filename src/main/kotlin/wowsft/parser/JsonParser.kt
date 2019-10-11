@@ -223,7 +223,7 @@ open class JsonParser
             value.forEach { upgrade ->
                 if (!upgrade.prev.isNullOrBlank()) {
                     for (entry in ship.shipUpgradeInfo.components.entries) {
-                        val tSU = entry.value.stream().filter{ v -> v.name.equals(upgrade.prev, ignoreCase = true) }.findFirst().orElse(null)
+                        val tSU = entry.value.firstOrNull { v -> v.name.equals(upgrade.prev, ignoreCase = true) }
                         if (tSU != null) {
                             upgrade.prevType = tSU.ucTypeShort
                             upgrade.prevPosition = tSU.position
