@@ -23,10 +23,6 @@ class ShipUpgrade
     var name: String? = null
     var prev: String? = null
     var ucType: String? = null
-        set(value) {
-            field = value
-            ucTypeShort = if (!value.isNullOrBlank()) value.replace("_", "").decapitalize() else value
-        }
     var position = 0
     @JsonInclude
     var elem = 0
@@ -42,6 +38,7 @@ class ShipUpgrade
     private val mapper = ObjectMapper()
 
     var ucTypeShort: String? = null
+        get() = if (!field.isNullOrBlank()) field else ucType?.replace("_", "")?.decapitalize()
 
     val image: String
         get() = if (!ucTypeShort.isNullOrBlank()) "https://cdn.wowsft.com/images/modules/module_" + ucTypeShort!!.toLowerCase() + ".png" else ""
