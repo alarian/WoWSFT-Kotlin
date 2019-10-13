@@ -32,7 +32,7 @@ class Secondary {
     var typeinfo : TypeInfo? = null
     var vertSector = ArrayList<Double>()
     @JsonInclude
-    var GSIdealRadius: Double = 1.0
+    var GSIdealRadius = 1.0
 
     var count = 0
 

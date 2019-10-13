@@ -29,7 +29,7 @@ class ATBA {
     var sigmaCount = 0.0
     var taperDist = 0.0
     @JsonInclude
-    var GSIdealRadius: Double = 1.0
+    var GSIdealRadius = 1.0
 
     @JsonIgnore
     private val mapper = ObjectMapper()
