@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.http.HttpOutputMessage
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import wowsft.model.Constant
 import java.io.IOException
 import java.lang.reflect.Type
 import java.util.LinkedHashMap
@@ -37,19 +38,17 @@ class CustomMJ2HMC(customObjectMapper: CustomObjectMapper): MappingJackson2HttpM
         objectWriter.writeValue(jsonGenerator, returnMessage)
     }
 
-    private fun convert(o: Any): Any {
-        val lhm = LinkedHashMap<String, Any>()
-
+    private fun convert(o: Any): Any
+    {
         if (o is CustomMessage) {
-            lhm["status"] = o.status
-            lhm["message"] = o.message
-        } else if (o is LinkedHashMap<*, *> && o.containsKey("status")) {
-            lhm["status"] = o["status"].toString()
-            lhm["message"] = o["message"].toString()
-        } else {
-            lhm["status"] = "200"
-            lhm["result"] = o
+            return o
+        } else if ((o is LinkedHashMap<*, *> && o.containsKey("message")) || o is Exception) {
+            return CustomMessage("500", Constant.GENERAL_INTERNAL_ERROR)
         }
+
+        val lhm = LinkedHashMap<String, Any>()
+        lhm["code"] = "200"
+        lhm["result"] = o
 
         return lhm
     }
