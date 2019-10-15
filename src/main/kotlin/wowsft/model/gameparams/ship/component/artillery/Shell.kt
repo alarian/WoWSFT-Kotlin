@@ -12,42 +12,42 @@ import kotlin.math.atan
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Shell
 {
-    var alphaDamage: Double = 0.0
-    var alphaPiercingCS: Double = 0.0
-    var alphaPiercingHE: Double = 0.0
+    var alphaDamage = 1.0
+    var alphaPiercingCS = 1.0
+    var alphaPiercingHE = 1.0
         set(alphaPiercingHE) {
             field = alphaPiercingHE
             this.alphaPiercingHEReal = alphaPiercingHE - 1.0
         }
-    var alphaPiercingHEReal: Double = 0.0
+    var alphaPiercingHEReal = 1.0
     var ammoType: String? = null
-    var bulletAirDrag: Double = 0.0
-    var bulletAlwaysRicochetAt: Double = 0.0
+    var bulletAirDrag = 1.0
+    var bulletAlwaysRicochetAt = 1.0
     var bulletCap = false
-    var bulletCapNormalizeMaxAngle: Double = 0.0
-    var bulletDetonator: Double = 0.0
-    var bulletDetonatorSpread: Double = 0.0
-    var bulletDetonatorThreshold: Double = 0.0
-    var bulletDiametr: Double = 0.0
-    var bulletKrupp: Double = 0.0
-    var bulletMass: Double = 0.0
-    var bulletPenetrationSpread: Double = 0.0
-    var bulletRicochetAt: Double = 0.0
-    var bulletSpeed: Double = 0.0
-    var bulletUnderwaterDistFactor: Double = 0.0
-    var bulletUnderwaterPenetrationFactor: Double = 0.0
-    var bulletWaterDrag: Double = 0.0
-    var burnProb: Double = 0.0
+    var bulletCapNormalizeMaxAngle = 1.0
+    var bulletDetonator = 1.0
+    var bulletDetonatorSpread = 1.0
+    var bulletDetonatorThreshold = 1.0
+    var bulletDiametr = 1.0
+    var bulletKrupp = 1.0
+    var bulletMass = 1.0
+    var bulletPenetrationSpread = 1.0
+    var bulletRicochetAt = 1.0
+    var bulletSpeed = 1.0
+    var bulletUnderwaterDistFactor = 1.0
+    var bulletUnderwaterPenetrationFactor = 1.0
+    var bulletWaterDrag = 1.0
+    var burnProb = 1.0
     var costCR = 0
-    var damage: Double = 0.0
-    var directDamage: Double = 0.0
+    var damage = 1.0
+    var directDamage = 1.0
     var id: Long = 0
     var index: String? = null
     var name: String? = null
     var typeinfo : TypeInfo? = null
     var uwAbility = false
-    var uwCritical: Double = 0.0
-    var volume: Double = 0.0
+    var uwCritical = 1.0
+    var volume = 1.0
     var waterRefractionReflectDeltaAngleInterval = ArrayList<Double>()
 
 //    @JsonIgnore
@@ -64,32 +64,32 @@ class Shell
 //    LinkedHashMap<String, Double> vertMinus;
 //    @JsonIgnore
     var distanceList: ArrayList<String>? = null
-    var minDistV: Double = 0.0
-    var penetrationAtFive: Double = 0.0
-    var penetrationAtTen: Double = 0.0
-    var penetrationAtFifteen: Double = 0.0
-    var penetrationAtTwenty: Double = 0.0
-    var penetrationAtMax: Double = 0.0
-    var flightTimeAtFive: Double = 0.0
-    var flightTimeAtTen: Double = 0.0
-    var flightTimeAtFifteen: Double = 0.0
-    var flightTimeAtTwenty: Double = 0.0
-    var flightTimeAtMax: Double = 0.0
-    var impactAtFive: Double = 0.0
-    var impactAtTen: Double = 0.0
-    var impactAtFifteen: Double = 0.0
-    var impactAtTwenty: Double = 0.0
-    var impactAtMax: Double = 0.0
-    var vertPlusAtFive: Double = 0.0
-    var vertPlusAtTen: Double = 0.0
-    var vertPlusAtFifteen: Double = 0.0
-    var vertPlusAtTwenty: Double = 0.0
-    var vertPlusAtMax: Double = 0.0
-    var vertMinusAtFive: Double = 0.0
-    var vertMinusAtTen: Double = 0.0
-    var vertMinusAtFifteen: Double = 0.0
-    var vertMinusAtTwenty: Double = 0.0
-    var vertMinusAtMax: Double = 0.0
+    var minDistV = 1.0
+    var penetrationAtFive = 1.0
+    var penetrationAtTen = 1.0
+    var penetrationAtFifteen = 1.0
+    var penetrationAtTwenty = 1.0
+    var penetrationAtMax = 1.0
+    var flightTimeAtFive = 1.0
+    var flightTimeAtTen = 1.0
+    var flightTimeAtFifteen = 1.0
+    var flightTimeAtTwenty = 1.0
+    var flightTimeAtMax = 1.0
+    var impactAtFive = 1.0
+    var impactAtTen = 1.0
+    var impactAtFifteen = 1.0
+    var impactAtTwenty = 1.0
+    var impactAtMax = 1.0
+    var vertPlusAtFive = 1.0
+    var vertPlusAtTen = 1.0
+    var vertPlusAtFifteen = 1.0
+    var vertPlusAtTwenty = 1.0
+    var vertPlusAtMax = 1.0
+    var vertMinusAtFive = 1.0
+    var vertMinusAtTen = 1.0
+    var vertMinusAtFifteen = 1.0
+    var vertMinusAtTwenty = 1.0
+    var vertMinusAtMax = 1.0
 
     var penetrationIFHE = 0
 
