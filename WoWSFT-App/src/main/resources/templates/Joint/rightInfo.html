@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="rightInfo" th:if="${warship != null}"
+          th:with="nation=${warship.typeinfo.nation},
+            artillery=${warship.modules.containsKey('artillery') ? warship.components.artillery.get(warship.modules.get('artillery')) : null},
+            suo=${warship.modules.containsKey('suo') ? warship.components.suo.get(warship.modules.get('suo')) : null},
+            atba=${warship.modules.containsKey('atba') ? warship.components.atba.get(warship.modules.get('atba')) : null},
+            airDefense=${warship.modules.containsKey('airDefense') ? warship.components.airDefense.get(warship.modules.get('airDefense')) : null},
+            torpedoes=${warship.modules.containsKey('torpedoes') ? warship.components.torpedoes.get(warship.modules.get('torpedoes')) : null},
+            hull=${warship.modules.containsKey('hull') ? warship.components.hull.get(warship.modules.get('hull')) : null},
+            engine=${warship.modules.containsKey('engine') ? warship.components.engine.get(warship.modules.get('engine')) : null},
+            flightControl=${warship.modules.containsKey('flightControl') ? warship.components.flightControl.get(warship.modules.get('flightControl')) : null},
+            airArmament=${warship.modules.containsKey('airArmament') ? warship.components.airArmament.get(warship.modules.get('airArmament')) : null},
+            diveBomber=${warship.modules.containsKey('diveBomber') ? warship.components.diveBomber.get(warship.modules.get('diveBomber')) : null},
+            fighter=${warship.modules.containsKey('fighter') ? warship.components.fighter.get(warship.modules.get('fighter')) : null},
+            torpedoBomber=${warship.modules.containsKey('torpedoBomber') ? warship.components.torpedoBomber.get(warship.modules.get('torpedoBomber')) : null},
+            auraFars=${warship.auraFar}, auraFarsBubble=${warship.auraFarBubble}, auraMediums=${warship.auraMedium}, auraNears=${warship.auraNear},
+            consumables=${warship.consumables}">
+    <div class="info_box_inner replace">
+        <div th:if="${artillery != null}" class="panel_right" data-type="artillery">
+            <div class="switch" data-type="arty">
+                <strong th:text="${global.get('IDS_SHIP_PARAM_ARTILLERY')}"></strong>
+            </div>
+            <table class="toggle arty">
+                <tbody th:with="turret0=${artillery.turrets.get(0)}">
+                    <tr class="subsystem switch" data-type="guns">
+                        <td>
+                            <th:block th:each="turretType : ${artillery.turretTypes}">
+                                <br th:if="${turretTypeStat.index > 0}"/>
+                                <u th:text="${turretType.value.get(0) + ' X ' + turretType.key + ' ' + global.get(IDS + turretType.value.get(1).toUpperCase())}"></u>
+                            </th:block>
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(artillery.maxDist * suo.maxDistCoef / 1000.0, 1, 2)} + ' km'"></td>
+                    </tr>
+                    <tr class="toggle guns">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_SHOT_DELAY')}"></td>
+                        <td th:text="${#numbers.formatDecimal(turret0.shotDelay, 1, 2)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle guns">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_SHOT_SPEED')}"></td>
+                        <td th:text="${#numbers.formatDecimal(60.0 / turret0.shotDelay, 1, 2) + ' rpm'}"></td>
+                    </tr>
+                    <tr class="toggle guns">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_ROTATION_TIME')}"></td>
+                        <td th:text="${#numbers.formatDecimal(180.0 / turret0.rotationSpeed.get(0), 1, 2)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle guns">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_ROTATION_SPEED')}"></td>
+                        <td th:text="${#numbers.formatDecimal(turret0.rotationSpeed.get(0), 1, 2)} + ' °/s'"></td>
+                    </tr>
+                    <tr class="toggle guns">
+                        <td th:text="${global.get('IDS_ACCURACY')}"></td>
+                        <td></td>
+                    </tr>
+                    <tr class="toggle guns">
+                        <td>- Sigma</td>
+                        <td th:text="${#numbers.formatDecimal(artillery.sigmaCount, 1, 2)} + ' σ'"></td>
+                    </tr>
+                    <tr class="toggle guns">
+                        <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_DISPERSION')}"></td>
+                        <td th:text="${#numbers.formatInteger(((turret0.idealRadius * artillery.GMIdealRadius - turret0.minRadius) / 1000.0 * (artillery.maxDist * suo.maxDistCoef / 30.0) + turret0.minRadius) * 30.0, 1, 'COMMA')} + ' m'"></td>
+                    </tr>
+                    <th:block th:each="shell : ${artillery.shells}" th:with="ammo=${shell.value}">
+                        <tr class="subsystem switch" th:attr="data-type=${ammo.index}">
+                            <td><u th:text="${global.get('IDS_' + ammo.name.toUpperCase())}"></u></td>
+                            <td th:text="${global.get('IDS_SHIP_PARAM_AMMO_' + ammo.ammoType.toUpperCase())}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                            <td th:text="${global.get('IDS_MAX_DAMAGE')}"></td>
+                            <td th:text="${#numbers.formatInteger(ammo.alphaDamage, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_AMMO_BULLET_SPEED')}"></td>
+                            <td th:text="${#numbers.formatInteger(ammo.bulletSpeed, 1, 'COMMA')} + ' m/s'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_AMMO_BULLET_MASS')}"></td>
+                            <td th:text="${#numbers.formatInteger(ammo.bulletMass, 1, 'COMMA')} + ' kg'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                            <td th:text="${global.get('IDS_RIBBON_SUBRIBBON_MAIN_CALIBER_RICOCHET')}"></td>
+                            <td th:text="${#numbers.formatInteger(ammo.bulletRicochetAt, 1, 'COMMA') + ' ~ ' + #numbers.formatInteger(ammo.bulletAlwaysRicochetAt, 1, 'COMMA')
+                                + (ammo.ammoType == 'AP' ? ' + ' + #numbers.formatInteger(ammo.bulletCapNormalizeMaxAngle, 1, 'COMMA') : '')} + ' °'"></td>
+                        </tr>
+                        <th:block th:if="${ammo.ammoType == 'CS'}">
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="${'SAP Penetration'}"></td>
+                                <td th:text="${#numbers.formatDecimal(ammo.alphaPiercingCS, 1, 1)} + ' mm'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="'Threshold'"></td>
+                                <td th:text="${#numbers.formatInteger(ammo.bulletDetonatorThreshold, 1, 'COMMA')} + ' mm'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="'Fuse Time'"></td>
+                                <td th:text="${#numbers.formatDecimal(ammo.bulletDetonator, 1, 3)} + ' s'"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="${ammo.ammoType == 'HE'}">
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="${'HE Penetration'}"></td>
+                                <td th:text="${#numbers.formatInteger(ammo.alphaPiercingHEReal, 1, 'COMMA')} + ' mm'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="${'Burn Probability'}"></td>
+                                <td th:text="${#numbers.formatDecimal(ammo.burnProb * 100, 1, 1)} + ' %'"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="${ammo.ammoType == 'AP'}">
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="'Overmatch'"></td>
+                                <td th:text="${#numbers.formatInteger(T(Math).floor(ammo.bulletDiametr * 1000 / 14.3), 1, 'COMMA')} + ' mm'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="'Threshold'"></td>
+                                <td th:text="${#numbers.formatInteger(ammo.bulletDetonatorThreshold, 1, 'COMMA')} + ' mm'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="'Fuse Time'"></td>
+                                <td th:text="${#numbers.formatDecimal(ammo.bulletDetonator, 1, 3)} + ' s'"></td>
+                            </tr>
+                            <th:block th:if="${false}">
+                                <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.vertMinusAtTen > 0 and ammo.vertPlusAtTen > 0 and artillery.maxDist >= 10000}">
+                                    <td th:text="'Vertical Dispersion'"></td>
+                                    <td></td>
+                                </tr>
+                                <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.vertMinusAtTen > 0 and ammo.vertPlusAtTen > 0 and artillery.maxDist >= 10000}">
+                                    <td th:text="'- 10 km'"></td>
+                                    <td th:text="${#numbers.formatDecimal(ammo.vertMinusAtTen / 1000, 1, 2) + ' - ' + #numbers.formatDecimal(ammo.vertPlusAtTen / 1000, 1, 2)} + ' km'"></td>
+                                </tr>
+                                <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.vertMinusAtFifteen > 0 and ammo.vertPlusAtFifteen > 0 and artillery.maxDist >= 15000}">
+                                    <td th:text="'- 15 km'"></td>
+                                    <td th:text="${#numbers.formatDecimal(ammo.vertMinusAtFifteen / 1000, 1, 2) + ' - ' + #numbers.formatDecimal(ammo.vertPlusAtFifteen / 1000, 1, 2)} + ' km'"></td>
+                                </tr>
+                                <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.vertMinusAtTwenty > 0 and ammo.vertPlusAtTwenty > 0 and artillery.maxDist >= 20000}">
+                                    <td th:text="'- 20 km'"></td>
+                                    <td th:text="${#numbers.formatDecimal(ammo.vertMinusAtTwenty / 1000, 1, 2) + ' - ' + #numbers.formatDecimal(ammo.vertPlusAtTwenty / 1000, 1, 2)} + ' km'"></td>
+                                </tr>
+                            </th:block>
+                            <th:block th:if="${false}">
+                                <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                    <td th:text="'Penetration'"></td>
+                                    <td></td>
+                                </tr>
+                                <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.penetrationAtFive > 0 and artillery.maxDist >= 5000}">
+                                    <td th:text="'- 5 km'"></td>
+                                    <td th:text="${#numbers.formatInteger(ammo.penetrationAtFive, 1, 'COMMA') + ' (' + #numbers.formatDecimal(ammo.impactAtFive, 1, 2) + ' °)'} + ' mm'"></td>
+                                </tr>
+                                <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.penetrationAtTen > 0 and artillery.maxDist >= 10000}">
+                                    <td th:text="'- 10 km'"></td>
+                                    <td th:text="${#numbers.formatInteger(ammo.penetrationAtTen, 1, 'COMMA') + ' (' + #numbers.formatDecimal(ammo.impactAtTen, 1, 2) + ' °)'} + ' mm'"></td>
+                                </tr>
+                                <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.penetrationAtFifteen > 0 and artillery.maxDist >= 15000}">
+                                    <td th:text="'- 15 km'"></td>
+                                    <td th:text="${#numbers.formatInteger(ammo.penetrationAtFifteen, 1, 'COMMA') + ' (' + #numbers.formatDecimal(ammo.impactAtFifteen, 1, 2) + ' °)'} + ' mm'"></td>
+                                </tr>
+                                <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.penetrationAtTwenty > 0 and artillery.maxDist >= 20000}">
+                                    <td th:text="'- 20 km'"></td>
+                                    <td th:text="${#numbers.formatInteger(ammo.penetrationAtTwenty, 1, 'COMMA') + ' (' + #numbers.formatDecimal(ammo.impactAtTwenty, 1, 2) + ' °)'} + ' mm'"></td>
+                                </tr>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${false}">
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="'Flight Time'"></td>
+                                <td th:text="''"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.flightTimeAtFive > 0 and artillery.maxDist >= 5000}">
+                                <td th:text="'- 5 km'"></td>
+                                <td th:text="${#numbers.formatDecimal(ammo.flightTimeAtFive, 1, 2)} + ' s'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.flightTimeAtTen > 0 and artillery.maxDist >= 10000}">
+                                <td th:text="'- 10 km'"></td>
+                                <td th:text="${#numbers.formatDecimal(ammo.flightTimeAtTen, 1, 2)} + ' s'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.flightTimeAtFifteen > 0 and artillery.maxDist >= 15000}">
+                                <td th:text="'- 15 km'"></td>
+                                <td th:text="${#numbers.formatDecimal(ammo.flightTimeAtFifteen, 1, 2)} + ' s'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'" th:if="${ammo.flightTimeAtTwenty > 0 and artillery.maxDist >= 20000}">
+                                <td th:text="'- 20 km'"></td>
+                                <td th:text="${#numbers.formatDecimal(ammo.flightTimeAtTwenty, 1, 2)} + ' s'"></td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+                    <tr class="subsystem switch" data-type="artySector">
+                        <td colspan="2"><u>Sector</u></td>
+                    </tr>
+                    <tr class="toggle artySector hide" style="text-align: center">
+                        <td colspan="2" th:include="Joint/angleSectorArty :: angleSectorArty"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${torpedoes != null}" class="panel_right" data-type="torpedoes">
+            <div class="switch" data-type="torpedo">
+                <strong th:text="${global.get('IDS_SHIP_PARAM_TORPEDY')}"></strong>
+            </div>
+            <table class="toggle torpedo">
+                <tbody th:with="torp0=${torpedoes.launchers.get(0)}">
+                    <tr class="subsystem switch" data-type="torps">
+                        <td>
+                            <th:block th:each="launcherType : ${torpedoes.launcherTypes}">
+                                <br th:if="${launcherTypeStat.index > 0}"/>
+                                <u th:text="${launcherType.value.get(0) + ' X ' + launcherType.key + ' ' + global.get(IDS + launcherType.value.get(1).toUpperCase())}"></u>
+                            </th:block>
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(torpedoes.ammo.maxDist / (100.0 / 3.0), 1, 2)} + ' km'"></td>
+                    </tr>
+                    <tr class="toggle torps">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_TORPEDO_AMMO')}"></td>
+                        <td th:text="${torpedoes.ammo.deepWater ? global.get('IDS_DOCK_AMMO_TITLE_TORPEDO_DEEPWATER') : global.get('IDS_DOCK_AMMO_TITLE_TORPEDO')}"></td>
+                    </tr>
+                    <tr class="toggle torps">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_TORPEDO_DAMAGE')}"></td>
+                        <td th:text="${#numbers.formatInteger(torpedoes.ammo.alphaDamage / 3.0 + torpedoes.ammo.damage, 1, 'COMMA')}"></td>
+                    </tr>
+                    <tr class="toggle torps">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_SHOT_DELAY')}"></td>
+                        <td th:text="${#numbers.formatDecimal(torp0.shotDelay, 1, 1)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle torps">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_TORPEDO_MAIN_SPEED')}"></td>
+                        <td th:text="${#numbers.formatInteger(torpedoes.ammo.speed, 1, 'COMMA')} + ' kts'"></td>
+                    </tr>
+                    <tr class="toggle torps">
+                        <td th:text="${global.get('IDS_SHIP_TOOLTIP_VISIBILITY')}"></td>
+                        <td th:text="${#numbers.formatDecimal(torpedoes.ammo.visibilityFactor, 1, 2)} + ' km'"></td>
+                    </tr>
+                    <tr class="toggle torps">
+                        <td th:text="${'Reaction Time'}"></td>
+                        <td th:text="${#numbers.formatDecimal(torpedoes.ammo.visibilityFactor / torpedoes.ammo.speed / 2.6 * 1000, 1, 1)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle torps">
+                        <td th:text="${global.get('IDS_PARAMS_MODIFIER_FLOODCHANCEFACTOR')}"></td>
+                        <td th:text="${#numbers.formatInteger(torpedoes.ammo.uwCritical * 100.0, 1, 'COMMA')} + ' %'"></td>
+                    </tr>
+                    <tr class="toggle torps">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_ROTATION_TIME')}"></td>
+                        <td th:text="${#numbers.formatDecimal(180.0 / torp0.rotationSpeed.get(0), 1, 1)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle torps">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_ROTATION_SPEED')}"></td>
+                        <td th:text="${#numbers.formatDecimal(torp0.rotationSpeed.get(0), 1, 1)} + ' °/s'"></td>
+                    </tr>
+                    <tr class="subsystem switch" data-type="torpSector"><td colspan="2"><u>Sector</u></td></tr>
+                    <tr class="toggle torpSector hide" style="text-align: center">
+                        <td colspan="2" th:include="Joint/angleSectorTorp :: angleSectorTorp"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${flightControl != null and airArmament != null}" class="panel_right" data-type="flightControl">
+            <div class="switch" data-type="flightControl">
+                <strong th:text="${global.get('IDS_FLIGHTCONTROL')}"></strong>
+            </div>
+            <table class="toggle flightControl">
+                <tbody>
+                    <tr>
+                        <td th:text="${'Max number of planes on Deck'}"></td>
+                        <td th:text="${#numbers.formatInteger(airArmament.deckPlaceCount, 1, 'COMMA')}"></td>
+                    </tr>
+                    <th:block th:if="${flightControl.planesReserveAssignment.get('Fighter') > 0 and fighter != null}">
+                        <tr class="switch subsystem" data-type="fPlane">
+                            <td><u th:text="${fighter.numPlanesInSquadron + ' X ' + global.get(IDS + fighter.name.toUpperCase())}"></u></td>
+                            <td th:text="${global.get('IDS_SHIP_PARAM_FIGHTER_SQUADRONS')}"></td>
+                        </tr>
+                        <tr class="toggle fPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_PLANE_SQUAD')}"></td>
+                            <td th:text="${#numbers.formatInteger(flightControl.planesReserveAssignment.get('Fighter'), 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle fPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_NUM_PLANES_AT_HANGAR')}"></td>
+                            <td th:text="${#numbers.formatInteger(fighter.hangarSettings.maxValue, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle fPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_PLANES_RESTORE_TIME')}"></td>
+                            <td th:text="${#numbers.formatInteger(fighter.hangarSettings.timeToRestore, 1, 'COMMA')} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle fPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_VITALITY')}"></td>
+                            <td th:text="${#numbers.formatInteger(fighter.maxHealth, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle fPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQ_VISIBILITY_DIST_BY_SHIP')}"></td>
+                            <td th:text="${#numbers.formatDecimal(fighter.maxVisibilityFactor, 1, 1)} + ' km'"></td>
+                        </tr>
+                        <tr class="toggle fPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_SPEED')}"></td>
+                            <td th:text="${#numbers.formatDecimal(fighter.speedMoveWithBomb, 1, 1)} + ' kts'"></td>
+                        </tr>
+                        <tr class="toggle fPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_SPEED_MAX')}"></td>
+                            <td th:text="${#numbers.formatDecimal(fighter.speedMoveWithBomb * fighter.speedMax, 1, 1)} + ' kts'"></td>
+                        </tr>
+                        <tr class="toggle fPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_MAX_FORSAGE_AMOUNT')}"></td>
+                            <td th:text="${#numbers.formatDecimal(fighter.maxForsageAmount, 1, 1)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle fPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_FORSAGE_RESTORE_TIME')}"></td>
+                            <td th:text="${#numbers.formatInteger(fighter.maxForsageAmount / fighter.forsageRegeneration, 1, 'COMMA')} + ' s'"></td>
+                        </tr>
+                        <tr class="subsystem switch" data-type="rocket">
+                            <td colspan="2"><u th:text="${global.get(IDS + fighter.bombName.toUpperCase())}"></u></td>
+                        </tr>
+                        <tr class="toggle rocket hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_NUM_ATTACKERS')}"></td>
+                            <td th:text="${#numbers.formatInteger(fighter.attackerSize, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle rocket hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_AMMO_COUNT_FIGHTER')}"></td>
+                            <td th:text="${#numbers.formatInteger(fighter.attackCount, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle rocket hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_ROCKET_DAMAGE')}"></td>
+                            <td th:text="${#numbers.formatInteger(fighter.rocket.alphaDamage, 1, 'COMMA')}"></td>
+                        </tr>
+                        <th:block th:if="${fighter.rocket.ammoType == 'HE'}">
+                            <tr class="toggle rocket hide">
+                                <td th:text="${'HE Penetration'}"></td>
+                                <td th:text="${#numbers.formatInteger(fighter.rocket.alphaPiercingHE - 1, 1, 'COMMA')} + ' mm'"></td>
+                            </tr>
+                            <tr class="toggle rocket hide">
+                                <td th:text="${'Burn Probability'}"></td>
+                                <td th:text="${#numbers.formatInteger(fighter.rocket.burnProb * 100, 1, 'COMMA')} + ' %'"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="${fighter.consumables.size() > 0}">
+                            <tr class="subsystem switch" data-type="fConsume">
+                                <td colspan="2"><u th:text="${global.get('IDS_TITLE_CONSUMABLES')}"></u></td>
+                            </tr>
+                            <tr class="toggle fConsume hide">
+                                <td colspan="2" style="text-align: center;">
+                                    <th:block th:each="consumable : ${fighter.consumables}">
+                                        <button class="button_plane_consumable">
+                                            <img th:src="${'https://cdn.wowsft.com/images/consumables/consumable_' + consumable.name + '.png'}"/>
+                                            <table class="tooltip invert">
+                                                <tbody>
+                                                <tr><td colspan="2"><th:block th:utext="${global.get(IDS + 'DOCK_CONSUME_TITLE_' + consumable.name.toUpperCase())}"></th:block></td></tr>
+                                                <tr><td colspan="2">&nbsp;</td></tr>
+                                                <tr><td colspan="2"><th:block th:utext="${#strings.replace(global.get(IDS + 'DOCK_CONSUME_DESCRIPTION_' + consumable.name.toUpperCase()), '&#10', '<br />')}"></th:block></td></tr>
+                                                <th:block th:each="sub : ${consumable.subConsumables}">
+                                                    <th:block th:each="b : ${sub.value.bonus}" th:with="desc=${global.get(IDS + b.key)}">
+                                                        <tr th:if="${desc != null}" class="tooltip_desc">
+                                                            <td th:utext="${desc}"></td>
+                                                            <td th:utext="${b.value}"></td>
+                                                        </tr>
+                                                    </th:block>
+                                                </th:block>
+                                                </tbody>
+                                            </table>
+                                        </button>
+                                    </th:block>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+                    <th:block th:if="${flightControl.planesReserveAssignment.get('Dive') > 0 and diveBomber != null}">
+                        <tr class="switch subsystem" data-type="dPlane">
+                            <td><u th:text="${diveBomber.numPlanesInSquadron + ' X ' + global.get(IDS + diveBomber.name.toUpperCase())}"></u></td>
+                            <td th:text="${global.get('IDS_SHIP_PARAM_BOMBER_SQUADRONS')}"></td>
+                        </tr>
+                        <tr class="toggle dPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_PLANE_SQUAD')}"></td>
+                            <td th:text="${#numbers.formatInteger(flightControl.planesReserveAssignment.get('Dive'), 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle dPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_NUM_PLANES_AT_HANGAR')}"></td>
+                            <td th:text="${#numbers.formatInteger(diveBomber.hangarSettings.maxValue, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle dPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_PLANES_RESTORE_TIME')}"></td>
+                            <td th:text="${#numbers.formatInteger(diveBomber.hangarSettings.timeToRestore, 1, 'COMMA')} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle dPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_VITALITY')}"></td>
+                            <td th:text="${#numbers.formatInteger(diveBomber.maxHealth, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle dPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQ_VISIBILITY_DIST_BY_SHIP')}"></td>
+                            <td th:text="${#numbers.formatDecimal(diveBomber.maxVisibilityFactor, 1, 1)} + ' km'"></td>
+                        </tr>
+                        <tr class="toggle dPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_SPEED')}"></td>
+                            <td th:text="${#numbers.formatDecimal(diveBomber.speedMoveWithBomb, 1, 1)} + ' kts'"></td>
+                        </tr>
+                        <tr class="toggle dPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_SPEED_MAX')}"></td>
+                            <td th:text="${#numbers.formatDecimal(diveBomber.speedMoveWithBomb * diveBomber.speedMax, 1, 1)} + ' kts'"></td>
+                        </tr>
+                        <tr class="toggle dPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_MAX_FORSAGE_AMOUNT')}"></td>
+                            <td th:text="${#numbers.formatDecimal(diveBomber.maxForsageAmount, 1, 1)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle dPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_FORSAGE_RESTORE_TIME')}"></td>
+                            <td th:text="${#numbers.formatInteger(diveBomber.maxForsageAmount / diveBomber.forsageRegeneration, 1, 'COMMA')} + ' s'"></td>
+                        </tr>
+                        <tr class="subsystem switch" data-type="dBomb">
+                            <td colspan="2"><u th:text="${global.get(IDS + diveBomber.bombName.toUpperCase())}"></u></td>
+                        </tr>
+                        <tr class="toggle dBomb hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_NUM_ATTACKERS')}"></td>
+                            <td th:text="${#numbers.formatInteger(diveBomber.attackerSize, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle dBomb hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_AMMO_COUNT_DIVE')}"></td>
+                            <td th:text="${#numbers.formatInteger(diveBomber.attackCount, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle dBomb hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_BOMB_DAMAGE')}"></td>
+                            <td th:text="${#numbers.formatInteger(diveBomber.bomb.alphaDamage, 1, 'COMMA')}"></td>
+                        </tr>
+                        <th:block th:if="${diveBomber.bomb.ammoType == 'HE'}">
+                            <tr class="toggle dBomb hide">
+                                <td th:text="${'HE Penetration'}"></td>
+                                <td th:text="${#numbers.formatInteger(diveBomber.bomb.alphaPiercingHE - 1, 1, 'COMMA')} + ' mm'"></td>
+                            </tr>
+                            <tr class="toggle dBomb hide">
+                                <td th:text="${'Burn Probability'}"></td>
+                                <td th:text="${#numbers.formatInteger(diveBomber.bomb.burnProb * 100, 1, 'COMMA')} + ' %'"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="${diveBomber.consumables.size() > 0}">
+                            <tr class="subsystem switch" data-type="dConsume">
+                                <td colspan="2"><u th:text="${global.get('IDS_TITLE_CONSUMABLES')}"></u></td>
+                            </tr>
+                            <tr class="toggle dConsume hide">
+                                <td colspan="2" style="text-align: center;">
+                                    <th:block th:each="consumable : ${diveBomber.consumables}">
+                                        <button class="button_plane_consumable">
+                                            <img th:src="${'https://cdn.wowsft.com/images/consumables/consumable_' + consumable.name + '.png'}"/>
+                                            <table class="tooltip invert">
+                                                <tbody>
+                                                <tr><td colspan="2"><th:block th:utext="${global.get(IDS + 'DOCK_CONSUME_TITLE_' + consumable.name.toUpperCase())}"></th:block></td></tr>
+                                                <tr><td colspan="2">&nbsp;</td></tr>
+                                                <tr><td colspan="2"><th:block th:utext="${#strings.replace(global.get(IDS + 'DOCK_CONSUME_DESCRIPTION_' + consumable.name.toUpperCase()), '&#10', '<br />')}"></th:block></td></tr>
+                                                <th:block th:each="sub : ${consumable.subConsumables}">
+                                                    <th:block th:each="b : ${sub.value.bonus}" th:with="desc=${global.get(IDS + b.key)}">
+                                                        <tr th:if="${desc != null}" class="tooltip_desc">
+                                                            <td th:utext="${desc}"></td>
+                                                            <td th:utext="${b.value}"></td>
+                                                        </tr>
+                                                    </th:block>
+                                                </th:block>
+                                                </tbody>
+                                            </table>
+                                        </button>
+                                    </th:block>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+                    <th:block th:if="${flightControl.planesReserveAssignment.get('Bomber') > 0 and torpedoBomber != null}">
+                        <tr class="switch subsystem" data-type="tPlane">
+                            <td><u th:text="${torpedoBomber.numPlanesInSquadron + ' X ' + global.get(IDS + torpedoBomber.name.toUpperCase())}"></u></td>
+                            <td th:text="${global.get('IDS_SHIP_PARAM_TBOMBER_SQUADRONS')}"></td>
+                        </tr>
+                        <tr class="toggle tPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_PLANE_SQUAD')}"></td>
+                            <td th:text="${#numbers.formatInteger(flightControl.planesReserveAssignment.get('Bomber'), 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle tPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_NUM_PLANES_AT_HANGAR')}"></td>
+                            <td th:text="${#numbers.formatInteger(torpedoBomber.hangarSettings.maxValue, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle tPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_PLANES_RESTORE_TIME')}"></td>
+                            <td th:text="${#numbers.formatInteger(torpedoBomber.hangarSettings.timeToRestore, 1, 'COMMA')} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle tPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_VITALITY')}"></td>
+                            <td th:text="${#numbers.formatInteger(torpedoBomber.maxHealth, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle tPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQ_VISIBILITY_DIST_BY_SHIP')}"></td>
+                            <td th:text="${#numbers.formatDecimal(torpedoBomber.maxVisibilityFactor, 1, 1)} + ' km'"></td>
+                        </tr>
+                        <tr class="toggle tPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_SPEED')}"></td>
+                            <td th:text="${#numbers.formatDecimal(torpedoBomber.speedMoveWithBomb, 1, 1)} + ' kts'"></td>
+                        </tr>
+                        <tr class="toggle tPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_SPEED_MAX')}"></td>
+                            <td th:text="${#numbers.formatDecimal(torpedoBomber.speedMoveWithBomb * torpedoBomber.speedMax, 1, 1)} + ' kts'"></td>
+                        </tr>
+                        <tr class="toggle tPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_MAX_FORSAGE_AMOUNT')}"></td>
+                            <td th:text="${#numbers.formatDecimal(torpedoBomber.maxForsageAmount, 1, 1)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle tPlane hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_FORSAGE_RESTORE_TIME')}"></td>
+                            <td th:text="${#numbers.formatInteger(torpedoBomber.maxForsageAmount / torpedoBomber.forsageRegeneration, 1, 'COMMA')} + ' s'"></td>
+                        </tr>
+                        <tr class="subsystem switch" data-type="tBomb">
+                            <td colspan="2"><u th:text="${global.get(IDS + torpedoBomber.bombName.toUpperCase())}"></u></td>
+                        </tr>
+                        <tr class="toggle tBomb hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_NUM_ATTACKERS')}"></td>
+                            <td th:text="${#numbers.formatInteger(torpedoBomber.attackerSize, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle tBomb hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_AMMO_COUNT_TORPEDO')}"></td>
+                            <td th:text="${#numbers.formatInteger(torpedoBomber.attackCount, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle tBomb hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_TORPEDO_DAMAGE')}"></td>
+                            <td th:text="${#numbers.formatInteger(torpedoBomber.torpedo.alphaDamage / 3.0 + torpedoBomber.torpedo.damage, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle tBomb hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_TORPEDO_SPEED')}"></td>
+                            <td th:text="${#numbers.formatInteger(torpedoBomber.torpedo.speed, 1, 'COMMA')} + ' kts'"></td>
+                        </tr>
+                        <tr class="toggle tBomb hide">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_TORPEDO_MAX_DIST')}"></td>
+                            <td th:text="${#numbers.formatDecimal(torpedoBomber.torpedo.maxDist * 100 / 3 / 1000, 1, 1)} + ' km'"></td>
+                        </tr>
+                        <tr class="toggle tBomb hide">
+                            <td th:text="${global.get('IDS_PARAMS_MODIFIER_FLOODCHANCEFACTOR')}"></td>
+                            <td th:text="${#numbers.formatInteger(torpedoBomber.torpedo.uwCritical * 100.0, 1, 'COMMA')} + ' %'"></td>
+                        </tr>
+                        <th:block th:if="${torpedoBomber.consumables.size() > 0}">
+                            <tr class="subsystem switch" data-type="tConsume">
+                                <td colspan="2"><u th:text="${global.get('IDS_TITLE_CONSUMABLES')}"></u></td>
+                            </tr>
+                            <tr class="toggle tConsume hide">
+                                <td colspan="2" style="text-align: center;">
+                                    <th:block th:each="consumable : ${torpedoBomber.consumables}">
+                                        <button class="button_plane_consumable">
+                                            <img th:src="${'https://cdn.wowsft.com/images/consumables/consumable_' + consumable.name + '.png'}"/>
+                                            <table class="tooltip invert">
+                                                <tbody>
+                                                <tr><td colspan="2"><th:block th:utext="${global.get(IDS + 'DOCK_CONSUME_TITLE_' + consumable.name.toUpperCase())}"></th:block></td></tr>
+                                                <tr><td colspan="2">&nbsp;</td></tr>
+                                                <tr><td colspan="2"><th:block th:utext="${#strings.replace(global.get(IDS + 'DOCK_CONSUME_DESCRIPTION_' + consumable.name.toUpperCase()), '&#10', '<br />')}"></th:block></td></tr>
+                                                <th:block th:each="sub : ${consumable.subConsumables}">
+                                                    <th:block th:each="b : ${sub.value.bonus}" th:with="desc=${global.get(IDS + b.key)}">
+                                                        <tr th:if="${desc != null}" class="tooltip_desc">
+                                                            <td th:utext="${desc}"></td>
+                                                            <td th:utext="${b.value}"></td>
+                                                        </tr>
+                                                    </th:block>
+                                                </th:block>
+                                                </tbody>
+                                            </table>
+                                        </button>
+                                    </th:block>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${atba != null}" class="panel_right" data-type="atba">
+            <div class="switch" data-type="secondary">
+                <strong th:text="${global.get('IDS_SHIP_PARAM_ATBA')}"></strong>
+            </div>
+            <table class="toggle secondary">
+                <tbody>
+                    <tr>
+                        <td th:text="${global.get('IDS_SHIP_PARAM_MAX_DIST')}"></td>
+                        <td th:text="${#numbers.formatDecimal(atba.maxDist / 1000, 1, 2)} + ' km'"></td>
+                    </tr>
+                    <th:block th:each="sec : ${atba.secondaries}" th:with="gun=${sec.value}">
+                        <tr class="subsystem switch" th:attr="data-type=${gun.index}">
+                            <td><u th:text="${gun.count + ' X ' + gun.numBarrels + ' ' + global.get('IDS_' + gun.name.toUpperCase())}"></u></td>
+                            <td th:text="${global.get('IDS_SHIP_PARAM_AMMO_' + gun.ammoType.toUpperCase())}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${gun.index} + ' hide'">
+                            <td th:text="${global.get('IDS_MAX_DAMAGE')}"></td>
+                            <td th:text="${#numbers.formatInteger(gun.alphaDamage, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${gun.index} + ' hide'">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_AMMO_BULLET_SPEED')}"></td>
+                            <td th:text="${#numbers.formatInteger(gun.bulletSpeed, 1, 'COMMA')} + ' m/s'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${gun.index} + ' hide'">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SHOT_DELAY')}"></td>
+                            <td th:text="${#numbers.formatDecimal(gun.shotDelay, 1, 2)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${gun.index} + ' hide'">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SHOT_SPEED')}"></td>
+                            <td th:text="${#numbers.formatDecimal(60.0 / gun.shotDelay, 1, 2) + ' rpm'}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${gun.index} + ' hide'">
+                            <td th:text="${global.get('IDS_ACCURACY')}"></td>
+                            <td></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${gun.index} + ' hide'">
+                            <td>- Sigma</td>
+                            <td th:text="${#numbers.formatDecimal(atba.sigmaCount, 1, 1)} + ' σ'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${gun.index} + ' hide'">
+                            <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_DISPERSION')}"></td>
+                            <td th:text="${#numbers.formatInteger(((gun.idealRadius * gun.GSIdealRadius - gun.minRadius) / 1000.0 * (atba.maxDist / 30.0) + gun.minRadius) * 30.0, 1, 'COMMA')} + ' m'"></td>
+                        </tr>
+                        <th:block th:if="${gun.ammoType == 'HE'}">
+                            <tr class="toggle" th:classappend="${gun.index} + ' hide'">
+                                <td th:text="${'HE Penetration'}"></td>
+                                <td th:text="${#numbers.formatInteger(gun.alphaPiercingHEReal, 1, 'COMMA')} + ' mm'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${gun.index} + ' hide'">
+                                <td th:text="${'Burn Probability'}"></td>
+                                <td th:text="${#numbers.formatDecimal(gun.burnProb * 100, 1, 1)} + ' %'"></td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="info_box_inner replace">
+        <div th:if="${airDefense != null and (auraFars.size() > 0 or auraMediums.size() > 0 or auraNears.size() > 0)}"
+             class="panel_right" data-type="airDefense">
+            <div class="switch" data-type="aa">
+                <strong th:text="${global.get('IDS_SHIP_PARAM_AIR_DEFENSE')}"></strong>
+            </div>
+            <table class="toggle aa">
+                <tbody>
+                    <th:block th:each="auraFar : ${auraFars}" th:if="${auraFarsBubble.?[innerBubbleCount > 0 or outerBubbleCount > 0].size() > 0}">
+                        <tr class="subsystem switch" th:attr="data-type=${'far' + auraFarStat.index}">
+                            <td><u th:text="${global.get('IDS_FAR')}"></u></td>
+                            <td th:text="${#numbers.formatDecimal(auraFar.minDistance / 1000, 1, 1) + ' - ' + #numbers.formatDecimal(auraFar.maxDistance / 1000, 1, 1)} + ' km'"></td>
+                        </tr>
+                        <th:block th:each="auraFarBubble : ${auraFarsBubble}" th:if="${auraFarBubble.innerBubbleCount > 0 or auraFarBubble.outerBubbleCount > 0}">
+                            <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
+                                <td><u th:text="${'Inner + Outer Explosions'}"></u></td>
+                                <td th:text="${#numbers.formatInteger(auraFarBubble.innerBubbleCount, 1, 'COMMA') + ' + ' + #numbers.formatInteger(auraFarBubble.outerBubbleCount, 1, 'COMMA')}"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
+                                <td th:text="'- ' + ${'Damage'}"></td>
+                                <td th:text="${#numbers.formatInteger(auraFarBubble.bubbleDamage * auraFarBubble.bubbleDamageModifier, 1, 'COMMA')}"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
+                                <td th:text="'- ' + ${'RoF'}"></td>
+                                <td th:text="${#numbers.formatDecimal(auraFarBubble.shotDelay, 1, 1)} + ' s'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
+                                <td th:text="'- ' + ${'Spawn Time'}"></td>
+                                <td th:text="${#numbers.formatDecimal(auraFarBubble.shotTravelTime, 1, 2)} + ' s'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
+                                <td th:text="'- ' + ${'Distance'}"></td>
+                                <td th:text="${#numbers.formatDecimal(auraFarBubble.minDistance / 1000, 1, 1) + ' - ' + #numbers.formatDecimal(auraFarBubble.maxDistance / 1000, 1, 1)} + ' km'"></td>
+                            </tr>
+                        </th:block>
+                        <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
+                            <td><u th:text="${'Aura'}"></u></td>
+                            <td th:text="${#numbers.formatDecimal(auraFar.areaDamage / auraFar.areaDamageFrequency, 1, 1)} + ' dps'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
+                            <td th:text="'- ' + ${'Damage'}"></td>
+                            <td th:text="${#numbers.formatInteger(auraFar.areaDamage, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
+                            <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_FIRERATE')}"></td>
+                            <td th:text="${#numbers.formatDecimal(auraFar.areaDamageFrequency, 1, 2)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
+                            <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_HIT_CHANCE')}"></td>
+                            <td th:text="${#numbers.formatInteger(auraFar.hitChance * 100, 1, 'COMMA')} + ' %'"></td>
+                        </tr>
+                    </th:block>
+                    <th:block th:each="auraMedium : ${auraMediums}">
+                        <tr class="subsystem switch" th:attr="data-type=${'medium' + auraMediumStat.index}">
+                            <td><u th:text="${global.get('IDS_MEDIUM')}"></u></td>
+                            <td th:text="${#numbers.formatDecimal(auraMedium.minDistance / 1000, 1, 1) + ' - ' + #numbers.formatDecimal(auraMedium.maxDistance / 1000, 1, 1)} + ' km'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'medium' + auraMediumStat.index + ' hide'}">
+                            <td><u th:text="${'Aura'}"></u></td>
+                            <td th:text="${#numbers.formatDecimal(auraMedium.areaDamage / auraMedium.areaDamageFrequency, 1, 1)} + ' dps'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'medium' + auraMediumStat.index + ' hide'}">
+                            <td th:text="'- ' + ${'Damage'}"></td>
+                            <td th:text="${#numbers.formatInteger(auraMedium.areaDamage, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'medium' + auraMediumStat.index + ' hide'}">
+                            <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_FIRERATE')}"></td>
+                            <td th:text="${#numbers.formatDecimal(auraMedium.areaDamageFrequency, 1, 2)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'medium' + auraMediumStat.index + ' hide'}">
+                            <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_HIT_CHANCE')}"></td>
+                            <td th:text="${#numbers.formatInteger(auraMedium.hitChance * 100, 1, 'COMMA')} + ' %'"></td>
+                        </tr>
+                    </th:block>
+                    <th:block th:each="auraNear : ${auraNears}">
+                        <tr class="subsystem switch" th:attr="data-type=${'near' + auraNearStat.index}">
+                            <td><u th:text="${global.get('IDS_NEAR')}"></u></td>
+                            <td th:text="${#numbers.formatDecimal(auraNear.minDistance / 1000, 1, 1) + ' - ' + #numbers.formatDecimal(auraNear.maxDistance / 1000, 1, 1)} + ' km'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'near' + auraNearStat.index + ' hide'}">
+                            <td><u th:text="${'Aura'}"></u></td>
+                            <td th:text="${#numbers.formatDecimal(auraNear.areaDamage / auraNear.areaDamageFrequency, 1, 1)} + ' dps'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'near' + auraNearStat.index + ' hide'}">
+                            <td th:text="'- ' + ${'Damage'}"></td>
+                            <td th:text="${#numbers.formatInteger(auraNear.areaDamage, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'near' + auraNearStat.index + ' hide'}">
+                            <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_FIRERATE')}"></td>
+                            <td th:text="${#numbers.formatDecimal(auraNear.areaDamageFrequency, 1, 2)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${'near' + auraNearStat.index + ' hide'}">
+                            <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_HIT_CHANCE')}"></td>
+                            <td th:text="${#numbers.formatInteger(auraNear.hitChance * 100, 1, 'COMMA')} + ' %'"></td>
+                        </tr>
+                    </th:block>
+                    <th:block th:if="${airDefense != null}">
+
+                        <tr class="subsystem switch" data-type="enforce">
+                            <td><u th:text="${global.get('IDS_SHIP_PARAM_AA_SECTOR_STRENGTH')}"></u></td>
+                            <td th:text="${#numbers.formatDecimal(airDefense.prioritySectorCoefficientDuring * 100 - 100, 1, 1)} + ' %'"></td>
+                        </tr>
+                        <tr class="toggle enforce hide">
+                            <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_SECTOR_COOLDOWN')}"></td>
+                            <td th:text="${#numbers.formatDecimal(airDefense.prioritySectorPreparation + airDefense.prioritySectorDuration, 1, 1)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle enforce hide">
+                            <td th:text="'- ' + ${'Instant Damage'}"></td>
+                            <td th:text="${#numbers.formatDecimal(airDefense.prioritySectorDamageInitial * 100, 1, 1)} + ' %'"></td>
+                        </tr>
+                        <tr class="toggle enforce hide">
+                            <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_SECTOR_INCREASED_TIME')}"></td>
+                            <td th:text="${#numbers.formatDecimal(airDefense.prioritySectorPreparation, 1, 1) + ' + ' + #numbers.formatDecimal(airDefense.prioritySectorDuration, 1, 1)} + ' s'"></td>
+                        </tr>
+
+                        <tr class="subsystem switch" data-type="aaSector">
+                            <td colspan="2"><u>Sector</u></td>
+                        </tr>
+                        <tr class="toggle aaSector hide" style="text-align: center">
+                            <td colspan="2" th:include="Joint/angleSectorAirDefense :: angleSectorAirDefense"></td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${hull != null}" class="panel_right" data-type="hull">
+            <div class="switch" data-type="survive"><strong th:text="${global.get('IDS_SHIP_PARAM_DURABILITY')}"></strong></div>
+            <table class="toggle survive">
+                <tbody>
+                    <tr>
+                        <td th:text="${global.get('IDS_SHIP_PARAM_HEALTH')}"></td>
+                        <td th:text="${#numbers.formatInteger(hull.health, 1, 'COMMA')}"></td>
+                    </tr>
+                    <tr class="subsystem switch" data-type="fire">
+                        <td><u th:text="${global.get('IDS_HELP_FIRE')}"></u></td>
+                        <td th:text="${#numbers.formatDecimal(hull.burnTime, 1, 1)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle fire hide">
+                        <td th:text="'- No. of fire'"></td>
+                        <td th:text="${#numbers.formatInteger((hull.burnSize > hull.burnSizeSkill ? hull.burnSizeSkill : hull.burnSize), 1, 'COMMA')}"></td>
+                    </tr>
+                    <tr class="toggle fire hide">
+                        <td th:text="'- Probability Reduction'"></td>
+                        <td th:text="${#numbers.formatDecimal(100.0 - hull.burnProb * 100.0, 1, 1)} + ' %'"></td>
+                    </tr>
+                    <tr class="toggle fire hide">
+                        <td th:text="'- DPS per Fire'"></td>
+                        <td th:text="${#numbers.formatInteger(hull.health * hull.burnDamage / 100.0, 1, 'COMMA')}"></td>
+                    </tr>
+                    <tr class="toggle fire hide">
+                        <td th:text="'- Total Damage per Fire'"></td>
+                        <td th:text="${#numbers.formatInteger(hull.health * hull.burnDamage / 100.0 * hull.burnTime, 1, 'COMMA')}"></td>
+                    </tr>
+                    <tr class="subsystem switch" data-type="flood">
+                        <td><u th:text="${global.get('IDS_HELP_FLOODING')}"></u></td>
+                        <td th:text="${#numbers.formatDecimal(hull.floodTime, 1, 1)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle flood hide">
+                        <td th:text="'- No. of flood'"></td>
+                        <td th:text="${#numbers.formatInteger(hull.floodSize, 1, 'COMMA')}"></td>
+                    </tr>
+                    <tr class="toggle flood hide">
+                        <td th:text="'- Probability'"></td>
+                        <td th:text="${#numbers.formatInteger(hull.floodProb * 100.0, 1, 'COMMA')} + ' %'"></td>
+                    </tr>
+                    <tr class="toggle flood hide">
+                        <td th:text="'- Damage Reduction'"></td>
+                        <td th:text="${hull.floodProtection > 0 ? #numbers.formatInteger(hull.floodProtection, 1, 'COMMA') : 0} + ' %'"></td>
+                    </tr>
+                    <tr class="toggle flood hide">
+                        <td th:text="'- DPS per flood'"></td>
+                        <td th:text="${#numbers.formatInteger(hull.health * hull.floodDamage / 100.0, 1, 'COMMA')}"></td>
+                    </tr>
+                    <tr class="toggle flood hide">
+                        <td th:text="'- Total Damage Per Flood'"></td>
+                        <td th:text="${#numbers.formatInteger(hull.health * hull.floodDamage / 100.0 * hull.floodTime, 1, 'COMMA')}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${hull != null}" class="panel_right" data-type="concealment">
+            <div class="switch" data-type="conceal"><strong th:utext="${global.get('IDS_SHIP_PARAM_VISIBILITY')}"></strong></div>
+            <table class="toggle conceal">
+                <tbody>
+                    <tr class="subsystem switch" data-type="sea">
+                        <td><u>Sea</u></td>
+                        <td th:text="${#numbers.formatDecimal(hull.visibilityFactor * (warship.canEquipCamouflage ? 0.97 : 1), 1, 2)} + ' km'"></td>
+                    </tr>
+                    <tr class="toggle sea hide">
+                        <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_VISIBILITY_DIST_BY_GK_IN_SMOKE_BATTLE')}"></td>
+                        <td th:text="${#numbers.formatDecimal(hull.visibilityCoefGKInSmoke, 1, 2)} + ' km'"></td>
+                    </tr>
+                    <tr class="toggle sea hide">
+                        <td th:text="'- ' + ${global.get('IDS_PARAM_VISIBILITY_FIRE')}"></td>
+                        <td th:text="${#numbers.formatDecimal(hull.visibilityFactor * 0.97 + hull.visibilityCoefFire, 1, 2)} + ' km'"></td>
+                    </tr>
+                    <tr class="subsystem switch" data-type="air">
+                        <td><u>Air</u></td>
+                        <td th:text="${#numbers.formatDecimal(hull.visibilityFactorByPlane, 1, 2)} + ' km'"></td>
+                    </tr>
+                    <tr class="toggle air hide">
+                        <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_VISIBILITY_DIST_BY_GK_IN_SMOKE_BATTLE')}"></td>
+                        <td th:text="${#numbers.formatDecimal(hull.visibilityCoefGKByPlane, 1, 2)} + ' km'"></td>
+                    </tr>
+                    <tr class="toggle air hide">
+                        <td th:text="'- ' + ${global.get('IDS_PARAM_VISIBILITY_FIRE')}"></td>
+                        <td th:text="${#numbers.formatDecimal(hull.visibilityFactorByPlane + hull.visibilityCoefFireByPlane, 1, 2)} + ' km'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${hull != null and engine != null}" class="panel_right" data-type="engine">
+            <div class="switch" data-type="move"><strong th:text="${global.get('IDS_SHIP_PARAM_MOBILITY')}"></strong></div>
+            <table class="toggle move">
+                <tbody>
+                    <tr class="subsystem switch" data-type="speed">
+                        <td th:text="${global.get('IDS_SHIP_PARAM_MAXSPEED')}"></td>
+                        <td th:text="${#numbers.formatDecimal(hull.maxSpeed * (1 + engine.speedCoef), 1, 1)} + ' kts'"></td>
+                    </tr>
+                    <tr class="toggle speed hide">
+                        <td th:text="'- Full Power Forward'"></td>
+                        <td th:text="${#numbers.formatDecimal(engine.forwardEngineUpTime, 1, 1)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle speed hide">
+                        <td th:text="'- Full Power Backward'"></td>
+                        <td th:text="${#numbers.formatDecimal(engine.backwardEngineUpTime, 1, 1)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle speed hide">
+                        <td th:text="'- Power Ratio'"></td>
+                        <td th:text="${#numbers.formatDecimal(engine.histEnginePower / hull.tonnage, 1, 2)} + ' hp / ton'"></td>
+                    </tr>
+                    <tr>
+                        <td th:text="${global.get('IDS_SHIP_PARAM_TURNINGRADIUS')}"></td>
+                        <td th:text="${#numbers.formatInteger(hull.turningRadius, 1, 'COMMA')} + ' m'"></td>
+                    </tr>
+                    <tr>
+                        <td th:text="${global.get('IDS_SHIP_PARAM_RUDDER_TIME')}"></td>
+                        <td th:text="${#numbers.formatDecimal(hull.rudderTime / 1.305, 1, 1)} + ' s'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${consumables != null}" class="panel_right" data-type="consumables" th:with="selection=${warship.selectConsumables}">
+            <ul th:each="slot : ${consumables}" th:if="${slot.size() > slot.?[__${warship.shipUpgradeInfo.components.get('hull').get(warship.positions.get('hull') - 1).disabledAbilities.contains(name)}__].size()}">
+                <li th:each="consumable : ${slot}">
+                    <button class="button_consumable"
+                            th:classappend="${(selection.size() == 0 and consumableStat.index == 0) or (selection.size() > 0 and selection.get(slotStat.index) == consumableStat.index + 1) ? 'select' : 'hide'}
+                                        + ${#lists.contains(warship.shipUpgradeInfo.components.get('hull').get(warship.positions.get('hull') - 1).disabledAbilities, consumable.name) ? ' disable' : ''}"
+                            th:attr="data-index=${slotStat.index}, data-position=${consumableStat.index + 1}">
+                        <img th:src="${'https://cdn.wowsft.com/images/consumables/consumable_' + consumable.name + '.png'}"/>
+                        <table class="tooltip invert">
+                            <tbody>
+                            <tr><td colspan="2"><th:block th:utext="${global.get(IDS + 'DOCK_CONSUME_TITLE_' + consumable.name.toUpperCase())}"></th:block></td></tr>
+                            <tr><td colspan="2">&nbsp;</td></tr>
+                            <tr><td colspan="2"><th:block th:utext="${#strings.replace(global.get(IDS + 'DOCK_CONSUME_DESCRIPTION_' + consumable.name.toUpperCase()), '&#10', '<br />')}"></th:block></td></tr>
+                            <th:block th:each="sub : ${consumable.subConsumables}">
+                                <th:block th:each="b : ${sub.value.bonus}" th:with="desc=${global.get(IDS + b.key)}">
+                                    <tr th:if="${desc != null}" class="tooltip_desc">
+                                        <td th:utext="${desc}"></td>
+                                        <td th:if="${b.key == 'PARAMS_MODIFIER_AFFECTEDCLASSES'}">
+                                            <th:block th:each="sType : ${#strings.arraySplit(b.value, ' ')}" th:utext="${global.get(sType) + (sTypeStat.last ? '' : '<br />')}"></th:block>
+                                        </td>
+                                        <td th:unless="${b.key == 'PARAMS_MODIFIER_AFFECTEDCLASSES'}" th:utext="${b.value}"></td>
+                                    </tr>
+                                </th:block>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

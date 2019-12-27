@@ -1,61 +1,44 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.bundling.BootWar
-
-group = "WoWSFT"
-version = "1.0.0"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 plugins {
-    id("war")
-    id("org.springframework.boot") version "2.1.8.RELEASE"
-    id("io.spring.dependency-management") version "1.0.8.RELEASE"
-    kotlin("jvm") version "1.3.41"
-    kotlin("plugin.spring") version "1.3.41"
-    kotlin("plugin.allopen") version "1.3.41"
-//    kotlin("kapt") version "1.3.41"
+    kotlin("jvm") version "1.3.61"
+    kotlin("plugin.spring") version "1.3.61" apply false
+    id("org.springframework.boot") version "2.2.2.RELEASE" apply false
+    id("io.spring.dependency-management") version "1.0.8.RELEASE" apply false
 }
 
-repositories {
-    mavenCentral()
+allprojects {
+    group = "WoWSFT"
+    version = "1.0"
+
+    repositories {
+        jcenter()
+    }
 }
 
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+subprojects {
+    apply(plugin = "kotlin")
+    apply(plugin = "kotlin-spring")
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.apache.commons:commons-lang3")
-    implementation("org.apache.commons:commons-collections4:4.4")
+    dependencies {
+        implementation("org.springframework.boot:spring-boot-starter-web")
 
-    implementation(kotlin("reflect"))
-    implementation(kotlin("stdlib-jdk8"))
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("org.apache.commons:commons-lang3")
+        implementation("org.apache.commons:commons-collections4:4.4")
 
-//    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+        implementation(kotlin("reflect"))
+        implementation(kotlin("stdlib-jdk8"))
 
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-}
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    }
 
-sourceSets {
-    main {
-        withConvention(KotlinSourceSet::class) {
-            kotlin.srcDir("src/main/kotlin")
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "1.8"
         }
-        resources.srcDirs(listOf("src/main/resources"))
-    }
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "1.8"
-    }
-}
-
-tasks.getByName<BootWar>("bootWar") {
-    mainClassName = "wowsft.Application"
-
-    from("src/main/ebextensions") {
-        into(".ebextensions")
     }
 }
