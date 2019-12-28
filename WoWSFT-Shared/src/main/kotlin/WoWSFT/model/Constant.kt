@@ -1,12 +1,12 @@
-package wowsft.model
+package WoWSFT.model
 
 import java.math.BigDecimal
-import java.util.*
 
-object Constant {
+object Constant
+{
     val distCoefWG = BigDecimal.valueOf(100.0 / 3.0)
-    const val smallGun: Double = 0.139
-    const val oneCoeff: Double = 1.0
+    const val smallGun = 0.139
+    const val oneCoeff = 1.0
     const val AP = "AP"
     const val HE = "HE"
     const val EN = "en"
@@ -49,34 +49,36 @@ object Constant {
     const val airDefense = "airDefense"
     const val atba = "atba"
     const val fireControl = "fireControl"
-    val miscList: List<String> = ArrayList(listOf(TYPE_PROJECTILE, TYPE_AIRCRAFT))
-    val componentsList: List<String> = ArrayList(listOf(flightControl, artillery, hull, torpedoes, suo, fighter, torpedoBomber, diveBomber, engine))
-    val compStatsList: List<String> = ArrayList(listOf(flightControl, airArmament, airDefense, artillery, atba, hull, suo, torpedoes, fighter, torpedoBomber, diveBomber, engine))
-    val globalLanguage = HashSet(listOf(EN))
-    val excludeShipGroups = HashSet(listOf("unavailable", "disabled", "preserved", "clan"))
-    val supertestShipGroups = HashSet(listOf("demoWithoutStats"))
-    val researchShipGroups = HashSet(listOf("upgradeable", "start"))
-    val premiumShipGroups = HashSet(listOf("special", "specialUnsellable", "upgradeableExclusive", "ultimate", "earlyAccess"))
-    val excludeShipNations = HashSet(listOf("Events", "disabled", "preserved", "clan"))
-    val excludeShipSpecies = HashSet(listOf("Auxiliary", "Submarine"))
-    val excludeCompStats = HashSet(listOf("directors", "finders", "radars"))
-    val excludeModernization = HashSet(listOf("extra", "aimingtime"))
-    val coeff = HashSet(listOf("coef", "maxdist", "idealradius"))
-    val noUnit = HashSet(listOf("num"))
-    val extra = HashSet(listOf("count", "level", "additional"))
-    val meter = HashSet(listOf("radius", "height", "dist"))
-    val rate = HashSet(listOf("regeneration", "probabilitybonus", "chance"))
-    val rateNoSym = HashSet(listOf("step"))
-    val multiple = HashSet(listOf("multiplier"))
-    val extraAngle = HashSet(listOf("gunbonus"))
-    val angle = HashSet(listOf("angle"))
-    val time = HashSet(listOf("time"))
-    val speed = HashSet(listOf("speedbonus"))
-    const val maxBitsToInt: Long = 3766517952L
+    val miscList = hashSetOf(TYPE_PROJECTILE, TYPE_AIRCRAFT)
+    val componentsList = hashSetOf(flightControl, artillery, hull, torpedoes, suo, fighter, torpedoBomber, diveBomber, engine)
+    val compStatsList = hashSetOf(flightControl, airArmament, airDefense, artillery, atba, hull, suo, torpedoes, fighter, torpedoBomber, diveBomber, engine)
+    val globalLanguage = hashSetOf(EN)
+    val excludeShipGroups = hashSetOf("unavailable", "disabled", "preserved", "clan")
+    val supertestShipGroups = hashSetOf("demoWithoutStats")
+    val researchShipGroups = hashSetOf("upgradeable", "start")
+    val premiumShipGroups = hashSetOf("special", "specialUnsellable", "upgradeableExclusive", "ultimate", "earlyAccess")
+    val excludeShipNations = hashSetOf("Events", "disabled", "preserved", "clan")
+    val excludeShipSpecies = hashSetOf("Auxiliary", "Submarine")
+    val excludeCompStats = hashSetOf("directors", "finders", "radars")
+    val excludeModernization = hashSetOf("extra", "aimingtime")
+    val coeff = hashSetOf("coef", "maxdist", "idealradius")
+    val noUnit = hashSetOf("num")
+    val extra = hashSetOf("count", "level", "additional")
+    val meter = hashSetOf("radius", "height", "dist")
+    val rate = hashSetOf("regeneration", "probabilitybonus", "chance")
+    val rateNoSym = hashSetOf("step")
+    val multiple = hashSetOf("multiplier")
+    val extraAngle = hashSetOf("gunbonus")
+    val angle = hashSetOf("angle")
+    val time = hashSetOf("time")
+    val speed = hashSetOf("speedbonus")
+    const val maxBitsToInt = 3766517952L
     const val GENERAL_INTERNAL_ERROR = "GENERAL_INTERNAL_ERROR"
     const val LOAD_FINISH = "loadFinish"
     const val SLASH = "/"
     const val NOTIFICATION = "notification"
     const val GLOBAL = "global"
     const val JSON_PARSER = "jsonParser"
+
+    const val CDN_IMAGE = "https://cdn.wowsft.com/images"
 }

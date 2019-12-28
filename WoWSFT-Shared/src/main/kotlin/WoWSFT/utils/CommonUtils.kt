@@ -1,11 +1,10 @@
-package wowsft.utils
+package WoWSFT.utils
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.core.io.ClassPathResource
-import wowsft.model.Constant
+import WoWSFT.model.Constant
 import java.io.IOException
-import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import kotlin.math.pow
