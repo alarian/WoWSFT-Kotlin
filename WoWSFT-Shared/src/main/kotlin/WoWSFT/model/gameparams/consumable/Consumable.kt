@@ -10,17 +10,17 @@ import java.util.*
 @WoWSFT
 class Consumable
 {
-    val subConsumables = LinkedHashMap<String, ConsumableSub>()
-    val canBuy = false
-    val canBuyCustom = LinkedHashMap<String, Boolean>()
-    val costCR = 0.0
-    val costGold = 0.0
-    val freeOfCharge = false
-    val id = 0L
-    val index = ""
-    val name = ""
-    val typeinfo = TypeInfo()
-    val description = ""
+    var subConsumables = LinkedHashMap<String, ConsumableSub>()
+    var canBuy = false
+    var canBuyCustom = LinkedHashMap<String, Boolean>()
+    var costCR = 0.0
+    var costGold = 0.0
+    var freeOfCharge = false
+    var id = 0L
+    var index = ""
+    var name = ""
+    var typeinfo = TypeInfo()
+    var description = ""
     @JsonIgnore
     private val mapper = ObjectMapper()
 

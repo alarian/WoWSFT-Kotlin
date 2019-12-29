@@ -5,7 +5,7 @@ import WoWSFT.config.WoWSFT
 @WoWSFT
 class TypeInfo
 {
-    val nation = ""
-    val species = ""
-    val type = ""
+    var nation = ""
+    var species = ""
+    var type = ""
 }

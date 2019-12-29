@@ -12,15 +12,15 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AirDefense
 {
-    val auraFar = mutableListOf<Aura>()
-    val auraMedium = mutableListOf<Aura>()
-    val auraNear = mutableListOf<Aura>()
-    val ownerlessTracesScatterCoefficient = 0.0
-    val prioritySectorChangeDelay = 0.0
-    val prioritySectorDisableDelay = 0.0
-    val prioritySectorEnableDelay = 0.0
-    val prioritySectorStrength = 0.0
-    val sectors = mutableListOf<MutableList<Double>>()
+    var auraFar = mutableListOf<Aura>()
+    var auraMedium = mutableListOf<Aura>()
+    var auraNear = mutableListOf<Aura>()
+    var ownerlessTracesScatterCoefficient = 0.0
+    var prioritySectorChangeDelay = 0.0
+    var prioritySectorDisableDelay = 0.0
+    var prioritySectorEnableDelay = 0.0
+    var prioritySectorStrength = 0.0
+    var sectors = mutableListOf<MutableList<Double>>()
     var prioritySectorPhases = mutableListOf<MutableList<Any>>()
         set(value) {
             field = value

@@ -25,7 +25,7 @@ class ShipUpgrade
     var position = 0
     @JsonInclude
     var elem = 0
-    val prevType = ""
+    var prevType = ""
         get() = if (field.isEmpty()) ucTypeShort else field
     @JsonInclude
     var prevPosition = 0

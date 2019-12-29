@@ -9,23 +9,23 @@ import com.fasterxml.jackson.annotation.JsonInclude
 @WoWSFT
 class Modernization : CommonModifier()
 {
-    val costCR = 0
-    val costGold = 0
-    val excludes = mutableListOf<String>()
-    val group = mutableListOf<String>()
-    val id: Long = 0
-    val index = ""
-    val name = ""
-    val nation = mutableListOf<String>()
-    val shiplevel = mutableListOf<Int>()
-    val ships = mutableListOf<String>()
-    val shiptype = mutableListOf<String>()
+    var costCR = 0
+    var costGold = 0
+    var excludes = mutableListOf<String>()
+    var group = mutableListOf<String>()
+    var id: Long = 0
+    var index = ""
+    var name = ""
+    var nation = mutableListOf<String>()
+    var shiplevel = mutableListOf<Int>()
+    var ships = mutableListOf<String>()
+    var shiptype = mutableListOf<String>()
     @JsonInclude
-    val slot = 0
-    val type = 0
-    val typeinfo = TypeInfo()
-    val fullName = ""
+    var slot = 0
+    var type = 0
+    var typeinfo = TypeInfo()
+    var fullName = ""
     val image get() = "$CDN_IMAGE/modernization_icons/icon_modernization_$name.png"
-    val bonus = LinkedHashMap<String, String>()
-    val description = ""
+    var bonus = LinkedHashMap<String, String>()
+    var description = ""
 }

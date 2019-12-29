@@ -1,9 +1,9 @@
 package WoWSFT.utils
 
+import WoWSFT.model.Constant.*
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.core.io.ClassPathResource
-import WoWSFT.model.Constant
 import java.io.IOException
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -16,7 +16,7 @@ object CommonUtils
 
     fun getDistCoefWG(number: Number): Double
     {
-        return (number.toDouble() / Constant.distCoefWG.toDouble() * 1000.0).roundToInt() / 1000.0
+        return (number.toDouble() / distCoefWG.toDouble() * 1000.0).roundToInt() / 1000.0
     }
 
     fun getBonusCoef(number: Number): Double
@@ -46,11 +46,11 @@ object CommonUtils
     }
 
     @Throws(IOException::class)
-    fun gameParamsDir(): String
+    fun getGameParamsDir(): String
     {
-        var directory: String = ClassPathResource("/json/live/GameParams.zip").url.path.replaceFirst(Constant.SLASH, "")
+        var directory: String = ClassPathResource("/json/live/GameParams.zip").url.path.replaceFirst(SLASH, "")
         if (directory.startsWith("var") || directory.startsWith("Users")) {
-            directory = "${Constant.SLASH}${directory}"
+            directory = "${SLASH}${directory}"
         }
         return directory
     }
@@ -58,7 +58,7 @@ object CommonUtils
     @Throws(IOException::class)
     fun zFetch(zf: ZipFile, index: String, obj: Class<*>?): Any?
     {
-        val zipEntry: ZipEntry? = zf.getEntry("${index}${Constant.FILE_JSON}")
+        val zipEntry: ZipEntry? = zf.getEntry("${index}${FILE_JSON}")
         return if (zipEntry != null) mapper.readValue(zf.getInputStream(zipEntry), obj) else null
     }
 
@@ -66,39 +66,39 @@ object CommonUtils
     {
         val bonus = LinkedHashMap<String, String>()
         copy.forEach { (param: String, cVal: Any) ->
-            if (Constant.speed.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = "${getNumSym(cVal as Double)} kts"
+            if (speed.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(cVal as Double)} kts"
             } else if (param.toLowerCase().contains("boostcoeff")) {
-                if (cVal as Double >= 2.0) bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = getNumSym(cVal)
-                else bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonus(cVal))} %"
-            } else if (Constant.rate.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonus(cVal as Double))} %"
-            } else if (Constant.multiple.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = "X ${replaceZero(cVal.toString())}"
-            } else if (Constant.coeff.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoef(cVal as Double))} %"
-            } else if (Constant.noUnit.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = if (cVal as Double > 0) replaceZero(cVal.toString()) else "∞"
-            } else if (Constant.meter.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = "${getDistCoefWG(cVal as Double)} km"
-            } else if (Constant.rateNoSym.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} %"
-            } else if (Constant.time.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} s"
-            } else if (Constant.extraAngle.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = "${getNumSym(cVal as Double)} °"
-            } else if (Constant.angle.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} °"
-            } else if (Constant.extra.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = getNumSym(cVal as Double)
+                if (cVal as Double >= 2.0) bonus["${MODIFIER}${param.toUpperCase()}"] = getNumSym(cVal)
+                else bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonus(cVal))} %"
+            } else if (rate.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonus(cVal as Double))} %"
+            } else if (multiple.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "X ${replaceZero(cVal.toString())}"
+            } else if (coeff.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoef(cVal as Double))} %"
+            } else if (noUnit.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = if (cVal as Double > 0) replaceZero(cVal.toString()) else "∞"
+            } else if (meter.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getDistCoefWG(cVal as Double)} km"
+            } else if (rateNoSym.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} %"
+            } else if (time.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} s"
+            } else if (extraAngle.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(cVal as Double)} °"
+            } else if (angle.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} °"
+            } else if (extra.stream().anyMatch { param.toLowerCase().contains(it) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = getNumSym(cVal as Double)
             } else if (param.toLowerCase().equals("affectedClasses", true)) {
                 val tempList = mapper.convertValue(cVal, object : TypeReference<List<String>?>() {})
                 if (!tempList.isNullOrEmpty()) {
                     var affected = ""
                     for (tl in tempList) {
-                        affected = "${affected}${Constant.IDS_}${tl.toUpperCase()} "
+                        affected = "${affected}${IDS_}${tl.toUpperCase()} "
                     }
-                    bonus["${Constant.MODIFIER}${param.toUpperCase()}"] = affected.trim()
+                    bonus["${MODIFIER}${param.toUpperCase()}"] = affected.trim()
                 }
             }
         }

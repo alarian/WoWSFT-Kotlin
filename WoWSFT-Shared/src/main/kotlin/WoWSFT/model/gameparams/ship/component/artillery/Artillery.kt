@@ -14,22 +14,22 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Artillery
 {
-    val auraFar = mutableListOf<Aura>()
-    val auraMedium = mutableListOf<Aura>()
-    val auraNear = mutableListOf<Aura>()
-    val turrets = mutableListOf<Turret>()
-    val turretTypes = LinkedHashMap<Int, MutableList<Any>>()
-    val artificialOffset = 0.0
-    val maxDist = 0.0
-    val minDistH = 0.0
-    val minDistV = 0.0
-    val normalDistribution = false
-    val sigmaCount = 0.0
-    val taperDist = 0.0
+    var auraFar = mutableListOf<Aura>()
+    var auraMedium = mutableListOf<Aura>()
+    var auraNear = mutableListOf<Aura>()
+    var turrets = mutableListOf<Turret>()
+    var turretTypes = LinkedHashMap<Int, MutableList<Any>>()
+    var artificialOffset = 0.0
+    var maxDist = 0.0
+    var minDistH = 0.0
+    var minDistV = 0.0
+    var normalDistribution = false
+    var sigmaCount = 0.0
+    var taperDist = 0.0
     @JsonInclude
-    val GMIdealRadius = 1.0
+    var GMIdealRadius = 1.0
     var barrelDiameter = 0.0
-    val shells = LinkedHashMap<String, Shell>()
+    var shells = LinkedHashMap<String, Shell>()
     @JsonIgnore
     private val mapper = ObjectMapper()
 

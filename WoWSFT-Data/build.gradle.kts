@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 plugins {
@@ -6,7 +5,7 @@ plugins {
 }
 
 dependencies {
-
+    implementation(project(":WoWSFT-Shared"))
 }
 
 sourceSets {

@@ -19,67 +19,67 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Ship
 {
-    val tempComponents = LinkedHashMap<String, Any>()
-    val components = ShipComponent()
+    var tempComponents = LinkedHashMap<String, Any>()
+    var components = ShipComponent()
     @JsonAlias("ShipAbilities")
-    val shipAbilities = LinkedHashMap<String, AbilitySlot>()
+    var shipAbilities = LinkedHashMap<String, AbilitySlot>()
     @JsonAlias("ShipUpgradeInfo")
-    val shipUpgradeInfo = ShipUpgradeInfo()
-    val apDamageLimitCoeff = 0.0
-    val battleLevels = BattleLevels()
-    val canEquipCamouflage = false
-    val defaultCrew = ""
-    val group = ""
-    val id: Long = 0
-    val index = ""
+    var shipUpgradeInfo = ShipUpgradeInfo()
+    var apDamageLimitCoeff = 0.0
+    var battleLevels = BattleLevels()
+    var canEquipCamouflage = false
+    var defaultCrew = ""
+    var group = ""
+    var id: Long = 0
+    var index = ""
     @JsonAlias("isPaperShip")
-    val paperShip = false
-    val level = 0
-    val maxEquippedFlags = 0
-    val name = ""
-    val navalFlag = ""
-    val needShowProjectYear = false
-    val peculiarity = ""
-    val steerAngle = listOf<Double>()
-    val typeinfo = TypeInfo()
-    val weight = 0
+    var paperShip = false
+    var level = 0
+    var maxEquippedFlags = 0
+    var name = ""
+    var navalFlag = ""
+    var needShowProjectYear = false
+    var peculiarity = ""
+    var steerAngle = listOf<Double>()
+    var typeinfo = TypeInfo()
+    var weight = 0
     var realShipType = ""
         set(value) {
             field = value
             realShipTypeId = if ("Premium".equals(value, ignoreCase = true)) "FILTER_PREMIUM" else value.toUpperCase()
         }
     var realShipTypeId = ""
-    val fullName = ""
-    val research = false
+    var fullName = ""
+    var research = false
     var prevShipIndex = ""
     var prevShipName = ""
     var prevShipXP = 0
     var prevShipCompXP = 0
     val typeImage get() = if (typeinfo.species.isNotEmpty() && realShipType.isNotEmpty()) "$CDN_IMAGE/vehicles/ship_classes/icon_${typeinfo.species.toLowerCase()}_standard.png" else ""
     val imageSmall get() = if (index.isNotEmpty()) "$CDN_IMAGE/vehicles/ship_previews/$index.png" else ""
-    val planes = LinkedHashMap<String, String>()
-    val consumables = mutableListOf<MutableList<Consumable>>()
-    val upgrades = mutableListOf<MutableList<Modernization>>()
-    val upgradesRow = 0
+    var planes = LinkedHashMap<String, String>()
+    var consumables = mutableListOf<MutableList<Consumable>>()
+    var upgrades = mutableListOf<MutableList<Modernization>>()
+    var upgradesRow = 0
     @JsonIgnore
-    val selectConsumables = mutableListOf<Int>()
+    var selectConsumables = mutableListOf<Int>()
     @JsonIgnore
-    val selectUpgrades = mutableListOf<Int>()
+    var selectUpgrades = mutableListOf<Int>()
     @JsonIgnore
-    val selectSkills = mutableListOf<Int>()
+    var selectSkills = mutableListOf<Int>()
     @JsonIgnore
-    val selectSkillPts = 0
-    val modules = LinkedHashMap<String, String>()
-    val positions = LinkedHashMap<String, Int>()
-    val commander = Commander()
-    val turrets = mutableListOf<Turret>()
-    val launchers = mutableListOf<Launcher>()
-    val auraFar = mutableListOf<Aura>()
-    val auraFarBubble = mutableListOf<Aura>()
-    val auraMedium = mutableListOf<Aura>()
-    val auraNear = mutableListOf<Aura>()
-    val adrenaline = 0.0
-    val arUse = false
+    var selectSkillPts = 0
+    var modules = LinkedHashMap<String, String>()
+    var positions = LinkedHashMap<String, Int>()
+    var commander = Commander()
+    var turrets = mutableListOf<Turret>()
+    var launchers = mutableListOf<Launcher>()
+    var auraFar = mutableListOf<Aura>()
+    var auraFarBubble = mutableListOf<Aura>()
+    var auraMedium = mutableListOf<Aura>()
+    var auraNear = mutableListOf<Aura>()
+    var adrenaline = 0.0
+    var arUse = false
 
     @JsonAnySetter
     fun setUpTempComponents(name: String, value: Any) {

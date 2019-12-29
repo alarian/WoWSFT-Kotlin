@@ -8,22 +8,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 @JsonIgnoreProperties(ignoreUnknown = true)
 class CrewPersonality
 {
-    val dismissable = false
-    val hasManyNations = false
-    val hasOverlay = false
-    val hasRank = false
+    var dismissable = false
+    var hasManyNations = false
+    var hasOverlay = false
+    var hasRank = false
     @JsonAlias("isPerson")
-    val person = false
+    var person = false
     @JsonAlias("isRetrainable")
-    val retrainable = false
+    var retrainable = false
     @JsonAlias("isUnique")
-    val unique = false
-    val canResetSkillsForFree = false
-    val peculiarity = ""
-    val personName = ""
-    val ships = Ships()
-    val costCR = 0
-    val costELXP = 0
-    val costGold = 0
-    val costXP = 0
+    var unique = false
+    var canResetSkillsForFree = false
+    var peculiarity = ""
+    var personName = ""
+    var ships = Ships()
+    var costCR = 0
+    var costELXP = 0
+    var costGold = 0
+    var costXP = 0
 }

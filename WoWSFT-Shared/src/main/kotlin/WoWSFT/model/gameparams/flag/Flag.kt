@@ -8,19 +8,19 @@ import WoWSFT.model.gameparams.TypeInfo
 @WoWSFT
 class Flag : CommonModifier()
 {
-    val canBuy = false
-    val canBuyCustom: Any? = null
-    val flags = listOf<String>()
-    val group = 0
-    val hidden = false
-    val hiddenCustom: Any? = null
-    val id = 0L
-    val index = ""
-    val name = ""
-    val typeinfo = TypeInfo()
-    val sortOrder = 0
-    val identifier = ""
-    val bonus = LinkedHashMap<String, String>()
-    val description = ""
+    var canBuy = false
+    var canBuyCustom: Any? = null
+    var flags = listOf<String>()
+    var group = 0
+    var hidden = false
+    var hiddenCustom: Any? = null
+    var id = 0L
+    var index = ""
+    var name = ""
+    var typeinfo = TypeInfo()
+    var sortOrder = 0
+    var identifier = ""
+    var bonus = LinkedHashMap<String, String>()
+    var description = ""
     val image get() = "$CDN_IMAGE/signal_flags/$name.png"
 }

@@ -14,12 +14,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 class Commander
 {
     @JsonProperty("CrewPersonality")
-    val crewPersonality = CrewPersonality()
-    val id = 0L
-    val identifier = ""
-    val index = ""
-    val name = ""
-    val typeinfo = TypeInfo()
+    var crewPersonality = CrewPersonality()
+    var id = 0L
+    var identifier = ""
+    var index = ""
+    var name = ""
+    var typeinfo = TypeInfo()
     @JsonProperty("cSkills")
     var cSkills = MutableList(4) { MutableList(8) { Skill() } }
 

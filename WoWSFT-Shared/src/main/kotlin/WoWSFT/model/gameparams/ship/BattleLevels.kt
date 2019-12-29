@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 class BattleLevels
 {
     @JsonProperty("COOPERATIVE")
-    val cooperative = listOf<Int>()
+    var cooperative = listOf<Int>()
     @JsonProperty("PVP")
-    val pvp = listOf<Int>()
+    var pvp = listOf<Int>()
 }

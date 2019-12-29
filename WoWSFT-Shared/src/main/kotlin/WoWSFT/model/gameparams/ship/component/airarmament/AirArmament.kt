@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AirArmament
 {
-    val auraCoeff = 0.0
-    val deckPlaceCount = 0.0
-    val isIndependentLaunchpad = false
-    val launchPrepareTime = 0.0
-    val launchpadType = ""
-    val planesReserveCapacity = 0.0
+    var auraCoeff = 0.0
+    var deckPlaceCount = 0
+    var isIndependentLaunchpad = false
+    var launchPrepareTime = 0.0
+    var launchpadType = ""
+    var planesReserveCapacity = 0
 }

@@ -10,16 +10,16 @@ import com.fasterxml.jackson.annotation.JsonInclude
 @WoWSFT
 class Skill : CommonModifier()
 {
-    val tier = 0
+    var tier = 0
     @JsonInclude
-    val column = 0
+    var column = 0
     @JsonIgnore
-    val skillType = 0
+    var skillType = 0
     @JsonIgnore
-    val turnOffOnRetraining = false
+    var turnOffOnRetraining = false
     @JsonAlias("isEpic")
-    val epic = false
-    val bonus = LinkedHashMap<String, String>()
-    val description = ""
+    var epic = false
+    var bonus = LinkedHashMap<String, String>()
+    var description = ""
     val image get() = "$CDN_IMAGE/skills/icon_perk_$modifier.png"
 }

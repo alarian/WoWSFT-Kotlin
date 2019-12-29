@@ -5,8 +5,8 @@ import WoWSFT.config.WoWSFT
 @WoWSFT
 class Ships
 {
-    val nation = listOf<String>()
-    val peculiarity = listOf<String>()
-    val ships = listOf<String>()
-    val groups = listOf<String>()
+    var nation = listOf<String>()
+    var peculiarity = listOf<String>()
+    var ships = listOf<String>()
+    var groups = listOf<String>()
 }

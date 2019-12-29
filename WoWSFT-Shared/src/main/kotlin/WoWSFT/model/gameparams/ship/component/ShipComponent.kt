@@ -16,16 +16,16 @@ import java.util.*
 @WoWSFT
 class ShipComponent
 {
-    val flightControl = LinkedHashMap<String, FlightControl>()
-    val airArmament = LinkedHashMap<String, AirArmament>()
-    val airDefense = LinkedHashMap<String, AirDefense>()
-    val artillery = LinkedHashMap<String, Artillery>()
-    val atba = LinkedHashMap<String, ATBA>()
-    val hull = LinkedHashMap<String, Hull>()
-    val suo = LinkedHashMap<String, FireControl>()
-    val torpedoes = LinkedHashMap<String, Torpedo>()
-    val fighter = LinkedHashMap<String, Plane>()
-    val torpedoBomber = LinkedHashMap<String, Plane>()
-    val diveBomber = LinkedHashMap<String, Plane>()
-    val engine = LinkedHashMap<String, Engine>()
+    var flightControl = LinkedHashMap<String, FlightControl>()
+    var airArmament = LinkedHashMap<String, AirArmament>()
+    var airDefense = LinkedHashMap<String, AirDefense>()
+    var artillery = LinkedHashMap<String, Artillery>()
+    var atba = LinkedHashMap<String, ATBA>()
+    var hull = LinkedHashMap<String, Hull>()
+    var suo = LinkedHashMap<String, FireControl>()
+    var torpedoes = LinkedHashMap<String, Torpedo>()
+    var fighter = LinkedHashMap<String, Plane>()
+    var torpedoBomber = LinkedHashMap<String, Plane>()
+    var diveBomber = LinkedHashMap<String, Plane>()
+    var engine = LinkedHashMap<String, Engine>()
 }
