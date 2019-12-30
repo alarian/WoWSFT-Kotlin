@@ -83,4 +83,5 @@ import java.math.BigDecimal
     const val JSON_PARSER = "jsonParser"
 
     const val CDN_IMAGE = "https://cdn.wowsft.com/images"
+    const val CDN = "https://cdn.wowsft.com/"
 //}

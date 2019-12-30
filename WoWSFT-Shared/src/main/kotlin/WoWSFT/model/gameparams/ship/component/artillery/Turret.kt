@@ -39,7 +39,7 @@ class Turret
     var radiusOnMax = 0.0
     var radiusOnZero = 0.0
     var reduceTime = 0.0
-    var rotationSpeed = listOf<Double>()
+    var rotationSpeed = mutableListOf<Double>()
     var shotDelay = 0.0
     var smallGun = false
     var smokePenalty = 0.0

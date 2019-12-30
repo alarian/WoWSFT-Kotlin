@@ -22,7 +22,7 @@ class Launcher
     var numAmmos = 0
     var numBarrels = 0
     var position = listOf<Double>()
-    var rotationSpeed = listOf<Double>()
+    var rotationSpeed = mutableListOf<Double>()
     var shootSector = listOf<Double>()
     var shotDelay = 0.0
     var smallGun = false

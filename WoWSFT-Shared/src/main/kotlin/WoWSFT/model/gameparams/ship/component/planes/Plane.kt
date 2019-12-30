@@ -19,7 +19,7 @@ class Plane
     var bombName = ""
     var forsageRegeneration = 0.0
     var fuelTime = 0.0
-    var hangarSettings = HangarSetting()
+    var hangarSettings: HangarSetting? = null
     var id = 0L
     var index = ""
     var level = 0

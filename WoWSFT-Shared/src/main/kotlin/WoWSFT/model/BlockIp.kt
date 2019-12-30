@@ -4,10 +4,10 @@ import java.util.*
 
 class BlockIp(private val ip: String)
 {
-    private var created: Date
-    private var count: Int
-    private var blockCount = 0
-    private var blockCreated: Date? = null
+    var created: Date
+    var count = 0
+    var blockCount = 0
+    var blockCreated: Date? = null
 
     fun doCount()
     {

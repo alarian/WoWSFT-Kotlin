@@ -17,7 +17,9 @@ class DataGenerator(
     private var context: ApplicationContext
 ) : CommandLineRunner, ApplicationContextAware
 {
-    private val log = LoggerFactory.getLogger(DataGenerator::class.java)
+    companion object {
+        private val log = LoggerFactory.getLogger(DataGenerator::class.java)
+    }
 
     @Throws(IOException::class)
     override fun run(vararg strings: String)

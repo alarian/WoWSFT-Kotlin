@@ -57,7 +57,10 @@ class JsonParser
     private val misc = HashMap<String, Any>()
 
     private val mapper = ObjectMapper()
-    private val log = LoggerFactory.getLogger(JsonParser::class.java)
+
+    companion object {
+        private val log = LoggerFactory.getLogger(JsonParser::class.java)
+    }
 
     init {
         mapper.registerModule(KotlinModule())
