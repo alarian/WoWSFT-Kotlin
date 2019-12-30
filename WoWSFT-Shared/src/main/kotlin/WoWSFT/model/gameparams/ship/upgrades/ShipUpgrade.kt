@@ -22,6 +22,11 @@ class ShipUpgrade
     var name = ""
     var prev = ""
     var ucType = ""
+        set(value) {
+            field = value
+            ucTypeShort = if (field.isNotEmpty()) field.replace("_", "").decapitalize() else field
+        }
+    var ucTypeShort = ""
     var position = 0
     @JsonInclude
     var elem = 0
@@ -31,17 +36,16 @@ class ShipUpgrade
     var prevPosition = 0
     var prevElem = 0
     var components = LinkedHashMap<String, MutableList<String>>()
-
-    val ucTypeShort get() = if (ucType.isNotEmpty()) ucType.decapitalize().replace("_", "") else ucType
     val image get() = if (ucTypeShort.isNotEmpty()) "$CDN_IMAGE/modules/${ucTypeShort.toLowerCase()}.png" else ""
 
     @JsonIgnore
     private val mapper = ObjectMapper()
 
     @JsonSetter
-    fun setComponents(value: Any?) {
+    fun setComponents(value: Any?)
+    {
         val temp = mapper.convertValue(value, object : TypeReference<LinkedHashMap<String, MutableList<String>>>() {})
-        temp.forEach { (key: String, list: List<String>) ->
+        temp.forEach { (key: String, list: MutableList<String>) ->
             val name = if (key.equals(fireControl, ignoreCase = true)) suo else key
             list.sort()
             components[name] = list

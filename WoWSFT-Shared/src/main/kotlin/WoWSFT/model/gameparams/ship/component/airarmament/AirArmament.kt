@@ -7,7 +7,7 @@ class AirArmament
 {
     var auraCoeff = 0.0
     var deckPlaceCount = 0
-    var isIndependentLaunchpad = false
+    var independentLaunchpad = false
     var launchPrepareTime = 0.0
     var launchpadType = ""
     var planesReserveCapacity = 0

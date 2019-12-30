@@ -71,7 +71,7 @@ class Ship
     var selectSkillPts = 0
     var modules = LinkedHashMap<String, String>()
     var positions = LinkedHashMap<String, Int>()
-    var commander = Commander()
+    var commander: Commander? = null
     var turrets = mutableListOf<Turret>()
     var launchers = mutableListOf<Launcher>()
     var auraFar = mutableListOf<Aura>()
@@ -82,7 +82,8 @@ class Ship
     var arUse = false
 
     @JsonAnySetter
-    fun setUpTempComponents(name: String, value: Any) {
+    fun setUpTempComponents(name: String, value: Any)
+    {
         tempComponents[name] = value
     }
 }

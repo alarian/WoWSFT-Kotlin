@@ -2,6 +2,7 @@ package WoWSFT
 
 import WoWSFT.model.Constant.JSON_PARSER
 import WoWSFT.parser.JsonParser
+import org.springframework.boot.Banner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
@@ -37,12 +38,9 @@ class Application : SpringBootServletInitializer()
     {
         return JsonParser()
     }
+}
 
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>)
-        {
-            runApplication<Application>(*args)
-        }
-    }
+fun main(args: Array<String>)
+{
+    runApplication<Application>(*args)
 }

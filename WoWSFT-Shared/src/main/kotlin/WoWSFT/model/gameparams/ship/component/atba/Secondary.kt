@@ -14,6 +14,7 @@ class Secondary
     var antiAirAuraDistance = 0.0
     var antiAirAuraStrength = 0.0
     var barrelDiameter = 0.0
+    @JsonInclude
     var deadZone = listOf<List<Double>>()
     var delim = 0.0
     var horizSector = listOf<Double>()

@@ -20,9 +20,14 @@ import WoWSFT.model.gameparams.ship.upgrades.*
 import WoWSFT.service.ParamService
 import WoWSFT.utils.CommonUtils
 import WoWSFT.utils.PenetrationUtils
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.core.json.JsonReadFeature
+import com.fasterxml.jackson.core.json.JsonWriteFeature
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
@@ -53,6 +58,18 @@ class JsonParser
 
     private val mapper = ObjectMapper()
     private val log = LoggerFactory.getLogger(JsonParser::class.java)
+
+    init {
+        mapper.registerModule(KotlinModule())
+
+        mapper.enable(SerializationFeature.INDENT_OUTPUT)
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+//        mapper.configure(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature(), false)
+//        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+//        mapper.configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+//        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true)
+//        mapper.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
+    }
 
     @Throws(IOException::class)
     fun setGlobal()
@@ -245,7 +262,7 @@ class JsonParser
 
     private fun generateShipsList()
     {
-        ships.forEach { (_: Any, ship: Ship) ->
+        ships.forEach { (_, ship) ->
             ship.shipUpgradeInfo.components.forEach { (_, components) ->
                 components.forEach { component ->
                     if (component.nextShips.isNotEmpty()) {
@@ -394,8 +411,6 @@ class JsonParser
         val directory = CommonUtils.getGameParamsDir().replace(FILE_GAMEPARAMS, DIR_SHIPS)
         var folder = getEmptyFolder(directory)
 
-        mapper.enable(SerializationFeature.INDENT_OUTPUT)
-
         for ((key, value) in ships) {
             val tempJson = "$directory$key$FILE_JSON"
             val f = File(tempJson)
@@ -436,7 +451,7 @@ class JsonParser
         val directory = CommonUtils.getGameParamsDir().replace(FILE_GAMEPARAMS, DIR_SHELL)
         var folder = getEmptyFolder(directory)
 
-        mapper.disable(SerializationFeature.INDENT_OUTPUT)
+//        mapper.disable(SerializationFeature.INDENT_OUTPUT)
 
         for ((_, ship) in ships) {
             if (ship.shipUpgradeInfo.components[artillery]!!.size > 0) {

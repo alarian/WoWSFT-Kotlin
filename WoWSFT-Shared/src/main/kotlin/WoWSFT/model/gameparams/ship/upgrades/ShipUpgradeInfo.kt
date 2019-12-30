@@ -29,10 +29,11 @@ class ShipUpgradeInfo
     private val mapper = ObjectMapper()
 
     @JsonAnySetter
-    fun setShipUpgrades(name: String, value: Any) {
+    fun setShipUpgrades(name: String, value: Any?)
+    {
         val upgrade = mapper.convertValue(value, ShipUpgrade::class.java)
         upgrade.name = name
         upgrade.position = if (upgrade.prev.isEmpty()) 1 else 2
-        components[upgrade.ucTypeShort]?.add(upgrade)
+        components[upgrade.ucTypeShort]!!.add(upgrade)
     }
 }

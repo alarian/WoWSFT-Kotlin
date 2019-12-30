@@ -3,6 +3,7 @@ package WoWSFT.model.gameparams.ship.component.artillery
 import WoWSFT.config.WoWSFT
 import WoWSFT.model.gameparams.TypeInfo
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -13,6 +14,7 @@ class Turret
     var antiAirAuraStrength = 0.0
     var barrelDiameter = 0.0
     var coeffPerSecondMin = 0.0
+    @JsonInclude
     var deadZone = listOf<List<Double>>()
     var delim = 0.0
     var ellipseRangeMax = 0.0
