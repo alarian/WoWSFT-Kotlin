@@ -21,10 +21,7 @@ import WoWSFT.service.ParamService
 import WoWSFT.utils.CommonUtils
 import WoWSFT.utils.PenetrationUtils
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.core.json.JsonReadFeature
-import com.fasterxml.jackson.core.json.JsonWriteFeature
 import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -60,6 +57,7 @@ class JsonParser
 
     companion object {
         private val log = LoggerFactory.getLogger(JsonParser::class.java)
+        private val penetrationUtils = PenetrationUtils()
     }
 
     init {
@@ -176,33 +174,24 @@ class JsonParser
                     upgrade.position = 2
                 }
                 upgrade.components.forEach { (cKey, cValue) ->
-                    if (cKey.equals(artillery, ignoreCase = true)) {
-                        cValue.forEach { cVal -> ship.components.artillery[cVal] = mapper.convertValue(ship.tempComponents[cVal], Artillery::class.java) }
-                    } else if (cKey.equals(airDefense, ignoreCase = true)) {
-                        cValue.forEach { cVal -> ship.components.airDefense[cVal] = mapper.convertValue(ship.tempComponents[cVal], AirDefense::class.java) }
-                    } else if (cKey.equals(atba, ignoreCase = true)) {
-                        cValue.forEach { cVal -> ship.components.atba[cVal] = mapper.convertValue(ship.tempComponents[cVal], ATBA::class.java) }
-                    } else if (cKey.equals(engine, ignoreCase = true)) {
-                        cValue.forEach { cVal -> ship.components.engine[cVal] = mapper.convertValue(ship.tempComponents[cVal], Engine::class.java) }
-                    } else if (cKey.equals(suo, ignoreCase = true)) {
-                        cValue.forEach { cVal -> ship.components.suo[cVal] = mapper.convertValue(ship.tempComponents[cVal], FireControl::class.java) }
-                    } else if (cKey.equals(hull, ignoreCase = true)) {
-                        cValue.forEach { cVal -> ship.components.hull[cVal] = mapper.convertValue(ship.tempComponents[cVal], Hull::class.java) }
-                    } else if (cKey.equals(torpedoes, ignoreCase = true)) {
-                        cValue.forEach { cVal -> ship.components.torpedoes[cVal] = mapper.convertValue(ship.tempComponents[cVal], Torpedo::class.java) }
-                    } else if (cKey.equals(airArmament, ignoreCase = true)) {
-                        cValue.forEach { cVal -> ship.components.airArmament[cVal] = mapper.convertValue(ship.tempComponents[cVal], AirArmament::class.java) }
-                    } else if (cKey.equals(flightControl, ignoreCase = true)) {
-                        cValue.forEach { cVal -> ship.components.flightControl[cVal] = mapper.convertValue(ship.tempComponents[cVal], FlightControl::class.java) }
-                    } else if (cKey.equals(fighter, ignoreCase = true) || cKey.equals(diveBomber, ignoreCase = true) || cKey.equals(torpedoBomber, ignoreCase = true)) {
-                        cValue.forEach { cVal ->
+                    when (cKey.decapitalize()) {
+                        artillery -> cValue.forEach { cVal -> ship.components.artillery[cVal] = mapper.convertValue(ship.tempComponents[cVal], Artillery::class.java) }
+                        airDefense -> cValue.forEach { cVal -> ship.components.airDefense[cVal] = mapper.convertValue(ship.tempComponents[cVal], AirDefense::class.java) }
+                        atba -> cValue.forEach { cVal -> ship.components.atba[cVal] = mapper.convertValue(ship.tempComponents[cVal], ATBA::class.java) }
+                        engine -> cValue.forEach { cVal -> ship.components.engine[cVal] = mapper.convertValue(ship.tempComponents[cVal], Engine::class.java) }
+                        suo -> cValue.forEach { cVal -> ship.components.suo[cVal] = mapper.convertValue(ship.tempComponents[cVal], FireControl::class.java) }
+                        hull -> cValue.forEach { cVal -> ship.components.hull[cVal] = mapper.convertValue(ship.tempComponents[cVal], Hull::class.java) }
+                        torpedoes -> cValue.forEach { cVal -> ship.components.torpedoes[cVal] = mapper.convertValue(ship.tempComponents[cVal], Torpedo::class.java) }
+                        airArmament -> cValue.forEach { cVal -> ship.components.airArmament[cVal] = mapper.convertValue(ship.tempComponents[cVal], AirArmament::class.java) }
+                        flightControl -> cValue.forEach { cVal -> ship.components.flightControl[cVal] = mapper.convertValue(ship.tempComponents[cVal], FlightControl::class.java) }
+                        fighter, diveBomber, torpedoBomber -> cValue.forEach { cVal ->
                             val tempPlaneType = mapper.convertValue(ship.tempComponents[cVal], object : TypeReference<HashMap<String, String>>() {})
                             ship.planes[cVal] = tempPlaneType["planeType"]!!
                         }
                     }
                 }
             }
-            value.sortWith(Comparator.comparingInt(ShipUpgrade::position).thenComparing(ShipUpgrade::name))
+            value.sortedWith(compareBy({ it.position }, { it.name }))
         }
         ship.shipUpgradeInfo.components.forEach { (_, value) ->
             value.forEach { upgrade ->
@@ -454,7 +443,7 @@ class JsonParser
         val directory = CommonUtils.getGameParamsDir().replace(FILE_GAMEPARAMS, DIR_SHELL)
         var folder = getEmptyFolder(directory)
 
-//        mapper.disable(SerializationFeature.INDENT_OUTPUT)
+        mapper.disable(SerializationFeature.INDENT_OUTPUT)
 
         for ((_, ship) in ships) {
             if (ship.shipUpgradeInfo.components[artillery]!!.size > 0) {
@@ -464,7 +453,7 @@ class JsonParser
                     for (ammo in ship.components.artillery[tempId]!!.turrets[0].ammoList) {
                         val shell = shells[ammo]
                         if (shell != null) {
-                            PenetrationUtils.setPenetration(
+                            penetrationUtils.setPenetration(
                                 shell,
                                 ship.components.artillery[tempId]!!.turrets[0].vertSector[1],
                                 ship.components.artillery[tempId]!!.minDistV,

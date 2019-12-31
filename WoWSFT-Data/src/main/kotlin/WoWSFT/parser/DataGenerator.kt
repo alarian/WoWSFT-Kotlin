@@ -29,7 +29,7 @@ class DataGenerator(
         jsonParser.setGlobal()
         jsonParser.setGameParams()
         jsonParser.generateShipData()
-//        jsonParser.generateShellPenetration()
+        jsonParser.generateShellPenetration()
 
         log.info("finish")
 
