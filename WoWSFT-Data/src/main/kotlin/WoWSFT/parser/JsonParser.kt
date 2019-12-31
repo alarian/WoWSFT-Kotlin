@@ -64,7 +64,7 @@ class JsonParser
         mapper.registerModule(KotlinModule())
 
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+//        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
 //        mapper.configure(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature(), false)
 //        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 //        mapper.configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
@@ -96,7 +96,7 @@ class JsonParser
             val typeInfo = mapper.convertValue(value["typeinfo"], TypeInfo::class.java)
             if (typeInfo.type.equals("Ship", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !excludeShipSpecies.contains(typeInfo.species)) {
                 val ship = mapper.convertValue(value, Ship::class.java)
-                if (!excludeShipGroups.contains(ship.group) && (ship.defaultCrew.isEmpty() || ship.defaultCrew.contains("PWW"))) {
+                if (!excludeShipGroups.contains(ship.group) && (ship.defaultCrew.isNullOrEmpty() || ship.defaultCrew!!.contains("PWW"))) {
                     ship.shipUpgradeInfo.components.forEach { (cType, c) -> c.forEach { su ->
                             for (s in excludeCompStats) {
                                 su.components.remove(s)
@@ -218,7 +218,7 @@ class JsonParser
     {
         when {
             researchShipGroups.contains(ship.group) -> {
-                ship.realShipType = ship.typeinfo.species
+                ship.realShipType = ship.typeinfo.species!!
                 ship.research = true
             }
             premiumShipGroups.contains(ship.group) -> { ship.realShipType = "Premium" }
@@ -297,15 +297,17 @@ class JsonParser
             }
         }
         ships.forEach { (_, ship) ->
-            shipsList.putIfAbsent(ship.typeinfo.nation, LinkedHashMap())
-            shipsList[ship.typeinfo.nation]!!.putIfAbsent(ship.realShipTypeId.toUpperCase(), LinkedHashMap())
-            shipsList[ship.typeinfo.nation]!![ship.realShipTypeId.toUpperCase()]!!.putIfAbsent(ship.typeinfo.species.toUpperCase(), LinkedHashMap())
-            shipsList[ship.typeinfo.nation]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species.toUpperCase()]!!.putIfAbsent(ship.level, ArrayList())
-            val arties = mutableListOf<String>()
-            ship.shipUpgradeInfo.components[artillery]?.forEach { arty -> arties.add(arty.name) }
+            if (!ship.typeinfo.nation.isNullOrEmpty() && !ship.typeinfo.species.isNullOrEmpty()) {
+                shipsList.putIfAbsent(ship.typeinfo.nation!!, LinkedHashMap())
+                shipsList[ship.typeinfo.nation!!]?.putIfAbsent(ship.realShipTypeId.toUpperCase(), LinkedHashMap())
+                shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!!.putIfAbsent(ship.typeinfo.species!!.toUpperCase(), LinkedHashMap())
+                shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species!!.toUpperCase()]!!.putIfAbsent(ship.level, ArrayList())
+                val arties = mutableListOf<String>()
+                ship.shipUpgradeInfo.components[artillery]?.forEach { arty -> arties.add(arty.name) }
 
-            shipsList[ship.typeinfo.nation]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species.toUpperCase()]!![ship.level]
-                ?.add(ShipIndex(ship.name, ship.index, ship.prevShipIndex, ship.prevShipName, ship.research, ship.shipUpgradeInfo.costXP, ship.prevShipXP, ship.prevShipCompXP, arties))
+                shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species!!.toUpperCase()]!![ship.level]
+                    ?.add(ShipIndex(ship.name, ship.index, ship.prevShipIndex, ship.prevShipName, ship.research, ship.shipUpgradeInfo.costXP, ship.prevShipXP, ship.prevShipCompXP, arties))
+            }
         }
 
         shipsList.entries.sortedBy { it.key }.forEach { nation ->

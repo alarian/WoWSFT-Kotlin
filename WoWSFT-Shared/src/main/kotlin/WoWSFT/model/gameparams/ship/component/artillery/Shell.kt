@@ -91,9 +91,9 @@ class Shell
         penetration: LinkedHashMap<String, Double>,
         impact: LinkedHashMap<String, Double>,
         distanceList: MutableList<String>,
-        launchAngle: LinkedHashMap<String, Double>,
-        minDistV: Double,
-        apShell: Boolean
+//        launchAngle: LinkedHashMap<String, Double>,
+        minDistV: Double
+//        apShell: Boolean
     ) {
         this.penetration = penetration
         this.flightTime = flightTime

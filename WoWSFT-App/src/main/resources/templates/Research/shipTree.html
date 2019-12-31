@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta charset="utf-8" />
     <link rel="icon" href="https://cdn.wowsft.com/images/Icon/WoWSFT_Icon.png" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.wowsft.com/css/wowsft.css?20190816" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.wowsft.com/css/WoWSFT.css?20190816" />
     <link rel="stylesheet" type="text/css" href="https://cdn.wowsft.com/css/misc.css?20191224" />
     <meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=yes" />
     <script src="https://cdn.wowsft.com/js/jquery/jquery-3.3.1.min.js"></script>
@@ -48,9 +48,6 @@
                                     <img th:attr="data-src=${'https://cdn.wowsft.com/images/vehicles/ship_previews/' + ship.index + '.png'}" /><br/>
                                     <span th:text="${global.get(IDS + ship.index.toUpperCase() + '_FULL')}"></span>
                                 </button><br th:if="${shipStat.index > 0}"/>
-                            </th:block>
-                            <th:block th:if="${shipType.value.get(i) == null}">
-                                <button class="button_ship"></button>
                             </th:block>
                         </td>
                     </th:block>

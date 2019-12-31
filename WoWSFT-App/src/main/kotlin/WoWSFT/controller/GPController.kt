@@ -65,7 +65,7 @@ class GPController(
         @RequestParam(required = false, defaultValue = "100") ar: Int
     ): String
     {
-        var sSkills = skills
+        var sSkills: Long
 
         model.addAttribute("single", true)
         model.addAttribute(IDS, IDS_)
@@ -124,7 +124,7 @@ class GPController(
     @ResponseBody
     @PostMapping("/arty")
     @Throws(Exception::class)
-    fun getShellData(@RequestParam index: String, @RequestParam artyId: String): Shell
+    fun getShellData(@RequestParam index: String, @RequestParam artyId: String): Shell?
     {
         return gpService.getArtyAmmoOnly(index, artyId)
     }

@@ -19,7 +19,7 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Ship
 {
-    var tempComponents = LinkedHashMap<String, Any>()
+    var tempComponents = LinkedHashMap<String, Any?>()
     var components = ShipComponent()
     @JsonAlias("ShipAbilities")
     var shipAbilities = LinkedHashMap<String, AbilitySlot>()
@@ -28,8 +28,8 @@ class Ship
     var apDamageLimitCoeff = 0.0
     var battleLevels = BattleLevels()
     var canEquipCamouflage = false
-    var defaultCrew = ""
-    var group = ""
+    var defaultCrew: String? = null
+    var group: String? = null
     var id: Long = 0
     var index = ""
     @JsonAlias("isPaperShip")
@@ -55,7 +55,7 @@ class Ship
     var prevShipName = ""
     var prevShipXP = 0
     var prevShipCompXP = 0
-    val typeImage get() = if (typeinfo.species.isNotEmpty() && realShipType.isNotEmpty()) "$CDN_IMAGE/vehicles/ship_classes/icon_${typeinfo.species.toLowerCase()}_standard.png" else ""
+    val typeImage get() = if (!typeinfo.species.isNullOrEmpty() && realShipType.isNotEmpty()) "$CDN_IMAGE/vehicles/ship_classes/icon_${typeinfo.species!!.toLowerCase()}_standard.png" else ""
     val imageSmall get() = if (index.isNotEmpty()) "$CDN_IMAGE/vehicles/ship_previews/$index.png" else ""
     var planes = LinkedHashMap<String, String>()
     var consumables = mutableListOf<MutableList<Consumable>>()
@@ -82,7 +82,7 @@ class Ship
     var arUse = false
 
     @JsonAnySetter
-    fun setUpTempComponents(name: String, value: Any)
+    fun setUpTempComponents(name: String, value: Any?)
     {
         tempComponents[name] = value
     }

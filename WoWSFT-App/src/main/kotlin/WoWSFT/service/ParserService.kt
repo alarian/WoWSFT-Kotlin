@@ -51,7 +51,7 @@ class ParserService
 
         shipUpgrades.forEach { (type, upgrade) ->
             if (!type.equals(hull, ignoreCase = true)) {
-                if (shipUpgrades[hull]!!.components[type]!!.isEmpty()) {
+                if (shipUpgrades[hull]?.components?.get(type).isNullOrEmpty()) {
                     if (shipUpgrades[upgrade.prevType]!!.position >= upgrade.prevPosition) {
                         ship.modules[type] = upgrade.components[type]!![0]
                     }

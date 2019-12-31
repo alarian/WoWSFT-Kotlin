@@ -91,9 +91,9 @@ class PenetrationUtils
             }
         }
         if (apShell) {
-            shell.setShell(flightTime, penetration, impactAngle, distanceList, LinkedHashMap(), minDistV, true)
+            shell.setShell(flightTime, penetration, impactAngle, distanceList, minDistV)
         } else {
-            shell.setShell(flightTime, LinkedHashMap(), LinkedHashMap(), mutableListOf(), LinkedHashMap(), minDistV, false)
+            shell.setShell(flightTime, LinkedHashMap(), LinkedHashMap(), mutableListOf(), minDistV)
         }
     }
 

@@ -13,7 +13,8 @@ dependencies {
 //    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 }
 
-val Project.profile get() = findProperty("profile") ?: "dev"
+val Project.profile get() = "dev"
+//val Project.profile get() = findProperty("profile") ?: "dev"
 
 sourceSets {
     main {

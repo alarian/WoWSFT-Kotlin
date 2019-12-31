@@ -5,7 +5,7 @@ import WoWSFT.config.WoWSFT
 @WoWSFT
 class TypeInfo
 {
-    var nation = ""
-    var species = ""
-    var type = ""
+    var nation: String? = null
+    var species: String? = null
+    var type: String? = null
 }

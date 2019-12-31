@@ -5,8 +5,8 @@ import WoWSFT.config.WoWSFT
 @WoWSFT
 class Ships
 {
-    var nation = listOf<String>()
-    var peculiarity = listOf<String>()
-    var ships = listOf<String>()
-    var groups = listOf<String>()
+    var nation = mutableListOf<String>()
+    var peculiarity = mutableListOf<String>()
+    var ships = mutableListOf<String>()
+    var groups = mutableListOf<String>()
 }

@@ -9,6 +9,7 @@ import java.math.BigDecimal
     val distCoefWG = BigDecimal.valueOf(100.0 / 3.0)
     const val smallGun = 0.139
     const val oneCoeff = 1.0
+
     const val AP = "AP"
     const val HE = "HE"
     const val EN = "en"
@@ -19,6 +20,7 @@ import java.math.BigDecimal
     const val TITLE = "TITLE_"
     const val DESCRIPTION = "DESCRIPTION_"
     const val DESC = "DESC_"
+
     const val TYPE_SHIP = "ships"
     const val TYPE_SHIP_LIST = "shipsList"
     const val TYPE_WARSHIP = "warship"
@@ -32,12 +34,14 @@ import java.math.BigDecimal
     const val TYPE_MISC = "misc"
     const val TYPE_PROJECTILE = "Projectile"
     const val TYPE_AIRCRAFT = "Aircraft"
+
     const val FILE_GAMEPARAMS = "live/GameParams.zip"
     const val FILE_JSON = ".json"
     const val FILE_SHIPS_ZIP = "files.zip"
     const val FILE_SHELLS_ZIP = "shells.zip"
     const val DIR_SHIPS = "ships/"
     const val DIR_SHELL = "shells/"
+
     const val flightControl = "flightControl"
     const val artillery = "artillery"
     const val hull = "hull"
@@ -47,14 +51,17 @@ import java.math.BigDecimal
     const val torpedoBomber = "torpedoBomber"
     const val diveBomber = "diveBomber"
     const val engine = "engine"
+
     const val airArmament = "airArmament"
     const val airDefense = "airDefense"
     const val atba = "atba"
     const val fireControl = "fireControl"
-    val miscList = hashSetOf(TYPE_PROJECTILE, TYPE_AIRCRAFT)
-    val componentsList = hashSetOf(flightControl, artillery, hull, torpedoes, suo, fighter, torpedoBomber, diveBomber, engine)
-    val compStatsList = hashSetOf(flightControl, airArmament, airDefense, artillery, atba, hull, suo, torpedoes, fighter, torpedoBomber, diveBomber, engine)
-    @JvmField val globalLanguage = hashSetOf(EN)
+
+    val miscList = listOf(TYPE_PROJECTILE, TYPE_AIRCRAFT)
+    val componentsList = listOf(flightControl, artillery, hull, torpedoes, suo, fighter, torpedoBomber, diveBomber, engine)
+    val compStatsList = listOf(flightControl, airArmament, airDefense, artillery, atba, hull, suo, torpedoes, fighter, torpedoBomber, diveBomber, engine)
+
+    val globalLanguage = hashSetOf(EN)
     val excludeShipGroups = hashSetOf("unavailable", "disabled", "preserved", "clan")
     val supertestShipGroups = hashSetOf("demoWithoutStats")
     val researchShipGroups = hashSetOf("upgradeable", "start")
@@ -63,6 +70,7 @@ import java.math.BigDecimal
     val excludeShipSpecies = hashSetOf("Auxiliary", "Submarine")
     val excludeCompStats = hashSetOf("directors", "finders", "radars")
     val excludeModernization = hashSetOf("extra", "aimingtime")
+
     val coeff = hashSetOf("coef", "maxdist", "idealradius")
     val noUnit = hashSetOf("num")
     val extra = hashSetOf("count", "level", "additional")
@@ -74,7 +82,9 @@ import java.math.BigDecimal
     val angle = hashSetOf("angle")
     val time = hashSetOf("time")
     val speed = hashSetOf("speedbonus")
+
     const val maxBitsToInt = 3766517952L
+
     const val GENERAL_INTERNAL_ERROR = "GENERAL_INTERNAL_ERROR"
     const val LOAD_FINISH = "loadFinish"
     const val SLASH = "/"
