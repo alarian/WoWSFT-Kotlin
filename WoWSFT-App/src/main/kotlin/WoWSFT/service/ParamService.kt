@@ -2,22 +2,10 @@ package WoWSFT.service
 
 import WoWSFT.model.Constant.*
 import WoWSFT.model.gameparams.CommonModifier
-import WoWSFT.model.gameparams.consumable.Consumable
-import WoWSFT.model.gameparams.consumable.ConsumableSub
 import WoWSFT.model.gameparams.ship.Ship
-import WoWSFT.model.gameparams.ship.component.airarmament.AirArmament
-import WoWSFT.model.gameparams.ship.component.airdefense.AirDefense
 import WoWSFT.model.gameparams.ship.component.airdefense.Aura
-import WoWSFT.model.gameparams.ship.component.artillery.Artillery
-import WoWSFT.model.gameparams.ship.component.artillery.Shell
-import WoWSFT.model.gameparams.ship.component.artillery.Turret
-import WoWSFT.model.gameparams.ship.component.atba.ATBA
-import WoWSFT.model.gameparams.ship.component.atba.Secondary
-import WoWSFT.model.gameparams.ship.component.engine.Engine
-import WoWSFT.model.gameparams.ship.component.hull.Hull
 import WoWSFT.model.gameparams.ship.component.planes.Plane
 import WoWSFT.model.gameparams.ship.component.torpedo.Launcher
-import WoWSFT.model.gameparams.ship.component.torpedo.Torpedo
 import WoWSFT.utils.CommonUtils.getBonus
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper

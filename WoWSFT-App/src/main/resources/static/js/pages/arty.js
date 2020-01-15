@@ -83,7 +83,7 @@ $('#addSelect').on('click', function () {
                 for (var i = 0; i < apshell.distanceList.length; i++) {
                     var dist = Number(apshell.distanceList[i]);
 
-                    if (dist > 25000) {
+                    if (dist > 21000) {
                         break;
                     }
 
@@ -110,9 +110,9 @@ $('#addSelect').on('click', function () {
                 drawMaterialChart(data2, materialChart2, chartDiv2, selectedShip + ' ' + artyName, list2, 'Penetration (mm)', 'Impact Angle (deg)');
                 index++;
 
-                window.setTimeout(function() {
-                    $('circle').attr('r', 3);
-                }, waitTime);
+                // window.setTimeout(function() {
+                //     $('#arty circle').attr('r', 3);
+                // }, waitTime);
             }
         }
     });

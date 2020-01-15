@@ -173,6 +173,7 @@ class JsonParser
                 if (upgrade.position == 3 && ship.shipUpgradeInfo.components[key]!!.size < 3) {
                     upgrade.position = 2
                 }
+
                 upgrade.components.forEach { (cKey, cValue) ->
                     when (cKey.decapitalize()) {
                         artillery -> cValue.forEach { cVal -> ship.components.artillery[cVal] = mapper.convertValue(ship.tempComponents[cVal], Artillery::class.java) }
@@ -191,8 +192,9 @@ class JsonParser
                     }
                 }
             }
-            value.sortedWith(compareBy({ it.position }, { it.name }))
+            value.sortBy { it.position }
         }
+
         ship.shipUpgradeInfo.components.forEach { (_, value) ->
             value.forEach { upgrade ->
                 if (upgrade.prev.isNotEmpty()) {
@@ -210,6 +212,7 @@ class JsonParser
                     }
                 }
             }
+            value.sortBy { it.position }
         }
         ship.tempComponents = LinkedHashMap()
     }
@@ -296,6 +299,7 @@ class JsonParser
                 }
             }
         }
+
         ships.forEach { (_, ship) ->
             if (!ship.typeinfo.nation.isNullOrEmpty() && !ship.typeinfo.species.isNullOrEmpty()) {
                 shipsList.putIfAbsent(ship.typeinfo.nation!!, LinkedHashMap())

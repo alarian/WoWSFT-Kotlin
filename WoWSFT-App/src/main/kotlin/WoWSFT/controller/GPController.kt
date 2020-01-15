@@ -65,7 +65,7 @@ class GPController(
         @RequestParam(required = false, defaultValue = "100") ar: Int
     ): String
     {
-        var sSkills: Long
+        val sSkills: Long
 
         model.addAttribute("single", true)
         model.addAttribute(IDS, IDS_)

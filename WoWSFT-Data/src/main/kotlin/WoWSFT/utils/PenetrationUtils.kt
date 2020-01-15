@@ -7,17 +7,17 @@ import kotlin.math.*
 
 class PenetrationUtils
 {
-    // SHELL CONSTANTS
+    // CONSTANTS
     private val G = 9.80665 // GRAVITY # N / kg
-//    private static final double G = 9.8; // Gravity used by WG
+//    private static final double G = 9.8; // GRAVITY used by WG
     private val T_0 = 288.15 // TEMPERATURE AT SEA LEVEL # K
     private val L = 0.0065 // TEMPERATURE LAPSE RATE # K / m
     private val P_0 = 101325.0 // PRESSURE AT SEA LEVEL # Pa
     private val R = 8.31447 // UNIV GAS CONSTANT # N.m / (mol.K)
     private val M = 0.0289644 // MOLAR MASS OF AIR # kg / mol
 
-    private val intervalDeg = 0.05
-    private val dt = 0.03 // TIME STEP
+    private val intervalDeg = 0.10
+    private val dt = 0.06 // TIME STEP
 
     fun setPenetration(shell: Shell, maxVertAngle: Double, minDistV: Double, maxDist: Double, apShell: Boolean)
     {
@@ -36,9 +36,7 @@ class PenetrationUtils
         C = C * K / 2400.0 // KRUPP INCLUSION
         val k = 0.5 * c_D * Math.pow(D / 2.0, 2.0) * PI / W // CONSTANTS TERMS OF DRAG
 
-//        List<Double> alpha = linspace(PI * maxVertAngle / 360.0 * 2.0); // ELEV. ANGLES 0...MAX
         val alpha = linspace(maxVertAngle) // ELEV Deg. ANGLES 0...MAX
-        val dt = 0.03 // TIME STEP
 
         val penetration = LinkedHashMap<String, Double>()
         val flightTime = LinkedHashMap<String, Double>()
@@ -109,7 +107,6 @@ class PenetrationUtils
     {
 //        var begin = 0.0
         var countDeg = 0.0
-        val intervalDeg = 0.05
         val alpha = mutableListOf<Double>()
 
         while (countDeg <= end) {
