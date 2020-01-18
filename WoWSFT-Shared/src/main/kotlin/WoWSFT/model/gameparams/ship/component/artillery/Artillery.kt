@@ -32,6 +32,7 @@ class Artillery
     var shells = LinkedHashMap<String, Shell>()
     @JsonIgnore
     private val mapper = ObjectMapper()
+    val numBarrels: Int get() = turretTypes.entries.sumBy { it.key * (it.value[0] as Int) }
 
     @JsonAnySetter
     fun setGuns(name: String, value: Any?) {

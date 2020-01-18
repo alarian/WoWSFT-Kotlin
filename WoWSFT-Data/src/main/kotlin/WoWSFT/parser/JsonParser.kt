@@ -305,7 +305,7 @@ class JsonParser
                 shipsList.putIfAbsent(ship.typeinfo.nation!!, LinkedHashMap())
                 shipsList[ship.typeinfo.nation!!]?.putIfAbsent(ship.realShipTypeId.toUpperCase(), LinkedHashMap())
                 shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!!.putIfAbsent(ship.typeinfo.species!!.toUpperCase(), LinkedHashMap())
-                shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species!!.toUpperCase()]!!.putIfAbsent(ship.level, ArrayList())
+                shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species!!.toUpperCase()]!!.putIfAbsent(ship.level, mutableListOf())
                 val arties = mutableListOf<String>()
                 ship.shipUpgradeInfo.components[artillery]?.forEach { arty -> arties.add(arty.name) }
 

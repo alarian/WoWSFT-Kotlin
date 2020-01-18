@@ -67,6 +67,10 @@
                             <td th:text="${global.get('IDS_SHIP_PARAM_AMMO_' + ammo.ammoType.toUpperCase())}"></td>
                         </tr>
                         <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                            <td th:text="${'Raw DPM'}"></td>
+                            <td th:text="${#numbers.formatInteger(ammo.alphaDamage * 60.0 / turret0.shotDelay * artillery.numBarrels, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
                             <td th:text="${global.get('IDS_MAX_DAMAGE')}"></td>
                             <td th:text="${#numbers.formatInteger(ammo.alphaDamage, 1, 'COMMA')}"></td>
                         </tr>

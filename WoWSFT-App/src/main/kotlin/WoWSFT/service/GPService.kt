@@ -50,7 +50,7 @@ class GPService(
                             && upgrade.nation.contains(ship.typeinfo.nation) && upgrade.shiptype.contains(ship.typeinfo.species)
                             && upgrade.shiplevel.contains(ship.level)) || upgrade.ships.contains(ship.name)) {
                     if (upgradesList.size < upgrade.slot + 1) {
-                        upgradesList.add(ArrayList())
+                        upgradesList.add(mutableListOf())
                     }
                     upgradesList[upgrade.slot].add(upgrade)
                 }

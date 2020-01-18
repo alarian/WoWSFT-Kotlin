@@ -304,7 +304,8 @@ class ParamService
         }
     }
 
-    private fun setPlanes(ship: Ship, plane: Plane, modifier: CommonModifier) {
+    private fun setPlanes(ship: Ship, plane: Plane, modifier: CommonModifier)
+    {
         if (plane.hangarSettings != null) {
             plane.hangarSettings!!.timeToRestore = plane.hangarSettings!!.timeToRestore * modifier.planeSpawnTimeCoefficient * modifier.airplanesSpawnTime
         }
@@ -318,7 +319,7 @@ class ParamService
         plane.speedMove = plane.speedMove * modifier.flightSpeedCoefficient
         plane.maxVisibilityFactor = plane.maxVisibilityFactor * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
         plane.maxVisibilityFactorByPlane = plane.maxVisibilityFactorByPlane * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
-        plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.airplanesSpeed * (oneCoeff + ship.adrenaline / modifier.squadronHealthStep * modifier.squadronSpeedStep)
+        plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.airplanesSpeed * (oneCoeff + ship.adrenaline / modifier.hpStep * modifier.squadronSpeedStep)
         plane.consumables.forEach { c ->
             c.subConsumables.forEach { (_, v) ->
                 v.reloadTime = v.reloadTime * if ("AllSkillsCooldownModifier".equals(modifier.modifier, ignoreCase = true)) modifier.reloadCoefficient else oneCoeff

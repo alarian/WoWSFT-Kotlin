@@ -83,7 +83,7 @@ class ParserService
 
     fun parseUpgrades(ship: Ship, bits: String)
     {
-        val list: MutableList<Int> = ArrayList()
+        val list = mutableListOf<Int>()
         if (bits.isNotEmpty()) {
             for (i in ship.upgrades.indices) {
                 if (i < bits.length && Character.isDigit(bits[i]) && Character.getNumericValue(bits[i]) <= ship.upgrades[i].size) {
