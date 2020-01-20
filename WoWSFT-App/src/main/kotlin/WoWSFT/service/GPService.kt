@@ -36,6 +36,7 @@ class GPService(
         if (ship != null) {
             setUpgrades(ship)
             setConsumables(ship)
+
             return ship
         }
         throw NullPointerException()

@@ -15,15 +15,15 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver
 @ComponentScan("WoWSFT")
 class WebConfig : WebMvcConfigurationSupport()
 {
-    @Bean
-    fun viewResolver(): ViewResolver
-    {
-        val resolver = InternalResourceViewResolver()
-        resolver.setPrefix("/templates/")
-        resolver.setSuffix(".html")
-        resolver.setExposeContextBeansAsAttributes(true)
-        return resolver
-    }
+//    @Bean
+//    fun viewResolver(): ViewResolver
+//    {
+//        val resolver = InternalResourceViewResolver()
+//        resolver.setPrefix("/templates/")
+//        resolver.setSuffix(".html")
+//        resolver.setExposeContextBeansAsAttributes(true)
+//        return resolver
+//    }
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>)
     {

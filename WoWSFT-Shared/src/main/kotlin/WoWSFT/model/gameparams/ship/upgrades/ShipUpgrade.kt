@@ -31,7 +31,7 @@ class ShipUpgrade
     @JsonInclude
     var elem = 0
     var prevType = ""
-        get() = if (field.isEmpty()) ucTypeShort else field
+        get() = if (field.isBlank()) ucTypeShort else field
     @JsonInclude
     var prevPosition = 0
     var prevElem = 0

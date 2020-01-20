@@ -184,4 +184,17 @@ open class CommonModifier
     var prioSectorPhaseDurationCoefficient = 1.0
     var prioSectorStartPhaseStrengthCoefficient = 1.0
     var prioSectorStrengthCoefficient = 1.0
+
+    var abilReloadTimeFactor = 1.0
+    var burnChanceFactorBig = 1.0
+    var burnChanceFactorSmall = 1.0
+    var collisionDamageApply = 1.0
+    var collisionDamageNerf = 1.0
+    var damageCoeffGM = 1.0
+    var damageCoeffTorpedo = 1.0
+    var floodChanceFactor = 1.0
+    var floodChanceFactorPlane = 1.0
+    var regenerationHPSpeed = 1.0
+    var regenerationPlaneRate = 1.0
+    var speedCoef= 1.0
 }

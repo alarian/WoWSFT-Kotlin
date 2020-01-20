@@ -17,7 +17,7 @@ open class ExceptionController
     @ExceptionHandler(Exception::class)
     fun otherErrors(t: Throwable, request: HttpServletRequest): CustomMessage
     {
-        log.info(request.requestURL.toString() + (if (!request.queryString.isNullOrEmpty()) "?${request.queryString}" else ""))
+        log.info(request.requestURL.toString() + (if (!request.queryString.isNullOrBlank()) "?${request.queryString}" else ""))
         log.error(t.localizedMessage, t)
 
         return CustomMessage("1001", GENERAL_INTERNAL_ERROR)

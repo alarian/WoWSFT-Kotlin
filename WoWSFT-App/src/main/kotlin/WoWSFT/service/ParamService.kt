@@ -83,7 +83,7 @@ class ParamService
 
         for (i in ship.selectSkills.indices) {
             if (ship.selectSkills[i] == 1) {
-                val modifier = mapper.convertValue(ship.commander!!.cSkills[i / 8][i % 8], CommonModifier::class.java)
+                val modifier = mapper.convertValue(ship.commander!!.crewSkills[i / 8][i % 8], CommonModifier::class.java)
                 setUpgrades(ship, modifier)
             }
         }

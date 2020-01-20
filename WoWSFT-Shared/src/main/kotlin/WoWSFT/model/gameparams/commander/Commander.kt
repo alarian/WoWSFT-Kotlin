@@ -2,10 +2,7 @@ package WoWSFT.model.gameparams.commander
 
 import WoWSFT.config.WoWSFT
 import WoWSFT.model.gameparams.TypeInfo
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.*
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 
@@ -20,8 +17,8 @@ class Commander
     var index = ""
     var name = ""
     var typeinfo = TypeInfo()
-    @JsonProperty("cSkills")
-    var cSkills = MutableList(4) { MutableList(8) { Skill() } }
+    @JsonProperty("CrewSkills")
+    var crewSkills = MutableList(4) { MutableList(8) { Skill() } }
 
     @JsonIgnore
     private val mapper = ObjectMapper()
@@ -32,7 +29,7 @@ class Commander
             val temp = mapper.convertValue(value, object : TypeReference<LinkedHashMap<String, Skill>>() {})
             temp.forEach { (k: String, v: Skill) ->
                 v.modifier = k
-                cSkills[v.tier - 1][v.column] = v
+                crewSkills[v.tier - 1][v.column] = v
             }
         }
     }

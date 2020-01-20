@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="flags" class="panel_left" data-type="flags" th:with="nation=${warship.typeinfo.nation}">
+    <div class="switch" data-type="flags">
+        <strong th:text="${global.get('IDS_FLAG')} + ' : '"></strong><strong class="points" th:text="${'0'}"></strong><strong th:text="${' / ' + warship.maxEquippedFlags}"></strong>
+    </div>
+    <table class="toggle flags">
+        <tbody>
+            <tr th:each="i : ${#numbers.sequence(1, T(Math).ceil(flags.size() / 6))}">
+                <td th:each="flag : ${flags}" th:if="${i * 6 > flagStat.index and flagStat.index >= (i - 1) * 6}">
+                    <button class="button_flag">
+                        <img th:src="${flag.value.image}"/>
+                        <table class="tooltip">
+                            <tbody>
+                            <tr><td colspan="2"><th:block th:utext="${global.get(IDS + flag.key.toUpperCase())}"></th:block></td></tr>
+                            <tr><td colspan="2">&nbsp;</td></tr>
+                            <tr><td colspan="2"><th:block th:utext="${#strings.replace(global.get(IDS + flag.key.toUpperCase() + '_DESCRIPTION'), '&#10', '<br />')}"></th:block></td></tr>
+                            <th:block th:each="b : ${flag.value.bonus}" th:with="desc=${global.get(IDS + b.key) != null ? global.get(IDS + b.key) : ''}">
+                                <tr th:if="${desc != null}" class="tooltip_desc">
+                                    <td th:utext="${desc}"></td>
+                                    <td th:utext="${b.value}"></td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

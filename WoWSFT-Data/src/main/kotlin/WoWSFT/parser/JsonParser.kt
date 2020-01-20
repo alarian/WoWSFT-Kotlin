@@ -20,11 +20,13 @@ import WoWSFT.model.gameparams.ship.upgrades.*
 import WoWSFT.service.ParamService
 import WoWSFT.utils.CommonUtils
 import WoWSFT.utils.PenetrationUtils
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.core.util.DefaultIndenter
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
@@ -52,24 +54,23 @@ class JsonParser
     private val flags = LinkedHashMap<String, Flag>()
     private val shells = HashMap<String, Shell>()
     private val misc = HashMap<String, Any>()
+    private val penetrationUtils = PenetrationUtils()
 
-    private val mapper = ObjectMapper()
+    private val mapper = ObjectMapper().registerKotlinModule()
 
     companion object {
         private val log = LoggerFactory.getLogger(JsonParser::class.java)
-        private val penetrationUtils = PenetrationUtils()
     }
 
     init {
-        mapper.registerModule(KotlinModule())
-
+        val indenter: Indenter = DefaultIndenter("    ", DefaultIndenter.SYS_LF)
+        val printer = DefaultPrettyPrinter()
+        printer.indentObjectsWith(indenter)
+        printer.indentArraysWith(indenter)
+        mapper.setDefaultPrettyPrinter(printer)
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
-//        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-//        mapper.configure(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature(), false)
-//        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-//        mapper.configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
-//        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true)
-//        mapper.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
+
+        repeat(6) { upgrades[it] = LinkedHashMap() }
     }
 
     @Throws(IOException::class)
@@ -87,16 +88,15 @@ class JsonParser
     fun setGameParams()
     {
         log.info("Setting up GameParams")
+
         val zf = ZipFile(ClassPathResource("/json/live/GameParams.zip").file.path)
         val temp = mapper.readValue(zf.getInputStream(zf.entries().nextElement()), object : TypeReference<LinkedHashMap<String, LinkedHashMap<String, Any>>>() {})
-        for (i in 0..5) {
-            upgrades[i] = LinkedHashMap()
-        }
+
         temp.forEach { (key, value) ->
             val typeInfo = mapper.convertValue(value["typeinfo"], TypeInfo::class.java)
             if (typeInfo.type.equals("Ship", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !excludeShipSpecies.contains(typeInfo.species)) {
                 val ship = mapper.convertValue(value, Ship::class.java)
-                if (!excludeShipGroups.contains(ship.group) && (ship.defaultCrew.isNullOrEmpty() || ship.defaultCrew!!.contains("PWW"))) {
+                if (!excludeShipGroups.contains(ship.group) && (ship.defaultCrew.isNullOrBlank() || ship.defaultCrew!!.contains("PWW"))) {
                     ship.shipUpgradeInfo.components.forEach { (cType, c) -> c.forEach { su ->
                             for (s in excludeCompStats) {
                                 su.components.remove(s)
@@ -145,10 +145,12 @@ class JsonParser
                 gameParamsHM[key] = value
             }
         }
+
         generateShipsList()
         sortUpgrades()
         setCommanderParams()
         sortFlags()
+
         temp.clear()
     }
 
@@ -262,7 +264,7 @@ class JsonParser
                 components.forEach { component ->
                     if (component.nextShips.isNotEmpty()) {
                         component.nextShips.forEach { ns ->
-                            if (idToName[ns] != null) {
+                            if (!idToName[ns].isNullOrBlank()) {
                                 var currentPosition = component.position
                                 var current = component.name
                                 var prev = component.prev
@@ -301,7 +303,7 @@ class JsonParser
         }
 
         ships.forEach { (_, ship) ->
-            if (!ship.typeinfo.nation.isNullOrEmpty() && !ship.typeinfo.species.isNullOrEmpty()) {
+            if (!ship.typeinfo.nation.isNullOrBlank() && !ship.typeinfo.species.isNullOrBlank()) {
                 shipsList.putIfAbsent(ship.typeinfo.nation!!, LinkedHashMap())
                 shipsList[ship.typeinfo.nation!!]?.putIfAbsent(ship.realShipTypeId.toUpperCase(), LinkedHashMap())
                 shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!!.putIfAbsent(ship.typeinfo.species!!.toUpperCase(), LinkedHashMap())
@@ -374,10 +376,10 @@ class JsonParser
 
     private fun sortUpgrades()
     {
-        upgrades.forEach { (slot, mod) ->
+        upgrades.forEach { (_, mod) ->
             mod.entries.sortedBy { it.key }.forEach { u ->
-                upgrades[slot]?.remove(u.key)
-                upgrades[slot]!![u.key] = u.value
+                mod.remove(u.key)
+                mod[u.key] = u.value
             }
         }
     }
@@ -393,7 +395,7 @@ class JsonParser
     private fun setCommanderParams()
     {
         commanders.forEach { (_, commander) ->
-            commander.cSkills.forEach { r ->
+            commander.crewSkills.forEach { r ->
                 r.forEach { s ->
                     s.bonus = CommonUtils.getBonus(mapper.convertValue(s, object : TypeReference<LinkedHashMap<String, Any>>() {}))
                 }
@@ -412,26 +414,29 @@ class JsonParser
         for ((key, value) in ships) {
             val tempJson = "$directory$key$FILE_JSON"
             val f = File(tempJson)
-            mapper.writerWithDefaultPrettyPrinter().writeValue(f, value)
+            mapper.writeValue(f, value)
         }
 
         for ((key, value) in misc) {
             val tempJson = "$directory$key$FILE_JSON"
             val f = File(tempJson)
-            mapper.writerWithDefaultPrettyPrinter().writeValue(f, value)
+            mapper.writeValue(f, value)
         }
 
         var f = File("$directory$TYPE_SHIP_LIST$FILE_JSON")
-        mapper.writerWithDefaultPrettyPrinter().writeValue(f, shipsList)
+        mapper.writeValue(f, shipsList)
 
         f = File("$directory$TYPE_UPGRADE$FILE_JSON")
-        mapper.writerWithDefaultPrettyPrinter().writeValue(f, upgrades)
+        mapper.writeValue(f, upgrades)
 
         f = File("$directory$TYPE_CONSUMABLE$FILE_JSON")
-        mapper.writerWithDefaultPrettyPrinter().writeValue(f, consumables)
+        mapper.writeValue(f, consumables)
 
         f = File("$directory$TYPE_COMMANDER$FILE_JSON")
-        mapper.writerWithDefaultPrettyPrinter().writeValue(f, commanders)
+        mapper.writeValue(f, commanders)
+
+        f = File("$directory$TYPE_FLAG$FILE_JSON")
+        mapper.writeValue(f, flags)
 
         createZipFile(folder, directory.replace(DIR_SHIPS, FILE_SHIPS_ZIP))
 
@@ -448,8 +453,6 @@ class JsonParser
 
         val directory = CommonUtils.getGameParamsDir().replace(FILE_GAMEPARAMS, DIR_SHELL)
         var folder = getEmptyFolder(directory)
-
-        mapper.disable(SerializationFeature.INDENT_OUTPUT)
 
         for ((_, ship) in ships) {
             if (ship.shipUpgradeInfo.components[artillery]!!.size > 0) {
@@ -469,7 +472,7 @@ class JsonParser
 
                             val tempJson = "$directory$ammo$FILE_JSON"
                             val f = File(tempJson)
-                            mapper.writerWithDefaultPrettyPrinter().writeValue(f, shell)
+                            mapper.writeValue(f, shell)
                         }
                     }
                 }

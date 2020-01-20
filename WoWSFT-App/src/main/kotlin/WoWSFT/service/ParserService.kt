@@ -37,7 +37,7 @@ class ParserService
 
                 basePositions[type] = 1
                 value[0].components.forEach { (x, y) ->
-                    if (y.isNotEmpty() && baseModules[x].isNullOrEmpty()) {
+                    if (y.isNotEmpty() && baseModules[x].isNullOrBlank()) {
                         baseModules[x] = y[0]
                     }
                 }

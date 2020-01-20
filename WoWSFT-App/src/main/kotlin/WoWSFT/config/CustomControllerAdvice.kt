@@ -20,7 +20,7 @@ class CustomControllerAdvice
     @Throws(IOException::class)
     fun handleRequestMethodException(t: Throwable?, request: HttpServletRequest, response: HttpServletResponse)
     {
-        log.info(request.requestURL.toString() + (if (!request.queryString.isNullOrEmpty()) "?${request.queryString}" else ""))
+        log.info(request.requestURL.toString() + (if (!request.queryString.isNullOrBlank()) "?${request.queryString}" else ""))
         response.setHeader("Content-Type", "application/json;charset=UTF-8")
         response.writer.write("{\"message\":\"$GENERAL_INTERNAL_ERROR\",\"status\":\"1002\"}")
     }

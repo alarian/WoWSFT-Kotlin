@@ -55,7 +55,7 @@ class Ship
     var prevShipName = ""
     var prevShipXP = 0
     var prevShipCompXP = 0
-    val typeImage get() = if (!typeinfo.species.isNullOrEmpty() && realShipType.isNotEmpty()) "$CDN_IMAGE/vehicles/ship_classes/icon_${typeinfo.species!!.toLowerCase()}_standard.png" else ""
+    val typeImage get() = if (!typeinfo.species.isNullOrBlank() && realShipType.isNotEmpty()) "$CDN_IMAGE/vehicles/ship_classes/icon_${typeinfo.species!!.toLowerCase()}_standard.png" else ""
     val imageSmall get() = if (index.isNotEmpty()) "$CDN_IMAGE/vehicles/ship_previews/$index.png" else ""
     var planes = LinkedHashMap<String, String>()
     var consumables = mutableListOf<MutableList<Consumable>>()

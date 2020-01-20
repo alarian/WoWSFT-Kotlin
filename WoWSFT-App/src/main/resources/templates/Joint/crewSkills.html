@@ -28,7 +28,7 @@
         <tbody class="commander_body"
                th:each="commander : ${commanders.entrySet().?[value.CrewPersonality.ships.nation.contains(__${#strings.concat('''', nation, '''')}__) or key == 'PCW001']}"
                th:classappend="${commander.key != warship.commander.index ? 'disable' : ''}" th:attr="data-commander-index=${commander.key}">
-            <tr th:each="skillTier : ${commander.value.cSkills}">
+            <tr th:each="skillTier : ${commander.value.crewSkills}">
                 <td th:each="skill : ${skillTier}">
                     <button th:class="'button_skill'" th:classappend="${warship.selectSkills.get(skillTierStat.index * 8 + skillStat.index) == 1 ? 'select' : ''}"
                             th:attr="data-index=${skillTierStat.index}, data-position=${skillStat.index}">

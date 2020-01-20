@@ -33,7 +33,7 @@ class ShipUpgradeInfo
     {
         val upgrade = mapper.convertValue(value, ShipUpgrade::class.java)
         upgrade.name = name
-        upgrade.position = if (upgrade.prev.isEmpty()) 1 else 2
+        upgrade.position = if (upgrade.prev.isBlank()) 1 else 2
         components[upgrade.ucTypeShort]!!.add(upgrade)
     }
 }

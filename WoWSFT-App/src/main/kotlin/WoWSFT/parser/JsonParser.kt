@@ -3,6 +3,7 @@ package WoWSFT.parser
 import WoWSFT.model.Constant.*
 import WoWSFT.model.gameparams.commander.Commander
 import WoWSFT.model.gameparams.consumable.Consumable
+import WoWSFT.model.gameparams.flag.Flag
 import WoWSFT.model.gameparams.modernization.Modernization
 import WoWSFT.model.gameparams.ship.ShipIndex
 import com.fasterxml.jackson.core.type.TypeReference
@@ -31,6 +32,8 @@ open class JsonParser
     private lateinit var upgrades: LinkedHashMap<Int, LinkedHashMap<String, Modernization>>
     @Autowired @Qualifier(TYPE_COMMANDER)
     private lateinit var commanders: LinkedHashMap<String, Commander>
+    @Autowired @Qualifier(TYPE_FLAG)
+    private lateinit var flags: LinkedHashMap<String, Flag>
     @Autowired @Qualifier(TYPE_SHIP_LIST)
     private lateinit var shipsList: LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>
 
@@ -87,6 +90,10 @@ open class JsonParser
         val tempCommanders = mapper.readValue(zShip.getInputStream(zShip.getEntry("$TYPE_COMMANDER$FILE_JSON")),
             object : TypeReference<LinkedHashMap<String, Commander>>() {})
         commanders.putAll(tempCommanders)
+
+        val tempFlags = mapper.readValue(zShip.getInputStream(zShip.getEntry("$TYPE_FLAG$FILE_JSON")),
+            object : TypeReference<LinkedHashMap<String, Flag>>() {})
+        flags.putAll(tempFlags)
 
         val tempShipsList = mapper.readValue(zShip.getInputStream(zShip.getEntry("$TYPE_SHIP_LIST$FILE_JSON")),
             object : TypeReference<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>>() {})
