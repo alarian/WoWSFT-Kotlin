@@ -1,0 +1,174 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /*font-size: 100%;*/
+    color: inherit;
+    list-style: none;
+    text-decoration: none;
+    background: transparent;
+}
+
+body {
+    cursor: default;
+    /*min-width: 1408px;*/
+    /*max-width: 1792px;*/
+    background: rgba(0, 0, 0, 0.1);
+    color: black;
+    text-align: center;
+    margin: 0 auto;
+
+    -ms-overflow-style: none;
+    /*overflow: auto;*/
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+body::-webkit-scrollbar {
+    display: none !important;
+}
+
+.top {
+    /*display: inline-block;*/
+    background: rgba(173, 216, 230, 0.9);
+    width: 100%;
+    z-index: 10;
+    /*text-align: left;*/
+}
+
+.top ul {
+    overflow: hidden;
+    font-size: 0;
+}
+
+.top li {
+    font-size: 14px;
+    display: inline-block;
+}
+
+.top li:hover, .top li:active {
+    background: deepskyblue;
+    cursor: pointer;
+}
+
+.top li a:not(#patreon) {
+    display: block;
+    padding: 16px;
+}
+
+a#patreon {
+    display: block;
+    margin: 8px;
+    padding: 8px;
+    /*border-radius: 9999px;*/
+    background-color: rgb(232, 91, 70);
+}
+
+a#patreon span {
+    color: white;
+}
+
+img#logo {
+    width: 90%;
+    max-width: 300px;
+    height: auto;
+}
+
+.bottom-fix {
+    display: inline-flex;
+    text-align: left;
+    padding: 20px 10%;
+    word-break: keep-all;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+#notification {
+    text-align: center;
+    margin: 0 10%;;
+}
+
+#notification ul {
+    display: inline-block;
+    text-align: left;
+}
+
+.shipsList {
+    text-align: left;
+    display: block;
+    background: rgba(173, 216, 230, 0.9);
+    position: fixed;
+    top: 48px;
+    overflow-x: hidden;
+    z-index: 10;
+}
+
+.shipsList .starter {
+    position: fixed;
+}
+
+.shipsList ul {
+    background: rgba(173, 216, 230, 0.9);
+}
+
+@media screen and (max-width: 564px) {
+    .shipsList {
+        top: 0;
+        position: relative;
+        width: 150px;
+    }
+}
+
+@media screen and (min-width: 1408px) {
+    .shipsList {
+        position: absolute;
+        left: 50%;
+        margin-left: -704px;
+    }
+}
+
+.shipsList span {
+    display: block;
+    width: 150px;
+    padding: 8px 14px;
+}
+
+.dropdown_main {
+    text-align: left;
+    display: none;
+    position: absolute;
+    background: rgba(173, 216, 230, 0.9);
+    left: 150px;
+    margin-top: -32px;
+}
+
+.dropdown_sub {
+    text-align: left;
+    display: none;
+    position: absolute;
+    background: rgba(173, 216, 230, 0.9);
+    left: 150px;
+    margin-top: -32px;
+}
+
+.dropdown_sub span {
+    width: 200px;
+    padding: 8px 14px;
+}
+
+.shipsList span:hover, .shipsList span:active {
+    background: deepskyblue;
+    cursor: pointer;
+}
+
+.shipsList li:hover > .dropdown_main, .shipsList li:active > .dropdown_main,
+.dropdown_main li:hover > .dropdown_main, .dropdown_main li:active > .dropdown_main,
+.dropdown_main li:hover > .dropdown_sub, .dropdown_main li:active > .dropdown_sub {
+    display: block;
+    cursor: pointer;
+}

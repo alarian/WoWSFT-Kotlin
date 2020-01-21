@@ -31,9 +31,8 @@ class GPController(
     @Autowired private val parserService: ParserService
 ) : ExceptionController()
 {
-    private val mapper = ObjectMapper()
-
     companion object {
+        private val mapper = ObjectMapper()
         private const val lang = EN
     }
 
