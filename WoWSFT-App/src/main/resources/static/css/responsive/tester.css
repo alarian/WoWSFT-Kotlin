@@ -80,12 +80,16 @@ img#logo {
 }
 
 .bottom-fix {
-    display: inline-flex;
+    display: inline-block;
     text-align: left;
     padding: 20px 10%;
     word-break: keep-all;
     -ms-word-wrap: break-word;
     word-wrap: break-word;
+}
+
+.bottom-fix h4 {
+    text-align: center;
 }
 
 #notification {
@@ -116,6 +120,17 @@ img#logo {
     background: rgba(173, 216, 230, 0.9);
 }
 
+.shipsList span {
+    display: block;
+    width: 150px;
+    padding: 10px 14px;
+}
+
+.shipsList span:hover, .shipsList span:active {
+    background: deepskyblue;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 564px) {
     .shipsList {
         top: 0;
@@ -132,38 +147,17 @@ img#logo {
     }
 }
 
-.shipsList span {
-    display: block;
-    width: 150px;
-    padding: 8px 14px;
-}
-
-.dropdown_main {
+.dropdown_main, .dropdown_sub {
     text-align: left;
     display: none;
     position: absolute;
     background: rgba(173, 216, 230, 0.9);
     left: 150px;
-    margin-top: -32px;
-}
-
-.dropdown_sub {
-    text-align: left;
-    display: none;
-    position: absolute;
-    background: rgba(173, 216, 230, 0.9);
-    left: 150px;
-    margin-top: -32px;
+    margin-top: -36px;
 }
 
 .dropdown_sub span {
     width: 200px;
-    padding: 8px 14px;
-}
-
-.shipsList span:hover, .shipsList span:active {
-    background: deepskyblue;
-    cursor: pointer;
 }
 
 .shipsList li:hover > .dropdown_main, .shipsList li:active > .dropdown_main,
@@ -171,4 +165,202 @@ img#logo {
 .dropdown_main li:hover > .dropdown_sub, .dropdown_main li:active > .dropdown_sub {
     display: block;
     cursor: pointer;
+}
+
+.shipTree {
+    display: inline-block;
+}
+
+.shipTree a {
+    display: block;
+}
+
+.shipTree a img {
+    width: 72px;
+}
+
+.shipTree a span {
+    font-size: 12px;
+    width: 72px;
+    display: block;
+    word-break: keep-all;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.info_box {
+    text-align: center;
+    margin: 0 auto;
+    border: 0;
+    vertical-align: top;
+    padding-bottom: 10px;
+    /*display: table;*/
+}
+
+.info_box_inner {
+    display: inline-block;
+    vertical-align: top;
+    /*background: white;*/
+    text-decoration: none;
+    opacity: 1;
+    text-align: center;
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+    white-space: normal;
+    padding: 4px;
+}
+
+.panel_left {
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+}
+
+.panel_left[data-type=upgrades] {
+    padding: 4px;
+}
+
+.panel_left[data-type=upgrades] ul {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.panel_left table {
+    /*text-align: left;*/
+    /*width: 100%;*/
+    margin: 0 auto;
+    padding: 4px;
+}
+
+.panel_left:not(:last-of-type), .panel_right:not(:last-of-type) {
+    margin-bottom: 4px;
+}
+
+.module_gap {
+    width: 7px;
+}
+
+.button_module, .button_upgrade,
+.button_skill, .button_uSkill,
+.button_flag, .button_consumable,
+.button_plane_consumable {
+    background: transparent;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 5px;
+    font-size: 10px;
+    width: 60px;
+    height: 60px;
+    word-wrap: normal;
+    cursor: pointer;
+    vertical-align: top;
+    overflow: hidden;
+    white-space: normal;
+    margin: 2px;
+    z-index: 2;
+    padding: 0;
+}
+
+.button_module {
+    width: 72px;
+    height: 72px;
+}
+
+.button_module img {
+    vertical-align: middle;
+}
+
+.button_upgrade, .button_consumable {
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+}
+
+.disable {
+    display: none;
+}
+
+.hide {
+    display: none;
+}
+
+button img {
+    width: 40px;
+}
+
+.button_skill img {
+    width: 50px;
+    vertical-align: middle;
+}
+
+.overlay {
+    position: absolute;
+    top: 7px;
+    left: 4px;
+    background-image: url(https://cdn.wowsft.com/images/Icon/skill_special.png);
+    background-repeat: no-repeat;
+    opacity: 1;
+    padding: 12px;
+    font-size: 0;
+    text-align: center;
+}
+
+.select {
+    border:1px solid rgb(256,0,0);
+    border-radius: 5px;
+}
+
+.switch {
+    cursor: pointer;
+}
+
+button .tooltip {
+    font-size: 12px;
+    visibility: hidden;
+    position: absolute;
+    z-index: 3;
+    width: 200px;
+    border-collapse: collapse;
+    -webkit-transform: translate(40%, -100%);
+    -moz-transform: translate(40%, -100%);
+    -ms-transform: translate(40%, -100%);
+    -o-transform: translate(40%, -100%);
+    transform: translate(40%, -100%);
+}
+
+button .tooltip.invert {
+    -webkit-transform: translate(-100%, -120%);
+    -moz-transform: translate(-100%, -120%);
+    -ms-transform: translate(-100%, -120%);
+    -o-transform: translate(-100%, -120%);
+    transform: translate(-100%, -120%);
+}
+
+button .tooltip tr td:first-of-type {
+    width: 130px;
+    word-break: keep-all;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+button .tooltip tr td:nth-of-type(2) {
+    vertical-align: middle;
+    width: 50px;
+    padding: 0 0 0 20px;
+}
+
+button:hover > .tooltip {
+    /*display: inline-table;*/
+    visibility: visible;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0.9;
+    border: 1px solid black;
+}
+
+.switch {
+    vertical-align: top;
+    margin: 0 auto;
+    padding: 8px;
+}
+
+button .tooltip_desc {
+    border: 1px solid black;
 }

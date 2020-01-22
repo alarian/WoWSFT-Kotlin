@@ -72,6 +72,8 @@ class CustomFilter(
         val request = req as HttpServletRequest
         val response = res as HttpServletResponse
 
+        response.setHeader("Cache-Control", "no-cache")
+
         if (isRelease) {
             response.setHeader("Content-Security-Policy", contentSecurityPolicy)
             response.setHeader("Strict-Transport-Security", "max-age=15768000; includeSubDomains")

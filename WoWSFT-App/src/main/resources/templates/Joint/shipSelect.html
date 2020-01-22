@@ -4,30 +4,29 @@
 <th:block th:fragment="warshipStats">
     <div id="notification" th:if="${single and warship == null}">
         <br /><br />
-        <strong th:unless="${lang == 'ko'}">Click on a ship for fitting.</strong>
-        <strong th:if="${lang == 'ko'}">함선 선택</strong>
+        <strong>Click on a ship for fitting.</strong>
     </div>
     <div class="ship" th:attr="data-ship-index=${warship.index}, data-ship-position=${single ? '0' : dataIndex}" th:if="${warship != null}">
-        <div class="name" style="display: block;">
-            <div th:if="${warship.research and warship.prevShipIndex != null}" style="display: inline-block;">
-                <a style="padding: 0; margin: 0;" th:href="${'/ship?index=' + warship.prevShipIndex.toUpperCase()}">
-                    <img style="width: 72px;" th:src="'https://cdn.wowsft.com/images/vehicles/ship_previews/' + ${warship.prevShipIndex} + '.png'" /><br />
-                    <span style="font-size: 12px;" th:text="${global.get(IDS + warship.prevShipIndex.toUpperCase() + '_FULL')}"></span>
+        <div class="name">
+            <div class="shipTree" th:if="${warship.research and warship.prevShipIndex != null}">
+                <a th:href="${'/ship?index=' + warship.prevShipIndex.toUpperCase()}">
+                    <img th:src="'https://cdn.wowsft.com/images/vehicles/ship_previews/' + ${warship.prevShipIndex} + '.png'" />
+                    <span th:text="${global.get(IDS + warship.prevShipIndex.toUpperCase() + '_FULL')}"></span>
                 </a>
             </div>
-            <div style="display: inline-block;">
+            <div class="shipTree">
                 <img th:src="${warship.typeImage}"/><br />
-                <strong style="font-size: 1em;" th:text="${global.get(IDS + warship.typeinfo.nation.toUpperCase()) + ' ' + global.get(IDS + warship.typeinfo.species.toUpperCase())}"></strong><br /><br />
-                <strong style="font-size: 2em;" th:text="${global.get(IDS + warship.index.toUpperCase() + '_FULL')}"></strong><br />
+                <strong th:text="${global.get(IDS + warship.typeinfo.nation.toUpperCase()) + ' ' + global.get(IDS + warship.typeinfo.species.toUpperCase())}"></strong><br /><br />
+                <strong th:text="${global.get(IDS + warship.index.toUpperCase() + '_FULL')}"></strong><br />
                 <img th:title="${global.get(IDS + warship.index +'_DESCR')}" th:src="${warship.imageSmall}" />
             </div>
-            <div th:if="${warship.research and warship.shipUpgradeInfo.components.?[value.?[nextShips != null and nextShips.size() > 0].size() > 0].size() > 0}" style="display: inline-block;">
+            <div class="shipTree" th:if="${warship.research and warship.shipUpgradeInfo.components.?[value.?[nextShips != null and nextShips.size() > 0].size() > 0].size() > 0}">
                 <th:block th:each="comp : ${warship.shipUpgradeInfo.components.?[value.?[nextShips != null and nextShips.size() > 0].size() > 0]}">
                     <th:block th:each="module : ${comp.value}" th:if="${module.nextShips != null and module.nextShips.size() > 0}">
                         <th:block th:each="nShipName : ${module.nextShips}" th:with="nIndex=${#strings.substring(nShipName, 0, 7)}">
-                            <a style="padding: 0; margin: 0;" th:href="${'/ship?index=' + nIndex.toUpperCase()}">
-                                <img style="width: 72px;" th:src="'https://cdn.wowsft.com/images/vehicles/ship_previews/' + ${nIndex} + '.png'" /><br />
-                                <span style="font-size: 12px;" th:text="${global.get(IDS + nIndex + '_FULL')}"></span>
+                            <a th:href="${'/ship?index=' + nIndex.toUpperCase()}">
+                                <img th:src="'https://cdn.wowsft.com/images/vehicles/ship_previews/' + ${nIndex} + '.png'" />
+                                <span th:text="${global.get(IDS + nIndex + '_FULL')}"></span>
                             </a>
                         </th:block>
                     </th:block>
@@ -44,20 +43,20 @@
                                 <tr th:if="${i > 1 and warship.shipUpgradeInfo.maxRows >= i}">
                                     <th:block th:each="col : ${warship.shipUpgradeInfo.cols}" th:if="${col.value > 0}">
                                         <th:block th:with="mods=${warship.shipUpgradeInfo.components.get(col.key).?[position == __${i}__]}">
-                                            <td th:if="${colStat.index > 2}" style="width: 7px;"></td>
+                                            <td th:if="${colStat.index > 2}" class="module_gap"></td>
                                             <td th:each="module : ${mods}">
                                                 <img th:if="${module.prevType == module.ucTypeShort and module.prevPosition > 0}" src="https://cdn.wowsft.com/images/Icon/down.png" />
                                             </td>
                                             <td th:each="j : ${#numbers.sequence(1, col.value - mods.size())}" th:if="${col.value > mods.size()}"></td>
-                                            <td th:if="${2 > colStat.index}" style="width: 7px;"></td>
+                                            <td th:if="${2 > colStat.index}" class="module_gap"></td>
                                         </th:block>
                                     </th:block>
                                 </tr>
                                 <tr>
                                     <th:block th:each="col : ${warship.shipUpgradeInfo.cols}" th:if="${col.value > 0}">
                                         <th:block th:with="mods=${warship.shipUpgradeInfo.components.get(col.key).?[position == __${i}__]}">
-                                            <td th:if="${mods.size() == 0 and colStat.index > 2}" style="width: 7px;"></td>
-                                            <td th:each="module : ${mods}" th:if="${moduleStat.index == 0 and colStat.index > 2}" style="width: 7px;">
+                                            <td th:if="${mods.size() == 0 and colStat.index > 2}" class="module_gap"></td>
+                                            <td th:each="module : ${mods}" th:if="${moduleStat.index == 0 and colStat.index > 2}" class="module_gap">
                                                 <img th:if="${module.prevType != module.ucTypeShort and module.prevPosition == module.position}" src="https://cdn.wowsft.com/images/Icon/right.png" />
                                             </td>
                                             <td th:each="module : ${mods}">
@@ -70,8 +69,8 @@
                                                 </button>
                                             </td>
                                             <td th:each="j : ${#numbers.sequence(1, col.value - mods.size())}" th:if="${col.value > mods.size()}"></td>
-                                            <td th:if="${mods.size() == 0 and 2 > colStat.index}" style="width: 7px;"></td>
-                                            <td th:each="module : ${mods}" th:if="${2 > colStat.index}" style="width: 7px;">
+                                            <td th:if="${mods.size() == 0 and 2 > colStat.index}" class="module_gap"></td>
+                                            <td th:each="module : ${mods}" th:if="${2 > colStat.index}" class="module_gap">
                                                 <img th:if="${module.prevType != module.ucTypeShort and module.prevPosition == module.position}" src="https://cdn.wowsft.com/images/Icon/left.png" />
                                                 <img th:if="${i > 1 and warship.shipUpgradeInfo.components.get('hull').size() >= i
                                                               and 2 > warship.shipUpgradeInfo.components.get('hull').get(i - 1).prevElem
@@ -113,9 +112,9 @@
                     </ul>
                 </div>
                 <div class="panel_left" data-type="crewSkills" th:replace="Joint/crewSkills :: crewSkills"></div>
-                <div class="panel_left" data-type="flags" th:replace="Joint/flags :: flags"></div>
+<!--                <div class="panel_left" data-type="flags" th:replace="Joint/flags :: flags"></div>-->
             </div>
-            <th:block th:replace="Joint/rightInfo :: rightInfo"></th:block>
+<!--            <th:block th:replace="Joint/rightInfo :: rightInfo"></th:block>-->
         </div>
     </div>
 </th:block>
