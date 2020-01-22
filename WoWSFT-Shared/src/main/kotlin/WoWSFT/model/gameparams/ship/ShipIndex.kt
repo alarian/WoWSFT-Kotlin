@@ -4,25 +4,19 @@ class ShipIndex
 {
     constructor() {}
     constructor(
-        identifier: String,
-        index: String,
-        prevShipIndex: String,
-        prevShipName: String,
-        research: Boolean,
-        costXP: Int,
-        prevShipXP: Int,
-        prevShipCompXP: Int,
-        arties: MutableList<String>
-    ) {
-        this.identifier = identifier
-        this.index = index
-        this.prevShipIndex = prevShipIndex
-        this.prevShipName = prevShipName
-        this.research = research
-        this.costXP = costXP
-        this.prevShipXP = prevShipXP
-        this.prevShipCompXP = prevShipCompXP
-        this.arties = arties
+        ship: Ship,
+        artyList: List<String>
+    )
+    {
+        identifier = ship.name
+        index = ship.index
+        prevShipIndex = ship.prevShipIndex
+        prevShipName = ship.prevShipName
+        research = ship.research
+        costXP = ship.shipUpgradeInfo.costXP
+        prevShipXP = ship.prevShipXP
+        prevShipCompXP = ship.prevShipCompXP
+        arties = artyList
     }
 
     var identifier = ""
@@ -34,5 +28,5 @@ class ShipIndex
     var prevShipXP = 0
     var prevShipCompXP = 0
     var position = 0
-    var arties = mutableListOf<String>()
+    var arties = listOf<String>()
 }

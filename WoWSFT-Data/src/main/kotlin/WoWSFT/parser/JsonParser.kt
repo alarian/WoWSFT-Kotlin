@@ -96,7 +96,7 @@ class JsonParser
             val typeInfo = mapper.convertValue(value["typeinfo"], TypeInfo::class.java)
             if (typeInfo.type.equals("Ship", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !excludeShipSpecies.contains(typeInfo.species)) {
                 val ship = mapper.convertValue(value, Ship::class.java)
-                if (!excludeShipGroups.contains(ship.group) && (ship.defaultCrew.isNullOrBlank() || ship.defaultCrew!!.contains("PWW"))) {
+                if (!excludeShipGroups.contains(ship.group)) {
                     ship.shipUpgradeInfo.components.forEach { (cType, c) -> c.forEach { su ->
                             for (s in excludeCompStats) {
                                 su.components.remove(s)
@@ -303,16 +303,16 @@ class JsonParser
         }
 
         ships.forEach { (_, ship) ->
-            if (!ship.typeinfo.nation.isNullOrBlank() && !ship.typeinfo.species.isNullOrBlank()) {
+            val fullName = global[EN]?.get("$IDS_${ship.index.toUpperCase()}_FULL").toString()
+
+            if (fullName.isNotBlank() && !fullName.contains("ARP") && !ship.typeinfo.nation.isNullOrBlank() && !ship.typeinfo.species.isNullOrBlank()) {
                 shipsList.putIfAbsent(ship.typeinfo.nation!!, LinkedHashMap())
                 shipsList[ship.typeinfo.nation!!]?.putIfAbsent(ship.realShipTypeId.toUpperCase(), LinkedHashMap())
                 shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!!.putIfAbsent(ship.typeinfo.species!!.toUpperCase(), LinkedHashMap())
                 shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species!!.toUpperCase()]!!.putIfAbsent(ship.level, mutableListOf())
-                val arties = mutableListOf<String>()
-                ship.shipUpgradeInfo.components[artillery]?.forEach { arty -> arties.add(arty.name) }
 
                 shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species!!.toUpperCase()]!![ship.level]
-                    ?.add(ShipIndex(ship.name, ship.index, ship.prevShipIndex, ship.prevShipName, ship.research, ship.shipUpgradeInfo.costXP, ship.prevShipXP, ship.prevShipCompXP, arties))
+                    ?.add(ShipIndex(ship, ship.shipUpgradeInfo.components[artillery]?.map { it.name } ?: listOf()))
             }
         }
 
