@@ -288,8 +288,8 @@ function callPage($ship)
         type: 'post',
         success: function (data) {
             if (data.status === undefined) {
-                $('.info_box_inner.replace').remove();
-                $('.info_box').append(data);
+                $('.info_box.replace').remove();
+                $('.ship[data-ship-index=' + $shipIndex + ']').append(data);
                 // $('.ship').remove();
                 // $('.main').prepend(data);
 

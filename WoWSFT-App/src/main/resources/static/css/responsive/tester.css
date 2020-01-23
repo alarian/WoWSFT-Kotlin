@@ -9,14 +9,24 @@
     background: transparent;
 }
 
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
 body {
     cursor: default;
     /*min-width: 1408px;*/
     /*max-width: 1792px;*/
+    /*min-height: 1300px;*/
     background: rgba(0, 0, 0, 0.1);
     color: black;
     text-align: center;
     margin: 0 auto;
+    line-height: 22px;
 
     -ms-overflow-style: none;
     /*overflow: auto;*/
@@ -37,7 +47,7 @@ body::-webkit-scrollbar {
     /*display: inline-block;*/
     background: rgba(173, 216, 230, 0.9);
     width: 100%;
-    z-index: 10;
+    z-index: 5;
     /*text-align: left;*/
 }
 
@@ -79,45 +89,60 @@ img#logo {
     height: auto;
 }
 
+.main {
+    height: 100%;
+}
+
 .bottom-fix {
-    display: inline-block;
-    text-align: left;
-    padding: 20px 10%;
+    margin: 20px 10%;
     word-break: keep-all;
     -ms-word-wrap: break-word;
     word-wrap: break-word;
 }
 
-.bottom-fix h4 {
-    text-align: center;
+.bottom-fix div {
+    max-width: 700px;
+    display: inline-block;
+}
+
+.bottom-fix p {
+    text-align: left;
 }
 
 #notification {
-    text-align: center;
-    margin: 0 10%;;
+    margin: 20px 10%;
+    word-break: keep-all;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+#notification div {
+    max-width: 700px;
+    display: inline-block;
 }
 
 #notification ul {
     display: inline-block;
     text-align: left;
+    max-width: 700px;
 }
 
 .shipsList {
     text-align: left;
     display: block;
     background: rgba(173, 216, 230, 0.9);
-    position: fixed;
-    top: 48px;
-    overflow-x: hidden;
-    z-index: 10;
+    position: absolute;
+    top: 54px;
+    /*overflow-x: hidden;*/
+    z-index: 5;
 }
 
-.shipsList .starter {
-    position: fixed;
+.shipsList div {
+    z-index: inherit;
 }
 
-.shipsList ul {
-    background: rgba(173, 216, 230, 0.9);
+.shipsList .nation {
+    z-index: inherit;
 }
 
 .shipsList span {
@@ -131,21 +156,21 @@ img#logo {
     cursor: pointer;
 }
 
-@media screen and (max-width: 564px) {
-    .shipsList {
-        top: 0;
-        position: relative;
-        width: 150px;
-    }
-}
+/*@media screen and (max-width: 564px) {*/
+/*    .shipsList {*/
+/*        top: 0;*/
+/*        position: relative;*/
+/*        width: 150px;*/
+/*    }*/
+/*}*/
 
-@media screen and (min-width: 1408px) {
-    .shipsList {
-        position: absolute;
-        left: 50%;
-        margin-left: -704px;
-    }
-}
+/*@media screen and (min-width: 1408px) {*/
+/*    .shipsList {*/
+/*        !*position: absolute;*!*/
+/*        left: 50%;*/
+/*        margin-left: -704px;*/
+/*    }*/
+/*}*/
 
 .dropdown_main, .dropdown_sub {
     text-align: left;
@@ -153,22 +178,23 @@ img#logo {
     position: absolute;
     background: rgba(173, 216, 230, 0.9);
     left: 150px;
-    margin-top: -36px;
+    margin-top: -42px;
 }
 
 .dropdown_sub span {
     width: 200px;
 }
 
-.shipsList li:hover > .dropdown_main, .shipsList li:active > .dropdown_main,
-.dropdown_main li:hover > .dropdown_main, .dropdown_main li:active > .dropdown_main,
-.dropdown_main li:hover > .dropdown_sub, .dropdown_main li:active > .dropdown_sub {
+.shipsList .nation:hover > .dropdown_main, .shipsList .nation:active > .dropdown_main,
+.dropdown_main div:hover > .dropdown_main, .dropdown_main div:active > .dropdown_main,
+.dropdown_main div:hover > .dropdown_sub, .dropdown_main div:active > .dropdown_sub {
     display: block;
     cursor: pointer;
 }
 
 .shipTree {
     display: inline-block;
+    min-width: 72px;
 }
 
 .shipTree a {
@@ -194,7 +220,7 @@ img#logo {
     border: 0;
     vertical-align: top;
     padding-bottom: 10px;
-    /*display: table;*/
+    display: inline-block;
 }
 
 .info_box_inner {
@@ -208,6 +234,10 @@ img#logo {
     border-radius: 5px;
     white-space: normal;
     padding: 4px;
+}
+
+.info_box_inner table {
+    border-spacing: 0;
 }
 
 .panel_left {
@@ -233,6 +263,55 @@ img#logo {
 
 .panel_left:not(:last-of-type), .panel_right:not(:last-of-type) {
     margin-bottom: 4px;
+}
+
+.panel_left[data-type=crewSkills] td {
+    /*padding: 4px;*/
+    position: relative;
+}
+
+.panel_right {
+    width: 360px;
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+}
+
+.panel_right div {
+    vertical-align: top;
+    margin: 0 auto;
+    padding: 4px;
+}
+
+.panel_right table {
+    text-align: left;
+    width: 100%;
+    padding: 4px;
+}
+
+.panel_right table tr td:first-of-type {
+    width: 236px;
+}
+
+.panel_right table tr td[colspan="2"] {
+    width: 352px;
+}
+
+.panel_right table tbody tr td:nth-of-type(2) {
+    width: 116px;
+    text-align: right;
+}
+
+.panel_right tr.subsystem {
+    background: rgba(0, 0, 0, 0.1)
+}
+
+.panel_right[data-type=consumables] {
+    padding: 4px 0;
+}
+
+.panel_right[data-type=consumables] ul {
+    display: inline-block;
+    vertical-align: top;
 }
 
 .module_gap {
@@ -280,6 +359,13 @@ img#logo {
 
 .hide {
     display: none;
+}
+
+.hidden {
+    width: 0;
+    height: 0;
+    display: none;
+    visibility: hidden;
 }
 
 button img {

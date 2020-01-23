@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<th:block th:fragment="rightInfo" th:if="${warship != null}"
+<div class="info_box replace" th:fragment="rightInfo" th:if="${warship != null}"
           th:with="nation=${warship.typeinfo.nation},
             artillery=${warship.modules.containsKey('artillery') ? warship.components.artillery.get(warship.modules.get('artillery')) : null},
             suo=${warship.modules.containsKey('suo') ? warship.components.suo.get(warship.modules.get('suo')) : null},
@@ -895,6 +895,6 @@
             </ul>
         </div>
     </div>
-</th:block>
+</div>
 </body>
 </html>

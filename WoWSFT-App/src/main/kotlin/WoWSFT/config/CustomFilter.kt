@@ -73,6 +73,7 @@ class CustomFilter(
         val response = res as HttpServletResponse
 
         response.setHeader("Cache-Control", "no-cache")
+        response.setHeader("Pragma", "no-cache")
 
         if (isRelease) {
             response.setHeader("Content-Security-Policy", contentSecurityPolicy)

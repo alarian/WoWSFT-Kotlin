@@ -11,7 +11,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta charset="utf-8" />
     <link rel="icon" href="/images/Icon/WoWSFT_Icon.png" />
-    <link rel="stylesheet" type="text/css" href="/css/responsive/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/css/responsive/tester.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <script src="/js/jquery/jquery-3.4.1.min.js"></script>
@@ -19,8 +18,7 @@
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5KDG7W6"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe class="hidden" src="https://www.googletagmanager.com/ns.html?id=GTM-5KDG7W6"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <header>
     <div class="top"><div th:replace="top :: top"></div></div>
@@ -34,7 +32,7 @@
                 <span th:utext="${notice.value}"></span>
             </li>
         </ul>
-    </div><br />
+    </div>
     <div th:replace="bottom :: bottom"></div>
 </main>
 <script src="/js/pages/touch.js"></script>
