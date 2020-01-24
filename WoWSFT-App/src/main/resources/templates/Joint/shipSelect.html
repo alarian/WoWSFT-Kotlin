@@ -9,7 +9,7 @@
         <div class="name">
             <div class="shipTree">
                 <a th:href="${'/ship?index=' + warship.prevShipIndex.toUpperCase()}"
-                   th:if="${warship.research and warship.prevShipIndex != null}">
+                   th:if="${warship.research and !#strings.isEmpty(warship.prevShipIndex)}">
                     <img th:src="'https://cdn.wowsft.com/images/vehicles/ship_previews/' + ${warship.prevShipIndex} + '.png'" />
                     <span th:text="${global.get(IDS + warship.prevShipIndex.toUpperCase() + '_FULL')}"></span>
                 </a>
@@ -46,7 +46,7 @@
                                         <th:block th:with="mods=${warship.shipUpgradeInfo.components.get(col.key).?[position == __${i}__]}">
                                             <td th:if="${colStat.index > 2}" class="module_gap"></td>
                                             <td th:each="module : ${mods}">
-                                                <img th:if="${module.prevType == module.ucTypeShort and module.prevPosition > 0}" src="https://cdn.wowsft.com/images/Icon/down.png" />
+                                                <span th:if="${module.prevType == module.ucTypeShort and module.prevPosition > 0}">&#9660;</span>
                                             </td>
                                             <td th:each="j : ${#numbers.sequence(1, col.value - mods.size())}" th:if="${col.value > mods.size()}"></td>
                                             <td th:if="${2 > colStat.index}" class="module_gap"></td>
@@ -58,7 +58,7 @@
                                         <th:block th:with="mods=${warship.shipUpgradeInfo.components.get(col.key).?[position == __${i}__]}">
                                             <td th:if="${mods.size() == 0 and colStat.index > 2}" class="module_gap"></td>
                                             <td th:each="module : ${mods}" th:if="${moduleStat.index == 0 and colStat.index > 2}" class="module_gap">
-                                                <img th:if="${module.prevType != module.ucTypeShort and module.prevPosition == module.position}" src="https://cdn.wowsft.com/images/Icon/right.png" />
+                                                <span th:if="${module.prevType != module.ucTypeShort and module.prevPosition == module.position}">&#9654;</span>
                                             </td>
                                             <td th:each="module : ${mods}">
                                                 <button th:class="'button_module'"
@@ -72,11 +72,12 @@
                                             <td th:each="j : ${#numbers.sequence(1, col.value - mods.size())}" th:if="${col.value > mods.size()}"></td>
                                             <td th:if="${mods.size() == 0 and 2 > colStat.index}" class="module_gap"></td>
                                             <td th:each="module : ${mods}" th:if="${2 > colStat.index}" class="module_gap">
-                                                <img th:if="${module.prevType != module.ucTypeShort and module.prevPosition == module.position}" src="https://cdn.wowsft.com/images/Icon/left.png" />
-                                                <img th:if="${i > 1 and warship.shipUpgradeInfo.components.get('hull').size() >= i
+                                                <span th:if="${module.prevType != module.ucTypeShort and module.prevPosition == module.position}"
+                                                >&#9664;</span>
+                                                <span th:if="${i > 1 and warship.shipUpgradeInfo.components.get('hull').size() >= i
                                                               and 2 > warship.shipUpgradeInfo.components.get('hull').get(i - 1).prevElem
                                                               and warship.shipUpgradeInfo.components.get('hull').get(i - 1).position > 1}"
-                                                     src="https://cdn.wowsft.com/images/Icon/right.png" />
+                                                >&#9654;</span>
                                             </td>
                                         </th:block>
                                     </th:block>

@@ -80,16 +80,16 @@ $(document).on('click', '.button_consumable', function (e) {
         $ship = $this.parents('.ship'),
         $consumables = $ship.find('.button_consumable[data-index=' + $index + ']');
 
-    if (!$this.hasClass('select')) {
-        for (var i = 0; i < $consumables.length; i++) {
-            $consumables.eq(i).removeClass('select');
-            $consumables.eq(i).addClass('hide');
-        }
-        $this.addClass('select');
-        $this.removeClass('hide');
-    } else {
-        $consumables.removeClass('hide');
+    if ($this.hasClass('select')) {
+        return false;
     }
+
+    for (var i = 0; i < $consumables.length; i++) {
+        $consumables.eq(i).removeClass('select');
+        $consumables.eq(i).addClass('hide');
+    }
+    $this.addClass('select');
+    $this.removeClass('hide');
 });
 
 $(document).on('click', function () {
@@ -332,10 +332,31 @@ $(document).on('input mouseup', '.arSlider', function (e) {
 $(document).on('change', '[name=commander]', function () {
     var $this = $(this),
         $ship = $this.parents('.ship'),
-        $sCommander = $this.val();
+        $commanders = $ship.find('.commander_body'),
+        $sCommander = $ship.find('[name=commander]').val(),
+        $curCommander = $ship.find('[data-commander-index=' + $sCommander + ']'),
+        $skills = $curCommander.find('.button_skill.select');
 
-    $('.commander_body').addClass('disable');
-    $('.commander_body[data-commander-index=' + $sCommander + ']').removeClass('disable');
+    $commanders.addClass('disable');
+    $curCommander.removeClass('disable');
 
-    delayCall($ship);
+    if ($skills.length) {
+        delayCall($ship);
+    }
+});
+
+$(document).on('click', '.shipsList_expand .shipsList_top', function (e) {
+    // e.stopPropagation();
+    var $this = $(this),
+        $nations = $('.nation');
+
+    if ($this.hasClass('expand')) {
+        $this.removeClass('expand');
+        $this.addClass('contract');
+        $nations.removeClass('hide');
+    } else {
+        $this.removeClass('contract');
+        $this.addClass('expand');
+        $nations.addClass('hide');
+    }
 });

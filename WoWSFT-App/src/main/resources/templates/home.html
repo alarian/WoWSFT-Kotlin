@@ -10,10 +10,10 @@
     <!-- End Google Tag Manager -->
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta charset="utf-8" />
-    <link rel="icon" href="/images/Icon/WoWSFT_Icon.png" />
-    <link rel="stylesheet" type="text/css" href="/css/responsive/tester.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <script src="/js/jquery/jquery-3.4.1.min.js"></script>
+    <link rel="icon" href="https://cdn.wowsft.com/images/Icon/WoWSFT_Icon.png" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.wowsft.com/css/responsive/compatibility.css?20200124" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=1.0, user-scalable=yes" />
+    <script src="https://cdn.wowsft.com/js/jquery/jquery-3.4.1.min.js"></script>
     <title>WoWS Fitting Tool</title>
 </head>
 <body>
@@ -21,11 +21,13 @@
 <noscript><iframe class="hidden" src="https://www.googletagmanager.com/ns.html?id=GTM-5KDG7W6"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <header>
-    <div class="top"><div th:replace="top :: top"></div></div>
+    <div class="top">
+        <div th:replace="top :: top"></div>
+    </div>
 </header>
 <main>
     <div id="notification">
-        <img id="logo" src="/images/Icon/WoWSFT_Icon.png" alt="Logo courtesy of ReptorPi from DCInside" /><br />
+        <img id="logo" src="https://cdn.wowsft.com/images/Icon/WoWSFT_Icon.png" alt="Logo courtesy of ReptorPi from DCInside" /><br />
         <ul>
             <li th:if="${5 > noticeStat.index}" th:each="notice : ${notification}">
                 <strong th:text="${notice.key}"></strong>
@@ -33,8 +35,10 @@
             </li>
         </ul>
     </div>
-    <div th:replace="bottom :: bottom"></div>
 </main>
-<script src="/js/pages/touch.js"></script>
+<footer>
+    <div th:replace="bottom :: bottom"></div>
+</footer>
+<script src="https://cdn.wowsft.com/js/pages/touch.js?20200124"></script>
 </body>
 </html>

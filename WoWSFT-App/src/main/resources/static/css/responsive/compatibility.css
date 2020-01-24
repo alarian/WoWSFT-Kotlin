@@ -9,6 +9,10 @@
     background: transparent;
 }
 
+html {
+    touch-action: manipulation;
+}
+
 html, body {
     width: 100%;
     height: 100%;
@@ -94,7 +98,7 @@ img#logo {
 }
 
 .bottom-fix {
-    margin: 20px 10%;
+    padding: 20px 10%;
     word-break: keep-all;
     -ms-word-wrap: break-word;
     word-wrap: break-word;
@@ -110,7 +114,7 @@ img#logo {
 }
 
 #notification {
-    margin: 20px 10%;
+    padding: 20px 10%;
     word-break: keep-all;
     -ms-word-wrap: break-word;
     word-wrap: break-word;
@@ -132,16 +136,12 @@ img#logo {
     display: block;
     background: rgba(173, 216, 230, 0.9);
     position: absolute;
-    top: 54px;
+    top: 0;
     /*overflow-x: hidden;*/
     z-index: 5;
 }
 
 .shipsList div {
-    z-index: inherit;
-}
-
-.shipsList .nation {
     z-index: inherit;
 }
 
@@ -151,26 +151,44 @@ img#logo {
     padding: 10px 14px;
 }
 
-.shipsList span:hover, .shipsList span:active {
+.shipsList_expand {
+    text-align: center;
+}
+
+.shipsList_top {
+    line-height: 34px;
+}
+
+.shipsList_top.contract::after {
+    content: ' ▲';
+}
+
+.shipsList_top.expand::after {
+    content: ' ▼';
+}
+
+.shipsList_expand .nation {
+    text-align: left;
+}
+
+@media screen and (max-width: 880px) {
+    .shipsList {
+        top: 54px;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .shipsList {
+        /*position: absolute;*/
+        left: 50%;
+        margin-left: -960px;
+    }
+}
+
+.shipsList .nation span:hover, .shipsList .nation span:active {
     background: deepskyblue;
     cursor: pointer;
 }
-
-/*@media screen and (max-width: 564px) {*/
-/*    .shipsList {*/
-/*        top: 0;*/
-/*        position: relative;*/
-/*        width: 150px;*/
-/*    }*/
-/*}*/
-
-/*@media screen and (min-width: 1408px) {*/
-/*    .shipsList {*/
-/*        !*position: absolute;*!*/
-/*        left: 50%;*/
-/*        margin-left: -704px;*/
-/*    }*/
-/*}*/
 
 .dropdown_main, .dropdown_sub {
     text-align: left;
@@ -185,7 +203,7 @@ img#logo {
     width: 200px;
 }
 
-.shipsList .nation:hover > .dropdown_main, .shipsList .nation:active > .dropdown_main,
+.shipsList_expand .nation:hover > .dropdown_main, .shipsList_expand .nation:active > .dropdown_main,
 .dropdown_main div:hover > .dropdown_main, .dropdown_main div:active > .dropdown_main,
 .dropdown_main div:hover > .dropdown_sub, .dropdown_main div:active > .dropdown_sub {
     display: block;
@@ -315,7 +333,7 @@ img#logo {
 }
 
 .module_gap {
-    width: 7px;
+    width: 14px;
 }
 
 .button_module, .button_upgrade,
@@ -379,7 +397,7 @@ button img {
 
 .overlay {
     position: absolute;
-    top: 7px;
+    top: 6px;
     left: 4px;
     background-image: url(https://cdn.wowsft.com/images/Icon/skill_special.png);
     background-repeat: no-repeat;
