@@ -1,13 +1,20 @@
 package WoWSFT.service
 
+import WoWSFT.model.Constant.TYPE_FLAG
 import WoWSFT.model.Constant.hull
+import WoWSFT.model.gameparams.flag.Flag
 import WoWSFT.model.gameparams.ship.Ship
 import WoWSFT.model.gameparams.ship.upgrades.ShipUpgrade
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.util.*
+import kotlin.math.abs
 
 @Service
-class ParserService
+class ParserService(
+    @Autowired @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>
+)
 {
     fun parseModules(ship: Ship, bits: String)
     {
@@ -109,6 +116,27 @@ class ParserService
             }
             ship.selectConsumables = list
         }
+    }
+
+    fun parseFlags(ship: Ship, flags: Int)
+    {
+        val list = mutableListOf<Int>()
+        val bits = Integer.toBinaryString(flags)
+
+        for (i in bits.length - 1 downTo 0) {
+            if (Character.isDigit(bits[i]) && Character.getNumericValue(bits[i]) <= abs(1)) {
+                list.add(Character.getNumericValue(bits[i]))
+            } else {
+                list.add(0)
+            }
+        }
+
+        if (bits.length < 12) {
+            for (i in 0 until 12 - bits.length) {
+                list.add(0)
+            }
+        }
+        ship.selectFlags = list
     }
 
     fun parseSkills(ship: Ship, skill: Long, ar: Int)

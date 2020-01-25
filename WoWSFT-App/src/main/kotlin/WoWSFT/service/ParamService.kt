@@ -2,6 +2,7 @@ package WoWSFT.service
 
 import WoWSFT.model.Constant.*
 import WoWSFT.model.gameparams.CommonModifier
+import WoWSFT.model.gameparams.flag.Flag
 import WoWSFT.model.gameparams.ship.Ship
 import WoWSFT.model.gameparams.ship.component.airdefense.Aura
 import WoWSFT.model.gameparams.ship.component.planes.Plane
@@ -9,11 +10,15 @@ import WoWSFT.model.gameparams.ship.component.torpedo.Launcher
 import WoWSFT.utils.CommonUtils.getBonus
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class ParamService
+class ParamService(
+    @Autowired @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>
+)
 {
     private val mapper = ObjectMapper()
 
@@ -88,6 +93,14 @@ class ParamService
             }
         }
 
+        val flagsKey = flagsLHM.keys.toList()
+        for (i in ship.selectFlags.indices) {
+            if (ship.selectFlags[i] == 1) {
+                val modifier = mapper.convertValue(flagsLHM[flagsKey[i]], CommonModifier::class.java)
+                setUpgrades(ship, modifier)
+            }
+        }
+
         ship.consumables.forEach { slot ->
             slot.forEach { c ->
                 c.subConsumables.forEach { (_, sub) ->
@@ -138,7 +151,8 @@ class ParamService
                 v.shells.forEach { (_, ammo) ->
                     if (HE.equals(ammo.ammoType, ignoreCase = true)) {
                         ammo.burnProb = ammo.burnProb + modifier.probabilityBonus +
-                                if (ammo.bulletDiametr > smallGun) modifier.chanceToSetOnFireBonusBig else modifier.chanceToSetOnFireBonusSmall
+                                (if (ammo.bulletDiametr > smallGun) modifier.chanceToSetOnFireBonusBig else modifier.chanceToSetOnFireBonusSmall) +
+                                (if (ammo.bulletDiametr > smallGunFlag) (modifier.burnChanceFactorBig - 1.0) else (modifier.burnChanceFactorSmall - 1.0))
                         ammo.alphaPiercingHE = ammo.alphaPiercingHE *
                                 if (ammo.bulletDiametr > smallGun) modifier.thresholdPenetrationCoefficientBig else modifier.thresholdPenetrationCoefficientSmall
                     }
@@ -155,6 +169,7 @@ class ParamService
 
                 v.ammo.maxDist = v.ammo.maxDist * modifier.torpedoRangeCoefficient
                 v.ammo.speed = v.ammo.speed + modifier.torpedoSpeedBonus
+                v.ammo.uwCritical = v.ammo.uwCritical + (modifier.floodChanceFactor - 1.0)
             }
         }
 
@@ -163,7 +178,7 @@ class ParamService
                 setPlanes(ship, v, modifier)
                 v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.airplanesFightersHealth * modifier.airplanesHealth).toInt()
                 if (HE.equals(v.rocket.ammoType, ignoreCase = true)) {
-                    v.rocket.burnProb = v.rocket.burnProb + modifier.rocketProbabilityBonus
+                    v.rocket.burnProb = v.rocket.burnProb + modifier.rocketProbabilityBonus + (modifier.burnChanceFactorSmall - 1.0)
                 }
             }
         }
@@ -173,7 +188,7 @@ class ParamService
                 setPlanes(ship, v, modifier)
                 v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.airplanesDiveBombersHealth * modifier.airplanesHealth).toInt()
                 if (HE.equals(v.bomb.ammoType, ignoreCase = true)) {
-                    v.bomb.burnProb = v.bomb.burnProb + modifier.bombProbabilityBonus
+                    v.bomb.burnProb = v.bomb.burnProb + modifier.bombProbabilityBonus + (modifier.burnChanceFactorBig - 1.0)
                 }
             }
         }
@@ -184,6 +199,7 @@ class ParamService
                 v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.airplanesTorpedoBombersHealth * modifier.airplanesHealth).toInt()
                 v.torpedo.maxDist = v.torpedo.maxDist * modifier.planeTorpedoRangeCoefficient
                 v.torpedo.speed = v.torpedo.speed + modifier.planeTorpedoSpeedBonus
+                v.torpedo.uwCritical = v.torpedo.uwCritical + (modifier.floodChanceFactorPlane - 1.0)
             }
         }
 
@@ -203,7 +219,7 @@ class ParamService
                     sec.GSIdealRadius = sec.GSIdealRadius * modifier.gsidealRadius *
                             if (ship.level >= 7) modifier.atbaIdealRadiusHi else modifier.atbaIdealRadiusLo
                     if (HE.equals(sec.ammoType, ignoreCase = true)) {
-                        sec.burnProb = sec.burnProb + modifier.probabilityBonus + modifier.chanceToSetOnFireBonusSmall
+                        sec.burnProb = sec.burnProb + modifier.probabilityBonus + modifier.chanceToSetOnFireBonusSmall + (modifier.burnChanceFactorSmall - 1.0)
                         sec.alphaPiercingHE = sec.alphaPiercingHE * modifier.thresholdPenetrationCoefficientSmall
                     }
                 }
@@ -228,6 +244,7 @@ class ParamService
                 v.burnSizeSkill = if (modifier.probabilityCoefficient != oneCoeff) 3 else v.burnSizeSkill
                 v.floodProb = v.floodProb * modifier.floodProb
                 v.floodTime = v.floodTime * modifier.floodTime * modifier.critTimeCoefficient
+                v.maxSpeed = v.maxSpeed * modifier.speedCoef
                 v.rudderTime = v.rudderTime * modifier.sgrudderTime
                 v.visibilityFactor = v.visibilityFactor * modifier.visibilityDistCoeff
                 v.visibilityFactorByPlane = v.visibilityFactorByPlane * modifier.visibilityDistCoeff
@@ -279,6 +296,8 @@ class ParamService
                         sC.workTime = sC.workTime * modifier.smokeGeneratorWorkTime
                         sC.lifeTime = sC.lifeTime * modifier.smokeGeneratorLifeTime
                         sC.radius = sC.radius * modifier.radiusCoefficient
+                    } else if ("regenCrew".equals(sC.consumableType, ignoreCase = true)) {
+                        sC.regenerationHPSpeed = sC.regenerationHPSpeed * modifier.regenerationHPSpeed
                     }
 
                     if ("AllSkillsCooldownModifier".equals(modifier.modifier, ignoreCase = true)) {
@@ -288,6 +307,8 @@ class ParamService
                     if (sC.numConsumables > 0) {
                         sC.numConsumables = sC.numConsumables + modifier.additionalConsumables
                     }
+
+                    sC.reloadTime = sC.reloadTime * modifier.abilReloadTimeFactor
                 }
             }
         }
@@ -310,11 +331,6 @@ class ParamService
             plane.hangarSettings!!.timeToRestore = plane.hangarSettings!!.timeToRestore * modifier.planeSpawnTimeCoefficient * modifier.airplanesSpawnTime
         }
         plane.maxForsageAmount = plane.maxForsageAmount * modifier.forsageDurationCoefficient * modifier.airplanesForsageDuration
-        plane.consumables.forEach { consumable ->
-            consumable.subConsumables.values.forEach { sub ->
-                sub.reloadTime = sub.reloadTime * modifier.reloadCoefficient
-            }
-        }
         plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.flightSpeedCoefficient
         plane.speedMove = plane.speedMove * modifier.flightSpeedCoefficient
         plane.maxVisibilityFactor = plane.maxVisibilityFactor * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
@@ -322,8 +338,15 @@ class ParamService
         plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.airplanesSpeed * (oneCoeff + ship.adrenaline / modifier.hpStep * modifier.squadronSpeedStep)
         plane.consumables.forEach { c ->
             c.subConsumables.forEach { (_, v) ->
-                v.reloadTime = v.reloadTime * if ("AllSkillsCooldownModifier".equals(modifier.modifier, ignoreCase = true)) modifier.reloadCoefficient else oneCoeff
+                if ("AllSkillsCooldownModifier".equals(modifier.modifier, ignoreCase = true)) {
+                    v.reloadTime = v.reloadTime * modifier.reloadCoefficient
+                }
+                v.reloadTime = v.reloadTime * modifier.abilReloadTimeFactor
                 v.fightersNum = v.fightersNum + if (v.fightersNum > 0) modifier.extraFighterCount else 0.0
+
+                if ("regenerateHealth".equals(v.consumableType, ignoreCase = true)) {
+                    v.regenerationRate = v.regenerationRate * modifier.regenerationPlaneRate
+                }
             }
         }
     }

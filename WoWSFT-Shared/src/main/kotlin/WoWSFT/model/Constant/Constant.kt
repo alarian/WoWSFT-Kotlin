@@ -8,6 +8,7 @@ import java.math.BigDecimal
 //{
     val distCoefWG = BigDecimal.valueOf(100.0 / 3.0)
     const val smallGun = 0.139
+    const val smallGunFlag = 0.160
     const val oneCoeff = 1.0
 
     const val AP = "AP"

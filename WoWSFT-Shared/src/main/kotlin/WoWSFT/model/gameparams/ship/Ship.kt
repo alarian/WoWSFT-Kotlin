@@ -69,6 +69,8 @@ class Ship
     var selectSkills = mutableListOf<Int>()
     @JsonIgnore
     var selectSkillPts = 0
+    @JsonIgnore
+    var selectFlags = mutableListOf<Int>()
     var modules = LinkedHashMap<String, String>()
     var positions = LinkedHashMap<String, Int>()
     var commander: Commander? = null

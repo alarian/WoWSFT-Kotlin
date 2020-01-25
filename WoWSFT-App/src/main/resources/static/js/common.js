@@ -80,16 +80,16 @@ $(document).on('click', '.button_consumable', function (e) {
         $ship = $this.parents('.ship'),
         $consumables = $ship.find('.button_consumable[data-index=' + $index + ']');
 
-    if ($this.hasClass('select')) {
-        return false;
+    if (!$this.hasClass('select')) {
+        for (var i = 0; i < $consumables.length; i++) {
+            $consumables.eq(i).removeClass('select');
+            $consumables.eq(i).addClass('hide');
+        }
+        $this.addClass('select');
+        $this.removeClass('hide');
+    } else {
+        $consumables.removeClass('hide');
     }
-
-    for (var i = 0; i < $consumables.length; i++) {
-        $consumables.eq(i).removeClass('select');
-        $consumables.eq(i).addClass('hide');
-    }
-    $this.addClass('select');
-    $this.removeClass('hide');
 });
 
 $(document).on('click', function () {
@@ -115,7 +115,7 @@ $(document).on('click', '.button_skill', function () {
         $index = parseInt($this.attr('data-index')),
         $pos = parseInt($this.attr('data-position')),
         $ship = $this.parents('.ship'),
-        $pts = $ship.find('.points'),
+        $pts = $ship.find('.panel_left[data-type=crewSkills]').find('.points'),
         $check = $ship.find('.limit_skill'),
         $sCommander = $ship.find('[name=commander]').val(),
         $curCommander = $('[data-commander-index=' + $sCommander + ']'),
@@ -154,9 +154,9 @@ $(document).on('click', '.button_skill', function () {
     }
 
     if ($this.hasClass('select')) {
-        $('.button_skill[data-index=' + $index + '][data-position=' + $pos +']').removeClass('select');
+        $ship.find('.button_skill[data-index=' + $index + '][data-position=' + $pos +']').removeClass('select');
     } else {
-        $('.button_skill[data-index=' + $index + '][data-position=' + $pos +']').addClass('select');
+        $ship.find('.button_skill[data-index=' + $index + '][data-position=' + $pos +']').addClass('select');
     }
 
     var adrenalRush = $curCommander.find('.button_skill[data-index=1][data-position=6]');
@@ -170,6 +170,36 @@ $(document).on('click', '.button_skill', function () {
     }
 
     $pts.text($totalSpts);
+
+    delayCall($ship);
+});
+
+$(document).on('click', '.button_flag', function () {
+    var $this = $(this),
+        $index = parseInt($this.attr('data-index')),
+        $ship = $this.parents('.ship'),
+        $pts = $ship.find('.panel_left[data-type=flags]').find('.points'),
+        $flags = $ship.find('.button_flag.select'),
+        $totalFpts = 0,
+        $maxPts = parseInt($ship.find('.panel_left[data-type=flags]').find('.maxPoints').attr('data-max-points'));
+
+    for (var i = 0; i < $flags.length && $maxPts >= $totalFpts; i++) {
+        $totalFpts += 1;
+    }
+
+    if ($this.hasClass('select')) {
+        $ship.find('.button_flag[data-index=' + $index + ']').removeClass('select');
+        $totalFpts -= 1;
+    } else {
+        if ($totalFpts >= $maxPts) {
+            return false;
+        }
+
+        $ship.find('.button_flag[data-index=' + $index + ']').addClass('select');
+        $totalFpts += 1;
+    }
+
+    $pts.text($totalFpts);
 
     delayCall($ship);
 });
@@ -206,8 +236,9 @@ function makeUrl($ship)
     var sModules = $ship.find('.button_module.select');
     var sUpgrades = $ship.find('.button_upgrade.select');
     var $sCommander = $ship.find('[name=commander]').val(),
-        $curCommander = $('[data-commander-index=' + $sCommander + ']'),
-        sSkills = $curCommander.find('.button_skill.select');
+        $curCommander = $ship.find('[data-commander-index=' + $sCommander + ']'),
+        $sSkills = $curCommander.find('.button_skill.select');
+    var $sFlags = $ship.find('.button_flag.select');
     var sConsumables = $ship.find('.button_consumable.select');
 
     var modules = '';
@@ -232,12 +263,18 @@ function makeUrl($ship)
 
     var useAr = false;
     var skills = 0;
-    for (var i = 0; i < sSkills.length; i++) {
-        var pos = parseInt(sSkills.eq(i).attr('data-index')) * 8 + parseInt(sSkills.eq(i).attr('data-position'));
+    for (var i = 0; i < $sSkills.length; i++) {
+        var pos = parseInt($sSkills.eq(i).attr('data-index')) * 8 + parseInt($sSkills.eq(i).attr('data-position'));
         skills += Math.pow(2, pos);
         if (pos === 14) {
             useAr = true;
         }
+    }
+
+    var flags = 0;
+    for (var i = 0; i < $sFlags.length; i++) {
+        var pos = parseInt($sFlags.eq(i).attr('data-index')) - 1;
+        flags += Math.pow(2, pos);
     }
 
     var ar = useAr && $ship.find('.arSlider').val() !== undefined ? $ship.find('.arSlider').val() : 0;
@@ -260,6 +297,7 @@ function makeUrl($ship)
         + '&commander=' + commander.toUpperCase()
         + (skills > 0 ? '&skills=' + skills.toString() : '')
         + (ar > 0 ? '&ar=' + ar : '')
+        + (flags > 0 ? '&flags=' + flags.toString() : '')
         + (consumables !== '' ? '&consumables=' + consumables : '');
         // + '&lang=' + lang;
 

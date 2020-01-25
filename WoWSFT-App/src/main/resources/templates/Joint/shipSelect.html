@@ -87,7 +87,7 @@
                     </table>
                 </div>
                 <div class="panel_left" data-type="upgrades" th:with="selection=${warship.selectUpgrades}">
-                    <ul th:each="slot : ${warship.upgrades}">
+                    <ul th:each="slot : ${warship.upgrades}" th:attr="data-index=${slotStat.index}">
                         <li>
                             <button class="button_upgrade"
                                     th:classappend="${selection .size() == 0 or selection.get(slotStat.index) == 0 ? 'select' : 'hide'}"
@@ -116,7 +116,7 @@
                     </ul>
                 </div>
                 <div class="panel_left" data-type="crewSkills" th:replace="Joint/crewSkills :: crewSkills"></div>
-<!--                <div class="panel_left" data-type="flags" th:replace="Joint/flags :: flags"></div>-->
+                <div class="panel_left" data-type="flags" th:replace="Joint/flags :: flags"></div>
             </div>
         </div>
         <div class="info_box replace" th:replace="Joint/rightInfo :: rightInfo"></div>

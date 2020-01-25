@@ -16,17 +16,17 @@ object CommonUtils
 
     fun getDistCoefWG(number: Number): Double
     {
-        return (number.toDouble() / distCoefWG.toDouble() * 1000.0).roundToInt() / 1000.0
+        return getDecimalRounded(number.toDouble() / distCoefWG.toDouble(), 3)
     }
 
     fun getBonusCoef(number: Number): Double
     {
-        return ((number.toDouble() * 1000.0).roundToInt() - 1000.0) / 10.0
+        return getDecimalRounded(number.toDouble() * 100.0, 3) - 100.0
     }
 
     fun getBonus(number: Number): Double
     {
-        return (number.toDouble() * 1000.0).roundToInt() / 10.0
+        return getDecimalRounded(number.toDouble() * 100.0, 3)
     }
 
     fun replaceZero(number: String): String

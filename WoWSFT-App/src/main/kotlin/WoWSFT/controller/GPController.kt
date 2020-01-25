@@ -25,7 +25,7 @@ class GPController(
     @Autowired @Qualifier(GLOBAL) private val global: HashMap<String, HashMap<String, Any>>,
     @Autowired @Qualifier(TYPE_SHIP_LIST) private val shipsList: LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>,
     @Autowired @Qualifier(TYPE_COMMANDER) private val commanders: LinkedHashMap<String, Commander>,
-    @Autowired @Qualifier(TYPE_FLAG) private val flags: LinkedHashMap<String, Flag>,
+    @Autowired @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>,
     @Autowired private val gpService: GPService,
     @Autowired private val paramService: ParamService,
     @Autowired private val parserService: ParserService
@@ -63,6 +63,7 @@ class GPController(
         @RequestParam(required = false, defaultValue = "") consumables: String,
         @RequestParam(required = false, defaultValue = "PCW001") commander: String,
         @RequestParam(required = false, defaultValue = "0") skills: Long,
+        @RequestParam(required = false, defaultValue = "0") flags: Int,
         @RequestParam(required = false, defaultValue = "100") ar: Int
     ): String
     {
@@ -76,10 +77,10 @@ class GPController(
             model.addAttribute("index", index.toUpperCase())
             model.addAttribute("dataIndex", 0)
             model.addAttribute("commanders", commanders)
-            model.addAttribute("flags", flags)
+            model.addAttribute("flags", flagsLHM)
 
             sSkills = if (skills > maxBitsToInt) 0 else skills
-            val ship = getShip(index.toUpperCase(), modules, upgrades, consumables, sSkills, commander.toUpperCase(), ar)
+            val ship = getShip(index.toUpperCase(), modules, upgrades, consumables, sSkills, commander.toUpperCase(), flags, ar)
             model.addAttribute(TYPE_WARSHIP, ship)
 
             if ("post".equals(request.method, ignoreCase = true)) {
@@ -92,7 +93,7 @@ class GPController(
     }
 
     @Throws(Exception::class)
-    private fun getShip(index: String, modules: String, upgrades: String, consumables: String, skills: Long, commander: String, ar: Int): Ship
+    private fun getShip(index: String, modules: String, upgrades: String, consumables: String, skills: Long, commander: String, flags: Int, ar: Int): Ship
     {
         var sCommander = commander
         val ship = mapper.readValue(mapper.writeValueAsString(gpService.getShip(index)), Ship::class.java)
@@ -101,6 +102,7 @@ class GPController(
         gpService.setShipAmmo(ship)
         parserService.parseConsumables(ship, consumables)
         parserService.parseUpgrades(ship, upgrades)
+        parserService.parseFlags(ship, flags)
         parserService.parseSkills(ship, skills, ar)
         paramService.setAA(ship)
 

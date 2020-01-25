@@ -40,4 +40,31 @@ class Plane
     var bomb = Shell()
     var torpedo = TorpedoAmmo()
     var consumables = mutableListOf<Consumable>()
+
+    val planeType: String get() {
+        return when (typeinfo.species) {
+            "Fighter" -> "Fighter"
+            "Dive" -> "DiveBomber"
+            "Bomber" -> "TorpedoBomber"
+            else -> ""
+        }
+    }
+
+    val planeTypeShort: String get() {
+        return when (typeinfo.species) {
+            "Fighter" -> "f"
+            "Dive" -> "d"
+            "Bomber" -> "t"
+            else -> ""
+        }
+    }
+
+    val ammoType: String get() {
+        return when (typeinfo.species) {
+            "Fighter" -> "rocket"
+            "Dive" -> "bomb"
+            "Bomber" -> "torpedo"
+            else -> ""
+        }
+    }
 }
