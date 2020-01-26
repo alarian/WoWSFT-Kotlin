@@ -27,11 +27,12 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.*
+import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.zip.ZipEntry
@@ -41,6 +42,7 @@ import java.util.zip.ZipOutputStream
 class JsonParser
 {
     @Autowired private lateinit var paramService: ParamService
+    @Autowired private lateinit var executor: ThreadPoolTaskExecutor
 
     private val nameToId = HashMap<String, String>()
     private val idToName = HashMap<String, String>()
@@ -57,6 +59,7 @@ class JsonParser
     private val penetrationUtils = PenetrationUtils()
 
     private val mapper = ObjectMapper().registerKotlinModule()
+    private val job = SupervisorJob()
 
     companion object {
         private val log = LoggerFactory.getLogger(JsonParser::class.java)
@@ -92,58 +95,65 @@ class JsonParser
         val zf = ZipFile(ClassPathResource("/json/live/GameParams.zip").file.path)
         val temp = mapper.readValue(zf.getInputStream(zf.entries().nextElement()), object : TypeReference<LinkedHashMap<String, LinkedHashMap<String, Any>>>() {})
 
-        temp.forEach { (key, value) ->
-            val typeInfo = mapper.convertValue(value["typeinfo"], TypeInfo::class.java)
-            if (typeInfo.type.equals("Ship", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !excludeShipSpecies.contains(typeInfo.species)) {
-                val ship = mapper.convertValue(value, Ship::class.java)
-                if (!excludeShipGroups.contains(ship.group)) {
-                    ship.shipUpgradeInfo.components.forEach { (cType, c) -> c.forEach { su ->
-                            for (s in excludeCompStats) {
-                                su.components.remove(s)
+        val scope = CoroutineScope(executor.asCoroutineDispatcher() + job)
+        runBlocking {
+            val deferred = temp.map { (key, value) ->
+                scope.async {
+                    val typeInfo = mapper.convertValue(value["typeinfo"], TypeInfo::class.java)
+                    if (typeInfo.type.equals("Ship", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !excludeShipSpecies.contains(typeInfo.species)) {
+                        val ship = mapper.convertValue(value, Ship::class.java)
+                        if (!excludeShipGroups.contains(ship.group)) {
+                            ship.shipUpgradeInfo.components.forEach { (cType, c) ->
+                                c.forEach { su ->
+                                    for (s in excludeCompStats) {
+                                        su.components.remove(s)
+                                    }
+                                    su.elem = componentsList.indexOf(cType)
+                                }
                             }
-                            su.elem = componentsList.indexOf(cType)
+                            addShips(ship)
                         }
+                    } else if (typeInfo.type.equals("Modernization", ignoreCase = true)) {
+                        val modernization = mapper.convertValue(value, Modernization::class.java)
+                        if (modernization.slot >= 0) {
+                            paramService.setBonusParams(key, mapper.convertValue(modernization, object : TypeReference<LinkedHashMap<String, Any>>() {}), modernization.bonus)
+                            upgrades[modernization.slot]!![modernization.name] = modernization
+                        }
+                    } else if (typeInfo.type.equals("Ability", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !key.contains("Super")) {
+                        val consumable = mapper.convertValue(value, Consumable::class.java)
+                        consumables[key] = consumable
+                    } else if (typeInfo.type.equals("Crew", ignoreCase = true)) {
+                        val commander = mapper.convertValue(value, Commander::class.java)
+                        if (!"Events".equals(commander.typeinfo.nation, ignoreCase = true)) {
+                            if (!commander.crewPersonality.unique && commander.typeinfo.nation == "Common") {
+                                commander.identifier = "IDS_CREW_LASTNAME_DEFAULT"
+                                commanders[commander.index.toUpperCase()] = commander
+                            } else if (commander.crewPersonality.unique) {
+                                commander.identifier = "$IDS_${commander.crewPersonality.personName.toUpperCase()}"
+                                commanders[commander.index.toUpperCase()] = commander
+                            }
+                        }
+                    } else if (typeInfo.type.equals("Exterior", ignoreCase = true) && typeInfo.species.equals("Flags", ignoreCase = true)) {
+                        val flag = mapper.convertValue(value, Flag::class.java)
+                        if (flag.group == 0) {
+                            flag.identifier = "$IDS_${flag.name.toUpperCase()}"
+                            paramService.setBonusParams(key, mapper.convertValue(flag, object : TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus)
+                            flags[flag.name] = flag
+                        }
+                    } else if (miscList.contains(typeInfo.type)) {
+                        if ("Artillery" == typeInfo.species) {
+                            val shell = mapper.convertValue(value, Shell::class.java)
+                            if (AP == shell.ammoType) {
+                                shells[key] = shell
+                            }
+                        }
+                        misc[key] = value
+                    } else {
+                        gameParamsHM[key] = value
                     }
-                    addShips(ship)
                 }
-            } else if (typeInfo.type.equals("Modernization", ignoreCase = true)) {
-                val modernization = mapper.convertValue(value, Modernization::class.java)
-                if (modernization.slot >= 0) {
-                    paramService.setBonusParams(key, mapper.convertValue(modernization, object : TypeReference<LinkedHashMap<String, Any>>() {}), modernization.bonus)
-                    upgrades[modernization.slot]!![modernization.name] = modernization
-                }
-            } else if (typeInfo.type.equals("Ability", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !key.contains("Super")) {
-                val consumable = mapper.convertValue(value, Consumable::class.java)
-                consumables[key] = consumable
-            } else if (typeInfo.type.equals("Crew", ignoreCase = true)) {
-                val commander = mapper.convertValue(value, Commander::class.java)
-                if (!"Events".equals(commander.typeinfo.nation, ignoreCase = true)) {
-                    if (!commander.crewPersonality.unique && commander.typeinfo.nation == "Common") {
-                        commander.identifier = "IDS_CREW_LASTNAME_DEFAULT"
-                        commanders[commander.index.toUpperCase()] = commander
-                    } else if (commander.crewPersonality.unique) {
-                        commander.identifier = "$IDS_${commander.crewPersonality.personName.toUpperCase()}"
-                        commanders[commander.index.toUpperCase()] = commander
-                    }
-                }
-            } else if (typeInfo.type.equals("Exterior", ignoreCase = true) && typeInfo.species.equals("Flags", ignoreCase = true)) {
-                val flag = mapper.convertValue(value, Flag::class.java)
-                if (flag.group == 0) {
-                    flag.identifier = "$IDS_${flag.name.toUpperCase()}"
-                    paramService.setBonusParams(key, mapper.convertValue(flag, object : TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus)
-                    flags[flag.name] = flag
-                }
-            } else if (miscList.contains(typeInfo.type)) {
-                if ("Artillery" == typeInfo.species) {
-                    val shell = mapper.convertValue(value, Shell::class.java)
-                    if (AP == shell.ammoType) {
-                        shells[key] = shell
-                    }
-                }
-                misc[key] = value
-            } else {
-                gameParamsHM[key] = value
             }
+            deferred.awaitAll()
         }
 
         generateShipsList()
@@ -408,7 +418,7 @@ class JsonParser
     {
         log.info("Generating ship data")
 
-        val directory = CommonUtils.getGameParamsDir().replace(FILE_GAMEPARAMS, DIR_SHIPS)
+        val directory = getGameParamsDir().replace(FILE_GAMEPARAMS, DIR_SHIPS)
         var folder = getEmptyFolder(directory)
 
         for ((key, value) in ships) {
@@ -451,39 +461,59 @@ class JsonParser
     {
         log.info("Generating shell penetration")
 
-        val directory = CommonUtils.getGameParamsDir().replace(FILE_GAMEPARAMS, DIR_SHELL)
-        var folder = getEmptyFolder(directory)
+        val directory = getGameParamsDir().replace(FILE_GAMEPARAMS, DIR_SHELL)
+        val folder = getEmptyFolder(directory)
+        val shellsPen = mutableListOf<Shell>()
 
-        for ((_, ship) in ships) {
-            if (ship.shipUpgradeInfo.components[artillery]!!.size > 0) {
-                for (su in ship.shipUpgradeInfo.components[artillery]!!) {
-                    val tempId = su.components[artillery]!![su.components[artillery]!!.size - 1]
+        val scope = CoroutineScope(executor.asCoroutineDispatcher() + job)
+        runBlocking {
+            val deferred = ships.map { (_, ship) ->
+                scope.async {
+                    if (ship.shipUpgradeInfo.components[artillery]!!.size > 0) {
+                        for (su in ship.shipUpgradeInfo.components[artillery]!!) {
+                            val tempId = su.components[artillery]!![su.components[artillery]!!.size - 1]
 
-                    for (ammo in ship.components.artillery[tempId]!!.turrets[0].ammoList) {
-                        val shell = shells[ammo]
-                        if (shell != null) {
-                            penetrationUtils.setPenetration(
-                                shell,
-                                ship.components.artillery[tempId]!!.turrets[0].vertSector[1],
-                                ship.components.artillery[tempId]!!.minDistV,
-                                ship.components.artillery[tempId]!!.maxDist,
-                                AP.equals(shell.ammoType.toLowerCase(), ignoreCase = true)
-                            )
-
-                            val tempJson = "$directory$ammo$FILE_JSON"
-                            val f = File(tempJson)
-                            mapper.writeValue(f, shell)
+                            for (ammo in ship.components.artillery[tempId]!!.turrets[0].ammoList) {
+                                val shell = shells[ammo]
+                                if (shell != null) {
+                                    penetrationUtils.setPenetration(
+                                        shell,
+                                        ship.components.artillery[tempId]!!.turrets[0].vertSector[1],
+                                        ship.components.artillery[tempId]!!.minDistV,
+                                        ship.components.artillery[tempId]!!.maxDist,
+                                        AP.equals(shell.ammoType.toLowerCase(), ignoreCase = true)
+                                    )
+                                    shellsPen.add(shell)
+                                }
+                            }
                         }
                     }
                 }
             }
+            deferred.awaitAll()
+        }
+
+        shellsPen.forEach { shell ->
+            val tempJson = "$directory${shell.name}$FILE_JSON"
+            val f = File(tempJson)
+            mapper.writeValue(f, shell)
         }
         createZipFile(folder, directory.replace(DIR_SHELL, FILE_SHELLS_ZIP))
 
-        folder = getEmptyFolder(directory)
+        folder.listFiles { f -> f.delete() }
         folder.delete()
 
         log.info("Generated shell penetration")
+    }
+
+    @Throws(IOException::class)
+    private fun getGameParamsDir(): String
+    {
+        var directory: String = ClassPathResource("/json/live/GameParams.zip").url.path.replaceFirst(SLASH, "")
+        if (directory.startsWith("var") || directory.startsWith("Users")) {
+            directory = "${SLASH}${directory}"
+        }
+        return directory
     }
 
     private fun getEmptyFolder(directory: String): File
@@ -500,19 +530,13 @@ class JsonParser
     @Throws(IOException::class)
     private fun createZipFile(folder: File, directory: String)
     {
-        val buffer = ByteArray(1024)
         val fos = FileOutputStream(directory)
         val zos = ZipOutputStream(fos)
 
         folder.listFiles()?.forEach { file ->
-            val fis = FileInputStream(file)
             zos.putNextEntry(ZipEntry(file.name))
-            var length: Int
-            while (fis.read(buffer).also { length = it } > 0) {
-                zos.write(buffer, 0, length)
-            }
+            zos.write(file.readBytes())
             zos.closeEntry()
-            fis.close()
         }
 
         zos.close()

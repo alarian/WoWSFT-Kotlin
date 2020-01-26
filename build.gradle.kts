@@ -23,17 +23,10 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
 
     dependencies {
-        implementation("org.springframework.boot:spring-boot-starter-web")
-        implementation("org.springframework:spring-context-support")
-
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-        implementation("org.apache.commons:commons-lang3")
-        implementation("org.apache.commons:commons-collections4:4.4")
 
         implementation(kotlin("reflect"))
         implementation(kotlin("stdlib-jdk8"))
-
-        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     }
 
     tasks.withType<KotlinCompile> {

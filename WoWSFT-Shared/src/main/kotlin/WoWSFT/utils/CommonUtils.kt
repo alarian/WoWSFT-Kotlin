@@ -3,7 +3,6 @@ package WoWSFT.utils
 import WoWSFT.model.Constant.*
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.core.io.ClassPathResource
 import java.io.IOException
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -43,16 +42,6 @@ object CommonUtils
     {
         val rounder: Double = 10.0.pow(digits)
         return (num * rounder).roundToInt() / rounder
-    }
-
-    @Throws(IOException::class)
-    fun getGameParamsDir(): String
-    {
-        var directory: String = ClassPathResource("/json/live/GameParams.zip").url.path.replaceFirst(SLASH, "")
-        if (directory.startsWith("var") || directory.startsWith("Users")) {
-            directory = "${SLASH}${directory}"
-        }
-        return directory
     }
 
     @Throws(IOException::class)

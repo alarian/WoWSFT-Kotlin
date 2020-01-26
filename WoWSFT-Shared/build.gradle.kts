@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
 
@@ -18,6 +17,4 @@ sourceSets {
 }
 
 val jar: Jar by tasks
-val bootJar: BootJar by tasks
-bootJar.enabled = false
 jar.enabled = true

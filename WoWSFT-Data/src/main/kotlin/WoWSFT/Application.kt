@@ -2,7 +2,6 @@ package WoWSFT
 
 import WoWSFT.model.Constant.JSON_PARSER
 import WoWSFT.parser.JsonParser
-import org.springframework.boot.Banner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
@@ -26,7 +25,7 @@ class Application : SpringBootServletInitializer()
     fun executor(): ThreadPoolTaskExecutor
     {
         val executor = ThreadPoolTaskExecutor()
-        executor.corePoolSize = 5
+        executor.corePoolSize = 8
         executor.setThreadNamePrefix("Thread-")
         executor.initialize()
 

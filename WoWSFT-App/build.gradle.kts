@@ -8,8 +8,11 @@ plugins {
 dependencies {
     implementation(project(":WoWSFT-Shared"))
 
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework:spring-context-support")
 
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 //    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 }
 
