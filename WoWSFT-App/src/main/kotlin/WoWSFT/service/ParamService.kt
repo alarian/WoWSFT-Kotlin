@@ -71,6 +71,7 @@ class ParamService(
             for (i in 1 until aura.size) {
                 aura[0].innerBubbleCount = aura[0].innerBubbleCount + aura[i].innerBubbleCount
                 aura[0].outerBubbleCount = aura[0].outerBubbleCount + aura[i].outerBubbleCount
+                aura[0].areaDamage = aura[0].areaDamage + aura[i].areaDamage
             }
             aura.subList(1, aura.size).clear()
         }
