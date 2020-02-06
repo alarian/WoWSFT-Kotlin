@@ -23,6 +23,7 @@ class Turret
     var id = 0L
     var idealDistance = 0.0
     var idealRadius = 0.0
+    var idealRadiusModifier = 1.0
     var index = ""
     var maxEllipseRanging = 0.0
     var medEllipseRanging = 0.0

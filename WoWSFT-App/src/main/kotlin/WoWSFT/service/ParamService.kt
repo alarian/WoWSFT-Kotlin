@@ -139,7 +139,7 @@ class ParamService(
     {
         ship.components.artillery.forEach { (c, v) ->
             if (c.equals(ship.modules[artillery], ignoreCase = true)) {
-                v.GMIdealRadius = v.GMIdealRadius * modifier.gmidealRadius
+//                v.GMIdealRadius = v.GMIdealRadius * modifier.gmidealRadius
                 v.maxDist = v.maxDist * modifier.gmmaxDist * if (v.barrelDiameter > smallGun) oneCoeff else modifier.smallGunRangeCoefficient
 
                 v.turrets.forEach { t ->
@@ -147,6 +147,7 @@ class ParamService(
                     t.shotDelay = t.shotDelay * modifier.gmshotDelay *
                             (if (t.barrelDiameter > smallGun) oneCoeff else modifier.smallGunReloadCoefficient) *
                             (oneCoeff - ship.adrenaline / modifier.hpStep * modifier.timeStep)
+                    t.idealRadiusModifier = t.idealRadiusModifier * modifier.gmidealRadius
                 }
 
                 v.shells.forEach { (_, ammo) ->
@@ -212,12 +213,14 @@ class ParamService(
 
         ship.components.atba.forEach { (c, v) ->
             if (c.equals(ship.modules[atba], ignoreCase = true)) {
-                v.GSIdealRadius = v.GSIdealRadius * modifier.gsidealRadius
+//                v.GSIdealRadius = v.GSIdealRadius * modifier.gsidealRadius
                 v.maxDist = v.maxDist * modifier.gsmaxDist * modifier.smallGunRangeCoefficient
                 v.secondaries.forEach { (_, sec) ->
                     sec.shotDelay = sec.shotDelay * modifier.gsshotDelay * modifier.smallGunReloadCoefficient *
                             (oneCoeff - ship.adrenaline / modifier.hpStep * modifier.timeStep)
-                    sec.GSIdealRadius = sec.GSIdealRadius * modifier.gsidealRadius *
+//                    sec.GSIdealRadius = sec.GSIdealRadius * modifier.gsidealRadius *
+//                            if (ship.level >= 7) modifier.atbaIdealRadiusHi else modifier.atbaIdealRadiusLo
+                    sec.idealRadiusModifier = sec.idealRadiusModifier * modifier.gsidealRadius *
                             if (ship.level >= 7) modifier.atbaIdealRadiusHi else modifier.atbaIdealRadiusLo
                     if (HE.equals(sec.ammoType, ignoreCase = true)) {
                         sec.burnProb = sec.burnProb + modifier.probabilityBonus + modifier.chanceToSetOnFireBonusSmall + (modifier.burnChanceFactorSmall - 1.0)
