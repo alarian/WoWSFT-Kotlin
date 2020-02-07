@@ -363,7 +363,7 @@ class JsonParser
                                     }
                                 }
                             }
-                            tiers[tier]?.sortedBy { it.position }
+                            tiers[tier]?.sortBy { it.position }
                         }
                         tier--
                     }
