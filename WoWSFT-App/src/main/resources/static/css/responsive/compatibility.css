@@ -213,6 +213,7 @@ img#logo {
 .shipTree {
     display: inline-block;
     min-width: 72px;
+    vertical-align: bottom;
 }
 
 .shipTree a {
