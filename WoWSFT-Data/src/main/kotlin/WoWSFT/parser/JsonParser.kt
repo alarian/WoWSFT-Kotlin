@@ -381,7 +381,7 @@ class JsonParser
     private fun sortUpgrades()
     {
         upgrades.forEach { (_, mod) ->
-            mod.entries.sortedBy { it.key }.forEach { u ->
+            mod.entries.sortedWith(compareBy({ it.value.costCR }, { it.key })).forEach { u ->
                 mod.remove(u.key)
                 mod[u.key] = u.value
             }

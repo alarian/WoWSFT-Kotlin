@@ -25,8 +25,8 @@ class AirDefense
         set(value) {
             field = value
             if (value.size == 2) {
-                prioritySectorPreparation = value[0][0].toString().toDouble()
-                prioritySectorDuration = value[1][0].toString().toDouble()
+                prioritySectorPreparation = value[0][0].toString().toDouble() + value[1][0].toString().toDouble()
+                prioritySectorDuration = value[0][0].toString().toDouble() + value[1][0].toString().toDouble()
                 prioritySectorDamageInitial = value[0][2].toString().toDouble()
                 prioritySectorCoefficientInitial = value[0][3].toString().toDouble()
                 prioritySectorCoefficientDuring = value[0][4].toString().toDouble()

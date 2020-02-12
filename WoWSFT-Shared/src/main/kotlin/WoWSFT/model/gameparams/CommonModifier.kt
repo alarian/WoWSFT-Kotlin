@@ -9,61 +9,61 @@ import com.fasterxml.jackson.annotation.JsonProperty
 open class CommonModifier
 {
     @JsonProperty("AAExtraBubbles")
-    var aaextraBubbles = 0.0
+    var aaExtraBubbles = 0.0
     @JsonProperty("AANearDamage")
-    var aanearDamage = 1.0
+    var aaNearDamage = 1.0
     @JsonProperty("AAOuterDamage")
-    var aaouterDamage = 1.0
+    var aaOuterDamage = 1.0
     @JsonProperty("ADMaxHP")
-    var admaxHP = 1.0
+    var adMaxHP = 1.0
     @JsonProperty("GMCritProb")
-    var gmcritProb = 1.0
+    var gmCritProb = 1.0
     @JsonProperty("GMIdealRadius")
-    var gmidealRadius = 1.0
+    var gmIdealRadius = 1.0
     @JsonProperty("GMMaxDist")
-    var gmmaxDist = 1.0
+    var gmMaxDist = 1.0
     @JsonProperty("GMMaxHP")
-    var gmmaxHP = 1.0
+    var gmMaxHP = 1.0
     @JsonProperty("GMRepairTime")
-    var gmrepairTime = 1.0
+    var gmRepairTime = 1.0
     @JsonProperty("GMRotationSpeed")
-    var gmrotationSpeed = 1.0
+    var gmRotationSpeed = 1.0
     @JsonProperty("GMShotDelay")
-    var gmshotDelay = 1.0
+    var gmShotDelay = 1.0
     @JsonProperty("GMSigmaCount")
-    var gmsigmaCount = 1.0
+    var gmSigmaCount = 1.0
     @JsonProperty("GSIdealRadius")
-    var gsidealRadius = 1.0
+    var gsIdealRadius = 1.0
     @JsonProperty("GSMaxDist")
-    var gsmaxDist = 1.0
+    var gsMaxDist = 1.0
     @JsonProperty("GSMaxHP")
-    var gsmaxHP = 1.0
+    var gsMaxHP = 1.0
     @JsonProperty("GSShotDelay")
-    var gsshotDelay = 1.0
+    var gsShotDelay = 1.0
     @JsonProperty("GSSigmaCount")
-    var gssigmaCount = 1.0
+    var gsSigmaCount = 1.0
     @JsonProperty("GTCritProb")
-    var gtcritProb = 1.0
+    var gtCritProb = 1.0
     @JsonProperty("GTMaxHP")
-    var gtmaxHP = 1.0
+    var gtMaxHP = 1.0
     @JsonProperty("GTRepairTime")
-    var gtrepairTime = 1.0
+    var gtRepairTime = 1.0
     @JsonProperty("GTRotationSpeed")
-    var gtrotationSpeed = 1.0
+    var gtRotationSpeed = 1.0
     @JsonProperty("GTShotDelay")
-    var gtshotDelay = 1.0
+    var gtShotDelay = 1.0
     @JsonProperty("PMCritProb")
-    var pmcritProb = 1.0
+    var pmCritProb = 1.0
     @JsonProperty("PMDetonationProb")
-    var pmdetonationProb = 1.0
+    var pmDetonationProb = 1.0
     @JsonProperty("PMRepairTime")
-    var pmrepairTime = 1.0
+    var pmRepairTime = 1.0
     @JsonProperty("SGCritProb")
-    var sgcritProb = 1.0
+    var sgCritProb = 1.0
     @JsonProperty("SGRepairTime")
-    var sgrepairTime = 1.0
+    var sgRepairTime = 1.0
     @JsonProperty("SGRudderTime")
-    var sgrudderTime = 1.0
+    var sgRudderTime = 1.0
     var airDefenseDispWorkTime = 1.0
     var airplanesDiveBombersHealth = 1.0
     var airplanesEmptyReturnSpeed = 1.0
@@ -197,4 +197,14 @@ open class CommonModifier
     var regenerationHPSpeed = 1.0
     var regenerationPlaneRate = 1.0
     var speedCoef= 1.0
+
+    var torpedoSpeedMultiplier = 1.0
+    var airplanesTorpedoSpeedMultiplier = 1.0
+    var shipConsumablesWorkTimeMultiplier = 1.0
+    var squadronConsumablesWorkTimeMultiplier = 1.0
+    @JsonProperty("InnerAADefenseDispExtraBubbles")
+    var innerAADefenseDispExtraBubbles = 0.0
+    var airDefenseDispReloadMultiplier = 1.0
+    var prioritySectorCooldownMultiplier = 1.0
+    var guaranteedTorpedoVisibilityDistance = 0
 }

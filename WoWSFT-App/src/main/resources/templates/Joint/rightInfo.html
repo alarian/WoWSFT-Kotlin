@@ -549,7 +549,7 @@
                         </tr>
                         <tr class="toggle enforce hide">
                             <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_SECTOR_COOLDOWN')}"></td>
-                            <td th:text="${#numbers.formatDecimal(airDefense.prioritySectorPreparation + airDefense.prioritySectorDuration, 1, 1)} + ' s'"></td>
+                            <td th:text="${#numbers.formatDecimal(airDefense.prioritySectorPreparation, 1, 1)} + ' s'"></td>
                         </tr>
                         <tr class="toggle enforce hide">
                             <td th:text="'- ' + ${'Instant Damage'}"></td>
@@ -557,7 +557,7 @@
                         </tr>
                         <tr class="toggle enforce hide">
                             <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_SECTOR_INCREASED_TIME')}"></td>
-                            <td th:text="${#numbers.formatDecimal(airDefense.prioritySectorPreparation, 1, 1) + ' + ' + #numbers.formatDecimal(airDefense.prioritySectorDuration, 1, 1)} + ' s'"></td>
+                            <td th:text="${#numbers.formatDecimal(airDefense.prioritySectorDuration, 1, 1)} + ' s'"></td>
                         </tr>
 
                         <tr class="subsystem switch" data-type="aaSector">

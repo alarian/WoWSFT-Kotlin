@@ -1,6 +1,7 @@
 package WoWSFT.model.gameparams.consumable
 
 import WoWSFT.config.WoWSFT
+import WoWSFT.utils.CommonUtils
 import java.util.*
 
 @WoWSFT
@@ -35,6 +36,7 @@ class ConsumableSub
     var regenerationHPSpeed = 0.0
     var regenerationRate = 0.0
     var reloadTime = 0.0
+        get() = if (field > 0) CommonUtils.getDecimalRounded(field, 1) else field
     var spawnBackwardShift = 0.0
     var speedLimit = 0.0
     var startDelayTime = 0.0
@@ -45,6 +47,7 @@ class ConsumableSub
     var timeWaitDelayAttack = 0.0
     var torpedoReloadTime = 0.0
     var workTime = 0.0
+        get() = if (field > 0) CommonUtils.getDecimalRounded(field, 1) else field
     // Effects. Ignore.
     var livePointEffect = ""
     var radarEffect = ""
