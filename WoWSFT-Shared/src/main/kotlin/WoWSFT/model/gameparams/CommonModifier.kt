@@ -129,7 +129,13 @@ open class CommonModifier
     var switchAmmoReloadCoef = 1.0
     var chanceToSetOnFireBonus = 0.0
     var chanceToSetOnFireBonusBig = 0.0
+        set(value) {
+            field = if (value != 0.0) -value else 0.0
+        }
     var chanceToSetOnFireBonusSmall = 0.0
+        set(value) {
+            field = if (value != 0.0) -value else 0.0
+        }
     var thresholdPenetrationCoefficient = 1.0
     var thresholdPenetrationCoefficientBig = 1.0
     var thresholdPenetrationCoefficientSmall = 1.0

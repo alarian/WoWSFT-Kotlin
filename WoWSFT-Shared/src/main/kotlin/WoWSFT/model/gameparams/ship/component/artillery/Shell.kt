@@ -14,7 +14,7 @@ class Shell
     var alphaDamage = 0.0
     var alphaPiercingCS = 0.0
     var alphaPiercingHE = 0.0
-    val alphaPiercingHEReal get() = ceil(alphaPiercingHE).toInt() - 1
+    val alphaPiercingHEReal get() = ceil(alphaPiercingHE).toInt()
     var ammoType = ""
     var bulletAirDrag = 0.0
     var bulletAlwaysRicochetAt = 0.0
@@ -33,6 +33,7 @@ class Shell
     var bulletUnderwaterPenetrationFactor = 0.0
     var bulletWaterDrag = 0.0
     var burnProb = 0.0
+    val burnProbReal get() = burnProb
     var costCR = 0
     var damage = 0.0
     var directDamage = 0.0

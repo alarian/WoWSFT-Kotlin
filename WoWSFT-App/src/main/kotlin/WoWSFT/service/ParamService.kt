@@ -153,7 +153,7 @@ class ParamService(
                 v.shells.forEach { (_, ammo) ->
                     if (HE.equals(ammo.ammoType, ignoreCase = true)) {
                         ammo.burnProb = ammo.burnProb + modifier.probabilityBonus +
-                                (if (ammo.bulletDiametr > smallGun) modifier.chanceToSetOnFireBonusBig else modifier.chanceToSetOnFireBonusSmall) +
+                                (ammo.burnProbReal * (if (ammo.bulletDiametr > smallGun) modifier.chanceToSetOnFireBonusBig else modifier.chanceToSetOnFireBonusSmall)) +
                                 (if (ammo.bulletDiametr > smallGunFlag) (modifier.burnChanceFactorBig - 1.0) else (modifier.burnChanceFactorSmall - 1.0))
                         ammo.alphaPiercingHE = ammo.alphaPiercingHE *
                                 if (ammo.bulletDiametr > smallGun) modifier.thresholdPenetrationCoefficientBig else modifier.thresholdPenetrationCoefficientSmall
@@ -225,7 +225,7 @@ class ParamService(
                     sec.idealRadiusModifier = sec.idealRadiusModifier * modifier.gsIdealRadius *
                             if (ship.level >= 7) modifier.atbaIdealRadiusHi else modifier.atbaIdealRadiusLo
                     if (HE.equals(sec.ammoType, ignoreCase = true)) {
-                        sec.burnProb = sec.burnProb + modifier.probabilityBonus + modifier.chanceToSetOnFireBonusSmall + (modifier.burnChanceFactorSmall - 1.0)
+                        sec.burnProb = sec.burnProb + modifier.probabilityBonus + (sec.burnProbReal * modifier.chanceToSetOnFireBonusSmall) + (modifier.burnChanceFactorSmall - 1.0)
                         sec.alphaPiercingHE = sec.alphaPiercingHE * modifier.thresholdPenetrationCoefficientSmall
                     }
                 }

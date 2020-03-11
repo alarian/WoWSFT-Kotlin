@@ -43,5 +43,6 @@ class Secondary
     var ammoType = ""
     var bulletSpeed = 0.0
     var burnProb = 0.0
-    val alphaPiercingHEReal get() = ceil(alphaPiercingHE).toInt() - 1
+    val burnProbReal get() = burnProb
+    val alphaPiercingHEReal get() = ceil(alphaPiercingHE).toInt()
 }

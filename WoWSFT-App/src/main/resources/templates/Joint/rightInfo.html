@@ -327,7 +327,7 @@
                                 </tr>
                                 <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
                                     <td th:text="${'HE Penetration'}"></td>
-                                    <td th:text="${#numbers.formatInteger(ammoObj.alphaPiercingHE - 1, 1, 'COMMA')} + ' mm'"></td>
+                                    <td th:text="${#numbers.formatInteger(ammoObj.alphaPiercingHEReal, 1, 'COMMA')} + ' mm'"></td>
                                 </tr>
                                 <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
                                     <td th:text="${'Burn Probability'}"></td>
