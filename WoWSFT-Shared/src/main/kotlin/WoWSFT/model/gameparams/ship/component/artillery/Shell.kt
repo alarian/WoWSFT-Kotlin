@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.util.*
 import kotlin.math.ceil
+import kotlin.math.floor
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,7 +15,7 @@ class Shell
     var alphaDamage = 0.0
     var alphaPiercingCS = 0.0
     var alphaPiercingHE = 0.0
-    val alphaPiercingHEReal get() = ceil(alphaPiercingHE).toInt()
+    val alphaPiercingHEReal get() = floor(alphaPiercingHE).toInt()
     var ammoType = ""
     var bulletAirDrag = 0.0
     var bulletAlwaysRicochetAt = 0.0
@@ -33,7 +34,11 @@ class Shell
     var bulletUnderwaterPenetrationFactor = 0.0
     var bulletWaterDrag = 0.0
     var burnProb = 0.0
-    val burnProbReal get() = burnProb
+        set(value) {
+            field = value
+            burnProbReal = if (burnProbReal == 0.0) value else burnProbReal
+        }
+    var burnProbReal = 0.0
     var costCR = 0
     var damage = 0.0
     var directDamage = 0.0

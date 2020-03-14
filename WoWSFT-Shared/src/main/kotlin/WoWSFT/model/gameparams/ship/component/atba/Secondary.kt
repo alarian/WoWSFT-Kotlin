@@ -5,6 +5,7 @@ import WoWSFT.model.gameparams.TypeInfo
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import kotlin.math.ceil
+import kotlin.math.floor
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -43,6 +44,10 @@ class Secondary
     var ammoType = ""
     var bulletSpeed = 0.0
     var burnProb = 0.0
-    val burnProbReal get() = burnProb
-    val alphaPiercingHEReal get() = ceil(alphaPiercingHE).toInt()
+        set(value) {
+            field = value
+            burnProbReal = if (burnProbReal == 0.0) value else burnProbReal
+        }
+    var burnProbReal = 0.0
+    val alphaPiercingHEReal get() = floor(alphaPiercingHE).toInt()
 }
