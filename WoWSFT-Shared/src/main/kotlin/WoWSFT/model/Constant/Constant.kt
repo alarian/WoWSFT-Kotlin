@@ -66,7 +66,7 @@ import java.math.BigDecimal
     val excludeShipGroups = hashSetOf("unavailable", "disabled", "preserved", "clan")
     val supertestShipGroups = hashSetOf("demoWithoutStats")
     val researchShipGroups = hashSetOf("upgradeable", "start")
-    val premiumShipGroups = hashSetOf("special", "specialUnsellable", "upgradeableExclusive", "ultimate", "earlyAccess")
+    val premiumShipGroups = hashSetOf("special", "specialUnsellable", "upgradeableExclusive", "ultimate", "upgradeableUltimate", "earlyAccess")
     val excludeShipNations = hashSetOf("Events", "disabled", "preserved", "clan")
     val excludeShipSpecies = hashSetOf("Auxiliary", "Submarine")
     val excludeCompStats = hashSetOf("directors", "finders", "radars")
