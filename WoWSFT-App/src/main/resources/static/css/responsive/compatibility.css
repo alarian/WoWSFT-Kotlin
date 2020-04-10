@@ -474,3 +474,11 @@ button:hover > .tooltip {
 button .tooltip_desc {
     border: 1px solid black;
 }
+
+.wip_overlay {
+    position: absolute;
+    width: 214px;
+    z-index: 1;
+    font-size: 0;
+    text-align: center;
+}
