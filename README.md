@@ -12,8 +12,10 @@ I acknowledge and agree to the rights and Terms of Use (ToS) provided by [Wargam
 
 Any codes and materials created by me are under [MIT License](./LICENSE).
 
-## No Payments and No Ads
+## No Payments and No Ads (by default)
 WoWSFT is a personal non-profit service that started from 2016. It is not affiliated with any person or body, and it has always been maintained solely by me free of charge and without ads.
+
+In order to support service related bills I've decided to include ads, but it is disabled by default. You can always choose to opt in or out.
 
 ## Tracker
 Google Analytics is used to check overall traffic and whether WoWSFT is up and receiving connections.

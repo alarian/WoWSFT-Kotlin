@@ -50,7 +50,7 @@ class CustomFilter(
             "script-src $headerUnsafe $headerSrc $googleSrc data:;" +
             "style-src $headerUnsafe $headerSrc $googleSrc;" +
             "font-src https://tagmanager.google.com/ https://fonts.gstatic.com/;" +
-            "form-action $none;frame-ancestors $none"
+            "form-action $none; frame-ancestors $none"
 
         init {
             ignoreUri.add("/favicon")
@@ -76,7 +76,7 @@ class CustomFilter(
         response.setHeader("Pragma", "no-cache")
 
         if (isRelease) {
-            response.setHeader("Content-Security-Policy", contentSecurityPolicy)
+//            response.setHeader("Content-Security-Policy", contentSecurityPolicy)
             response.setHeader("Strict-Transport-Security", "max-age=15768000; includeSubDomains")
             response.setHeader("X-Content-Type-Options", "nosniff")
             response.setHeader("X-Frame-Options", "DENY")

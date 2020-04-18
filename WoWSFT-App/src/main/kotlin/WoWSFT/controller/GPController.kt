@@ -1,5 +1,6 @@
 package WoWSFT.controller
 
+import WoWSFT.config.CustomProperties
 import WoWSFT.model.Constant.*
 import WoWSFT.model.gameparams.commander.Commander
 import WoWSFT.model.gameparams.flag.Flag
@@ -12,14 +13,19 @@ import WoWSFT.service.ParserService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.http.HttpHeaders
+import org.springframework.http.ResponseCookie
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @Controller
 class GPController(
+    @Autowired private val customProperties: CustomProperties,
     @Autowired @Qualifier(LOAD_FINISH) private val loadFinish: HashMap<String, Int>,
     @Autowired @Qualifier(NOTIFICATION) private val notification: LinkedHashMap<String, LinkedHashMap<String, String>>,
     @Autowired @Qualifier(GLOBAL) private val global: HashMap<String, HashMap<String, Any>>,
@@ -34,12 +40,16 @@ class GPController(
     companion object {
         private val mapper = ObjectMapper()
         private const val lang = EN
+        private const val WOWSFT_AD = "WoWSFT_Ad"
     }
+    private val isRelease get() = "release".equals(customProperties.env, ignoreCase = true)
 
-    @ModelAttribute(name = "language")
-    fun setLanguage(model: Model)
+    @ModelAttribute(name = "misc")
+    fun setLanguage(model: Model, request: HttpServletRequest)
     {
         model.addAttribute("lang", lang)
+        val cookie = getAdStatus(request)
+        model.addAttribute("adStatus", cookie != null && cookie.value == "1")
     }
 
     @GetMapping("")
@@ -142,5 +152,36 @@ class GPController(
         model.addAttribute("nations", shipsList)
 
         return "Research/shipTree"
+    }
+
+    @ResponseBody
+    @PostMapping("/adToggle")
+    fun toggleAdRequest(request: HttpServletRequest,
+                        response: HttpServletResponse, @RequestParam toggle: Boolean): String
+    {
+        toggleAd(response, toggle)
+        return "SUCCESS"
+    }
+
+    private fun getAdStatus(request: HttpServletRequest): Cookie?
+    {
+        if (!request.cookies.isNullOrEmpty()) {
+            return request.cookies.firstOrNull { c -> c.name == WOWSFT_AD }
+        }
+        return null
+    }
+
+    private fun toggleAd(response: HttpServletResponse, toggle: Boolean)
+    {
+        val toggleValue = if (toggle) "1" else "0"
+        val domain = if (isRelease) "wowsft.com" else "localhost"
+        val maxAge = if (toggle) 31556952L else 0L
+
+        val resCookie = ResponseCookie
+            .from(WOWSFT_AD, toggleValue).domain(domain).path("/").maxAge(maxAge)
+            .httpOnly(true).sameSite("Strict").secure(isRelease)
+            .build()
+
+        response.setHeader(HttpHeaders.SET_COOKIE, resCookie.toString())
     }
 }

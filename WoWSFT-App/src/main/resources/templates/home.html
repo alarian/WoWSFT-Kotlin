@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.wowsft.com/css/responsive/compatibility.css" />
     <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=1.0, user-scalable=yes" />
     <script src="https://cdn.wowsft.com/js/jquery/jquery-3.4.1.min.js"></script>
+    <script th:if="${adStatus}" data-ad-client="ca-pub-2111375563174258" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <title>WoWS Fitting Tool</title>
 </head>
 <body>
@@ -39,8 +40,9 @@
     </div>
 </main>
 <footer>
-    <div th:replace="bottom :: bottom"></div>
+    <th:block th:replace="bottom :: bottom"></th:block>
 </footer>
+<script src="https://cdn.wowsft.com/js/common.js"></script>
 <script src="https://cdn.wowsft.com/js/pages/touch.js"></script>
 </body>
 </html>

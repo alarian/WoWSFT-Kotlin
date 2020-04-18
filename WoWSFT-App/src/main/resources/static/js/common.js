@@ -398,3 +398,23 @@ $(document).on('click', '.shipsList_expand .shipsList_top', function (e) {
         $nations.addClass('hide');
     }
 });
+
+$(document).on('click', '#adToggle', function () {
+    var $this = $(this),
+        $status = $this.attr('data-status') !== '1';
+
+    $.ajax({
+        url: '/adToggle?toggle=' + $status.toString(),
+        type: 'post',
+        success: function (data) {
+            if (data.status === '200') {
+                location.reload()
+            } else {
+                console.log(data);
+            }
+        },
+        error: function (data) {
+            console.log(data)
+        }
+    })
+})

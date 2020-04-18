@@ -16,6 +16,9 @@
             <a href="/research"><span>Research XP</span></a>
         </li>
         <li>
+            <a href="#" id="adToggle" type="button" th:attr="data-status=${adStatus == true ? '1' : '0'}">Toggle Ad <th:block th:text="${adStatus ? 'Off' : 'On'}"></th:block></a>
+        </li>
+        <li>
             <a id="patreon" target="_blank" type="button" rel="noopener noreferrer" href="https://www.patreon.com/bePatron?u=27963691" role="button">
                 <div>
                     <span>
