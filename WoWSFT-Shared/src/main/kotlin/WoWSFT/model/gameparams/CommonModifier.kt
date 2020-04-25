@@ -180,7 +180,7 @@ open class CommonModifier
     var flightSpeedCoefficient = 1.0
     var forsageDurationCoefficient = 1.0
     var squadronHealthStep = 1.0
-    var squadronSpeedStep = 1.0
+    var squadronSpeedStep = 0.0
     var nearAuraDamageTakenCoefficient = 1.0
     var planeHealthPerLevel = 0.0
     var planeTorpedoRangeCoefficient = 1.0

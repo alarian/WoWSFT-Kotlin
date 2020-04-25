@@ -305,7 +305,7 @@
                         </tr>
                         <tr class="toggle" th:classappend="${plane.planeType} + ' hide'">
                             <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_FORSAGE_RESTORE_TIME')}"></td>
-                            <td th:text="${#numbers.formatInteger(plane.maxForsageAmount / plane.forsageRegeneration, 1, 'COMMA')} + ' s'"></td>
+                            <td th:text="${#numbers.formatDecimal(plane.maxForsageAmount / plane.forsageRegeneration, 1, 1)} + ' s'"></td>
                         </tr>
                         <th:block>
                             <tr class="subsystem switch" th:attr="data-type=${plane.ammoType}">
