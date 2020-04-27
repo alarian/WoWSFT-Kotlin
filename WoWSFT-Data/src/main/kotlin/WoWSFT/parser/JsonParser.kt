@@ -72,6 +72,7 @@ class JsonParser
         printer.indentArraysWith(indenter)
         mapper.setDefaultPrettyPrinter(printer)
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
+        mapper.setAnnotationIntrospector(IgnoreJacksonWriteOnlyAccess())
 
         repeat(6) { upgrades[it] = LinkedHashMap() }
     }

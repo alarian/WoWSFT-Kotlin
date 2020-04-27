@@ -4,6 +4,7 @@ import WoWSFT.model.Constant.*
 import WoWSFT.model.gameparams.CommonModifier
 import WoWSFT.model.gameparams.flag.Flag
 import WoWSFT.model.gameparams.ship.Ship
+import WoWSFT.model.gameparams.ship.component.airdefense.AAJoint
 import WoWSFT.model.gameparams.ship.component.airdefense.Aura
 import WoWSFT.model.gameparams.ship.component.planes.Plane
 import WoWSFT.model.gameparams.ship.component.torpedo.Launcher
@@ -20,40 +21,42 @@ class ParamService(
     @Autowired @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>
 )
 {
-    private val mapper = ObjectMapper()
+    companion object {
+        private val mapper = ObjectMapper()
+    }
 
     fun setAA(ship: Ship)
     {
-        val auraFar = mutableListOf<Aura>()
-        val auraMedium = mutableListOf<Aura>()
-        val auraNear = mutableListOf<Aura>()
-
         ship.components.airDefense.forEach { (c, v) ->
             if (c.equals(ship.modules[airDefense], ignoreCase = true)) {
-                addAura(auraFar, v.auraFar, true)
-                addAura(auraMedium, v.auraMedium, false)
-                addAura(auraNear, v.auraNear, false)
+                processAura(ship, v.aaJoint)
             }
         }
         ship.components.atba.forEach { (c, v) ->
             if (c.equals(ship.modules[atba], ignoreCase = true)) {
-                addAura(auraFar, v.auraFar, true)
-                addAura(auraMedium, v.auraMedium, false)
-                addAura(auraNear, v.auraNear, false)
+                processAura(ship, v.aaJoint)
             }
         }
         ship.components.artillery.forEach { (c, v) ->
             if (c.equals(ship.modules[artillery], ignoreCase = true)) {
-                addAura(auraFar, v.auraFar, true)
-                addAura(auraMedium, v.auraMedium, false)
-                addAura(auraNear, v.auraNear, false)
+                processAura(ship, v.aaJoint)
             }
         }
 
+        val auraFar = mutableListOf<Aura>()
+        auraFar.addAll(ship.auraFar)
+
         ship.auraFar = sortAura(auraFar.filter { it.areaDamage > 0 }.toMutableList())
         ship.auraFarBubble = sortAura(auraFar.filter { it.bubbleDamage > 0 }.toMutableList())
-        ship.auraMedium = sortAura(auraMedium)
-        ship.auraNear = sortAura(auraNear)
+        ship.auraMedium = sortAura(ship.auraMedium)
+        ship.auraNear = sortAura(ship.auraNear)
+    }
+
+    private fun processAura(ship: Ship, aaJoint: AAJoint)
+    {
+        addAura(ship.auraFar, aaJoint.auraFar, true)
+        addAura(ship.auraMedium, aaJoint.auraMedium, false)
+        addAura(ship.auraNear, aaJoint.auraNear, false)
     }
 
     private fun addAura(aura: MutableList<Aura>, temp: MutableList<Aura>, hasBubble: Boolean)

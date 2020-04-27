@@ -1,6 +1,7 @@
 package WoWSFT.model.gameparams.ship.component.artillery
 
 import WoWSFT.config.WoWSFT
+import WoWSFT.model.gameparams.ship.component.airdefense.AAJoint
 import WoWSFT.model.gameparams.ship.component.airdefense.Aura
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -14,9 +15,7 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Artillery
 {
-    var auraFar = mutableListOf<Aura>()
-    var auraMedium = mutableListOf<Aura>()
-    var auraNear = mutableListOf<Aura>()
+    val aaJoint = AAJoint()
     var turrets = mutableListOf<Turret>()
     var turretTypes = LinkedHashMap<Int, MutableList<Any>>()
     var artificialOffset = 0.0
@@ -30,20 +29,22 @@ class Artillery
     var GMIdealRadius = 1.0
     var barrelDiameter = 0.0
     var shells = LinkedHashMap<String, Shell>()
+
+    val numBarrels: Int get() = turretTypes.entries.sumBy { it.key * (it.value[0] as Int) }
+
     @JsonIgnore
     private val mapper = ObjectMapper()
-    val numBarrels: Int get() = turretTypes.entries.sumBy { it.key * (it.value[0] as Int) }
 
     @JsonAnySetter
     fun setGuns(name: String, value: Any?) {
         if (value is HashMap<*, *>) {
             val tempObject = mapper.convertValue(value, object : TypeReference<HashMap<String, Any>>() {})
             if ("far".equals(tempObject["type"] as String?, ignoreCase = true)) {
-                auraFar.add(mapper.convertValue(value, Aura::class.java))
+                aaJoint.auraFar.add(mapper.convertValue(value, Aura::class.java))
             } else if ("medium".equals(tempObject["type"] as String?, ignoreCase = true)) {
-                auraMedium.add(mapper.convertValue(value, Aura::class.java))
+                aaJoint.auraMedium.add(mapper.convertValue(value, Aura::class.java))
             } else if ("near".equals(tempObject["type"] as String?, ignoreCase = true)) {
-                auraNear.add(mapper.convertValue(value, Aura::class.java))
+                aaJoint.auraNear.add(mapper.convertValue(value, Aura::class.java))
             } else if (tempObject.containsKey("HitLocationArtillery")) {
                 val turret = mapper.convertValue(value, Turret::class.java)
                 turrets.add(turret)

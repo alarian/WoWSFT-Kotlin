@@ -12,9 +12,7 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 class AirDefense
 {
-    var auraFar = mutableListOf<Aura>()
-    var auraMedium = mutableListOf<Aura>()
-    var auraNear = mutableListOf<Aura>()
+    val aaJoint = AAJoint()
     var ownerlessTracesScatterCoefficient = 0.0
     var prioritySectorChangeDelay = 0.0
     var prioritySectorDisableDelay = 0.0
@@ -24,7 +22,7 @@ class AirDefense
     var prioritySectorPhases = mutableListOf<MutableList<Any>>()
         set(value) {
             field = value
-            if (value.size == 2) {
+            if (value.size >= 2 && value[0].size >= 5) {
                 prioritySectorPreparation = value[0][0].toString().toDouble() + value[1][0].toString().toDouble()
                 prioritySectorDuration = value[0][0].toString().toDouble() + value[1][0].toString().toDouble()
                 prioritySectorDamageInitial = value[0][2].toString().toDouble()
@@ -47,9 +45,9 @@ class AirDefense
         if (value is HashMap<*, *>) {
             val tempObject = mapper.convertValue(value, object : TypeReference<HashMap<String, Any>>() {})
             when (tempObject["type"].toString().toLowerCase()) {
-                "far" -> { auraFar.add(mapper.convertValue(value, Aura::class.java)) }
-                "medium" -> { auraMedium.add(mapper.convertValue(value, Aura::class.java)) }
-                "near" -> { auraNear.add(mapper.convertValue(value, Aura::class.java)) }
+                "far" -> { aaJoint.auraFar.add(mapper.convertValue(value, Aura::class.java)) }
+                "medium" -> { aaJoint.auraMedium.add(mapper.convertValue(value, Aura::class.java)) }
+                "near" -> { aaJoint.auraNear.add(mapper.convertValue(value, Aura::class.java)) }
             }
         }
     }
