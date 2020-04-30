@@ -49,7 +49,7 @@ class GPController(
     {
         model.addAttribute("lang", lang)
         val cookie = getAdStatus(request)
-        model.addAttribute("adStatus", cookie != null && cookie.value == "1")
+        model.addAttribute("adStatus", cookie == null || cookie.value == "1")
     }
 
     @GetMapping("")
@@ -175,7 +175,7 @@ class GPController(
     {
         val toggleValue = if (toggle) "1" else "0"
         val domain = if (isRelease) "wowsft.com" else "localhost"
-        val maxAge = if (toggle) 31556952L else 0L
+        val maxAge = 31556952L
 
         val resCookie = ResponseCookie
             .from(WOWSFT_AD, toggleValue).domain(domain).path("/").maxAge(maxAge)

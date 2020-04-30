@@ -97,6 +97,10 @@ img#logo {
     height: 100%;
 }
 
+main#arty {
+    padding: 5px;
+}
+
 .bottom-fix {
     padding: 20px 10%;
     word-break: keep-all;
@@ -401,6 +405,46 @@ button img {
     vertical-align: middle;
 }
 
+.button_nation
+{
+    background-color: transparent;
+    text-align: center;
+    border: 0 solid black;
+    border-radius: 5px;
+    font-size: 12px;
+    /*min-width: 140px;*/
+    /*max-width: 140px;*/
+    /*min-height: 140px;*/
+    /*max-height: 140px;*/
+    word-wrap: normal;
+    cursor: pointer;
+    vertical-align: top;
+    margin: 2px;
+}
+
+.button_nation img
+{
+    width: 120px;
+    margin-bottom: 0;
+}
+
+.button_ship {
+    /*width: 120px;*/
+    height: 92px;
+    background-color: transparent;
+    text-align: center;
+    border: 0 solid black;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.button_ship img {
+    width: 124px;
+}
+
 .overlay {
     position: absolute;
     top: 6px;
@@ -481,4 +525,40 @@ button .tooltip_desc {
     z-index: 1;
     font-size: 0;
     text-align: center;
+}
+
+.research_nation {
+    padding: 20px 0;
+}
+
+.research_reset {
+    padding-bottom: 20px;
+}
+
+.research_list {
+    text-align: center;
+    display: inline-table;
+    padding: 50px 0;
+}
+
+.tree {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+#chart_div1 circle, #chart_div2 circle {
+    r: 3
+}
+
+.research_list table tr:not(:first-child) td:not(:first-child) {
+    border-top: 1px solid black;
+}
+
+.research_list table td:nth-child(even) {
+    background-color: rgb(210,210,210);
+}
+
+.research_list td {
+    width: 130px;
+    vertical-align: middle;
 }
