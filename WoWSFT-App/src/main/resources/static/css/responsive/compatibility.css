@@ -550,6 +550,38 @@ button .tooltip_desc {
     r: 3
 }
 
+#shipSelector {
+    vertical-align: middle;
+    display: inline-flex;
+}
+
+#shipSelector select {
+    /*margin: 2px;*/
+}
+
+.button_arty {
+    background: transparent;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 1);
+    border-radius: 5px;
+    /*font-size: 10px;*/
+    /*width: 60px;*/
+    /*height: 60px;*/
+    word-wrap: normal;
+    cursor: pointer;
+    vertical-align: top;
+    overflow: hidden;
+    white-space: normal;
+    padding: 1px;
+    margin: 0 2px;
+    /*z-index: 2;*/
+    /*padding: 0;*/
+}
+
+#chart_list {
+    margin: 10px 2px;
+}
+
 .research_list table tr:not(:first-child) td:not(:first-child) {
     border-top: 1px solid black;
 }
