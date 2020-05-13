@@ -9,6 +9,7 @@ import WoWSFT.model.gameparams.ship.component.engine.Engine
 import WoWSFT.model.gameparams.ship.component.firecontrol.FireControl
 import WoWSFT.model.gameparams.ship.component.flightcontrol.FlightControl
 import WoWSFT.model.gameparams.ship.component.hull.Hull
+import WoWSFT.model.gameparams.ship.component.hydrophone.Hydrophone
 import WoWSFT.model.gameparams.ship.component.planes.Plane
 import WoWSFT.model.gameparams.ship.component.torpedo.Torpedo
 import java.util.*
@@ -28,4 +29,5 @@ class ShipComponent
     var torpedoBomber = LinkedHashMap<String, Plane>()
     var diveBomber = LinkedHashMap<String, Plane>()
     var engine = LinkedHashMap<String, Engine>()
+    var hydrophone = LinkedHashMap<String, Hydrophone>()
 }

@@ -58,9 +58,10 @@ import java.math.BigDecimal
     const val atba = "atba"
     const val fireControl = "fireControl"
 
+    const val hydrophone = "hydrophone"
+
     val miscList = listOf(TYPE_PROJECTILE, TYPE_AIRCRAFT)
     val componentsList = listOf(flightControl, artillery, hull, torpedoes, suo, fighter, torpedoBomber, diveBomber, engine)
-    val compStatsList = listOf(flightControl, airArmament, airDefense, artillery, atba, hull, suo, torpedoes, fighter, torpedoBomber, diveBomber, engine)
 
     val globalLanguage = hashSetOf(EN)
     val excludeShipGroups = hashSetOf("unavailable", "disabled", "preserved", "clan")

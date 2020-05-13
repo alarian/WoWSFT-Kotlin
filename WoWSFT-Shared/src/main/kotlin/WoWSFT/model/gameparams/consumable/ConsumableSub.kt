@@ -2,6 +2,7 @@ package WoWSFT.model.gameparams.consumable
 
 import WoWSFT.config.WoWSFT
 import WoWSFT.utils.CommonUtils
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.*
 
 @WoWSFT
@@ -48,15 +49,22 @@ class ConsumableSub
     var torpedoReloadTime = 0.0
     var workTime = 0.0
         get() = if (field > 0) CommonUtils.getDecimalRounded(field, 1) else field
+    var maxDepth = 0.0
+    var newWaterline = 0
+    var ammo = ""
+
     // Effects. Ignore.
-    var livePointEffect = ""
-    var radarEffect = ""
-    var radarEffectForPlayer = ""
-    var spawnEffect = ""
-    var spawnPointEffect = ""
-    var waveEffect = ""
-    var descIDs = ""
-    var iconIDs = ""
-    var titleIDs = ""
+    @JsonIgnore var livePointEffect = ""
+    @JsonIgnore var radarEffect = ""
+    @JsonIgnore var radarEffectForPlayer = ""
+    @JsonIgnore var spawnEffect = ""
+    @JsonIgnore var spawnPointEffect = ""
+    @JsonIgnore var waveEffect = ""
+    @JsonIgnore var descIDs = ""
+    @JsonIgnore var iconIDs = ""
+    @JsonIgnore var titleIDs = ""
+    @JsonIgnore var targetEffect = ""
+    @JsonIgnore var waterEffect = ""
+
     var bonus = LinkedHashMap<String, String>()
 }

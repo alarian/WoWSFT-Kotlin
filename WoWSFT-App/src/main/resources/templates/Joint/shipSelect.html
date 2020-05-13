@@ -87,7 +87,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel_left" data-type="upgrades" th:with="selection=${warship.selectUpgrades}">
+                <div class="panel_left" data-type="upgrades" th:if="${warship.upgrades != null and warship.upgrades.size() > 0}" th:with="selection=${warship.selectUpgrades}">
                     <ul th:each="slot : ${warship.upgrades}" th:attr="data-index=${slotStat.index}">
                         <li>
                             <button class="button_upgrade"
