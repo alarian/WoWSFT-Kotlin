@@ -176,7 +176,7 @@ class JsonParser
     private fun sortShipUpgradeInfo(ship: Ship)
     {
         ship.shipUpgradeInfo.components.forEach { (key, value) ->
-            value.forEach{ upgrade ->
+            value.forEach { upgrade ->
                 if (upgrade.position == 3 && ship.shipUpgradeInfo.components[key]!!.size < 3) {
                     upgrade.position = 2
                 }
