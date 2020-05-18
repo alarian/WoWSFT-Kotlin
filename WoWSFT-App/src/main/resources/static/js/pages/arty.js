@@ -187,12 +187,10 @@ $('#resetChart').on('click', function () {
 
 function removeData(idx)
 {
-    data1.Ff.splice(idx * 2 + 1, 2);
-    data2.Ff.splice(idx * 2 + 1, 2);
-    for (var i = 0; i < data1.eg.length; i++) {
-        data1.eg[i].c.splice(idx * 2 + 1, 2);
-        data2.eg[i].c.splice(idx * 2 + 1, 2);
-    }
+    data1.removeColumn(idx * 2 + 1);
+    data1.removeColumn(idx * 2 + 1);
+    data2.removeColumn(idx * 2 + 1);
+    data2.removeColumn(idx * 2 + 1);
     index = index - 1;
 
     var tempSeries = {};
