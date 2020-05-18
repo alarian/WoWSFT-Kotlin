@@ -319,20 +319,22 @@
                                 <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_AMMO_COUNT_' + plane.planeType.replace('Bomber', '').toUpperCase())}"></td>
                                 <td th:text="${#numbers.formatInteger(plane.attackCount, 1, 'COMMA')}"></td>
                             </tr>
-                            <th:block th:if="${plane.rocket.ammoType == 'HE' or plane.bomb.ammoType == 'HE'}"
+                            <th:block th:if="${plane.torpedo.ammoType != 'torpedo'}"
                                       th:with="ammoObj=${plane.rocket.ammoType == 'HE' ? plane.rocket : plane.bomb}">
                                 <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
                                     <td th:text="${'Maximum Damage'}"></td>
                                     <td th:text="${#numbers.formatInteger(ammoObj.alphaDamage, 1, 'COMMA')}"></td>
                                 </tr>
-                                <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
-                                    <td th:text="${'HE Penetration'}"></td>
-                                    <td th:text="${#numbers.formatInteger(ammoObj.alphaPiercingHEReal, 1, 'COMMA')} + ' mm'"></td>
-                                </tr>
-                                <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
-                                    <td th:text="${'Burn Probability'}"></td>
-                                    <td th:text="${#numbers.formatDecimal(ammoObj.burnProb * 100, 1, 1)} + ' %'"></td>
-                                </tr>
+                                <th:block th:if="${plane.rocket.ammoType == 'HE' or plane.bomb.ammoType == 'HE'}">
+                                    <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
+                                        <td th:text="${'HE Penetration'}"></td>
+                                        <td th:text="${#numbers.formatInteger(ammoObj.alphaPiercingHEReal, 1, 'COMMA')} + ' mm'"></td>
+                                    </tr>
+                                    <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
+                                        <td th:text="${'Burn Probability'}"></td>
+                                        <td th:text="${#numbers.formatDecimal(ammoObj.burnProb * 100, 1, 1)} + ' %'"></td>
+                                    </tr>
+                                </th:block>
                             </th:block>
                             <th:block th:if="${plane.torpedo.ammoType == 'torpedo'}">
                                 <tr class="toggle" th:classappend="${plane.torpedo.ammoType} + ' hide'">
