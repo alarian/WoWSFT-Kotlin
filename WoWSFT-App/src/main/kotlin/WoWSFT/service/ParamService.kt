@@ -340,25 +340,27 @@ class ParamService(
     {
         if (plane.hangarSettings != null) {
             plane.hangarSettings!!.timeToRestore = plane.hangarSettings!!.timeToRestore * modifier.planeSpawnTimeCoefficient * modifier.airplanesSpawnTime
-        }
-        plane.maxForsageAmount = plane.maxForsageAmount * modifier.forsageDurationCoefficient * modifier.airplanesForsageDuration
-        plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.flightSpeedCoefficient
-        plane.speedMove = plane.speedMove * modifier.flightSpeedCoefficient
-        plane.maxVisibilityFactor = plane.maxVisibilityFactor * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
-        plane.maxVisibilityFactorByPlane = plane.maxVisibilityFactorByPlane * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
-        plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.airplanesSpeed * (oneCoeff + ship.adrenaline / modifier.hpStep * modifier.squadronSpeedStep)
-        plane.consumables.forEach { c ->
-            c.subConsumables.forEach { (_, v) ->
-                if ("AllSkillsCooldownModifier".equals(modifier.modifier, ignoreCase = true)) {
-                    v.reloadTime = v.reloadTime * modifier.reloadCoefficient
-                }
-                v.reloadTime = v.reloadTime * modifier.abilReloadTimeFactor
-                v.fightersNum = v.fightersNum + if (v.fightersNum > 0) modifier.extraFighterCount else 0.0
+            plane.hangarSettings!!.maxValue = plane.hangarSettings!!.maxValue + modifier.airplanesExtraHangarSize
 
-                if ("regenerateHealth".equals(v.consumableType, ignoreCase = true)) {
-                    v.regenerationRate = v.regenerationRate * modifier.regenerationPlaneRate
+            plane.maxForsageAmount = plane.maxForsageAmount * modifier.forsageDurationCoefficient * modifier.airplanesForsageDuration
+            plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.flightSpeedCoefficient
+            plane.speedMove = plane.speedMove * modifier.flightSpeedCoefficient
+            plane.maxVisibilityFactor = plane.maxVisibilityFactor * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
+            plane.maxVisibilityFactorByPlane = plane.maxVisibilityFactorByPlane * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
+            plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.airplanesSpeed * (oneCoeff + ship.adrenaline / modifier.hpStep * modifier.squadronSpeedStep)
+            plane.consumables.forEach { c ->
+                c.subConsumables.forEach { (_, v) ->
+                    if ("AllSkillsCooldownModifier".equals(modifier.modifier, ignoreCase = true)) {
+                        v.reloadTime = v.reloadTime * modifier.reloadCoefficient
+                    }
+                    v.reloadTime = v.reloadTime * modifier.abilReloadTimeFactor
+                    v.fightersNum = v.fightersNum + if (v.fightersNum > 0) modifier.extraFighterCount else 0.0
+
+                    if ("regenerateHealth".equals(v.consumableType, ignoreCase = true)) {
+                        v.regenerationRate = v.regenerationRate * modifier.regenerationPlaneRate
+                    }
+                    v.workTime = v.workTime * modifier.squadronConsumablesWorkTimeMultiplier
                 }
-                v.workTime = v.workTime * modifier.squadronConsumablesWorkTimeMultiplier
             }
         }
     }

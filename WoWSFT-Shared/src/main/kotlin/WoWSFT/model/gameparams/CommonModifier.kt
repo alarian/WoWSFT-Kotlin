@@ -67,7 +67,7 @@ open class CommonModifier
     var airDefenseDispWorkTime = 1.0
     var airplanesDiveBombersHealth = 1.0
     var airplanesEmptyReturnSpeed = 1.0
-    var airplanesExtraHangarSize = 0.0
+    var airplanesExtraHangarSize = 0
     var airplanesFighterAimingTime = 0.0
     var airplanesFightersHealth = 1.0
     var airplanesForsageDuration = 1.0
