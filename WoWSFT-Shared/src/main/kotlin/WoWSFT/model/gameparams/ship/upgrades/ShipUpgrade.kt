@@ -38,8 +38,10 @@ class ShipUpgrade
     var components = LinkedHashMap<String, MutableList<String>>()
     val image get() = if (ucTypeShort.isNotEmpty()) "$CDN_IMAGE/modules/${ucTypeShort.toLowerCase()}.png" else ""
 
-    @JsonIgnore
-    private val mapper = ObjectMapper()
+    companion object {
+        @JsonIgnore
+        private val mapper = ObjectMapper()
+    }
 
     @JsonSetter
     fun setComponents(value: Any?)

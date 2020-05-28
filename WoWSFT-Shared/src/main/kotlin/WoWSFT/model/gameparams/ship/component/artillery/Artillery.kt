@@ -32,8 +32,10 @@ class Artillery
 
     val numBarrels: Int get() = turretTypes.entries.sumBy { it.key * (it.value[0] as Int) }
 
-    @JsonIgnore
-    private val mapper = ObjectMapper()
+    companion object {
+        @JsonIgnore
+        private val mapper = ObjectMapper()
+    }
 
     @JsonAnySetter
     fun setGuns(name: String, value: Any?) {

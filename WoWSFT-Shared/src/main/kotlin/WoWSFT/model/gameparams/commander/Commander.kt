@@ -20,8 +20,10 @@ class Commander
     @JsonProperty("CrewSkills")
     var crewSkills = MutableList(4) { MutableList(8) { Skill() } }
 
-    @JsonIgnore
-    private val mapper = ObjectMapper()
+    companion object {
+        @JsonIgnore
+        private val mapper = ObjectMapper()
+    }
 
     @JsonAnySetter
     fun setSkills(name: String, value: Any?) {

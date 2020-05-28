@@ -21,8 +21,10 @@ class Consumable
     var name = ""
     var typeinfo = TypeInfo()
     var description = ""
-    @JsonIgnore
-    private val mapper = ObjectMapper()
+    companion object {
+        @JsonIgnore
+        private val mapper = ObjectMapper()
+    }
 
     @JsonAnySetter
     fun setSubs(name: String, value: Any?) {

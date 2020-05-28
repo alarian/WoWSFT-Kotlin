@@ -25,8 +25,10 @@ class ATBA
     var taperDist = 0.0
     @JsonInclude
     var GSIdealRadius = 1.0
-    @JsonIgnore
-    private val mapper = ObjectMapper()
+    companion object {
+        @JsonIgnore
+        private val mapper = ObjectMapper()
+    }
 
     @JsonAnySetter
     fun setGuns(name: String, value: Any?) {

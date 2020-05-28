@@ -19,8 +19,10 @@ class Torpedo
     var useGroups = false
     var useOneShot = false
     var ammo = TorpedoAmmo()
-    @JsonIgnore
-    private val mapper = ObjectMapper()
+    companion object {
+        @JsonIgnore
+        private val mapper = ObjectMapper()
+    }
 
     @JsonAnySetter
     fun setGuns(name: String, value: Any?) {

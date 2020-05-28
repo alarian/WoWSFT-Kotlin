@@ -25,8 +25,10 @@ class ShipUpgradeInfo
         componentsList.forEach { components[it] = mutableListOf() }
     }
 
-    @JsonIgnore
-    private val mapper = ObjectMapper()
+    companion object {
+        @JsonIgnore
+        private val mapper = ObjectMapper()
+    }
 
     @JsonAnySetter
     fun setShipUpgrades(name: String, value: Any?)

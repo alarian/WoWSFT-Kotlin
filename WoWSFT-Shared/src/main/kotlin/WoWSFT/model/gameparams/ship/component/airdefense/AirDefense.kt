@@ -37,8 +37,10 @@ class AirDefense
     var prioritySectorCoefficientInitial = 0.0
     var prioritySectorCoefficientDuring = 0.0
 
-    @JsonIgnore
-    private val mapper = ObjectMapper()
+    companion object {
+        @JsonIgnore
+        private val mapper = ObjectMapper()
+    }
 
     @JsonAnySetter
     fun setAura(name: String, value: Any?) {
