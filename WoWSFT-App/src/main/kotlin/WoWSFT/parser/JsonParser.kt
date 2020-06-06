@@ -95,7 +95,8 @@ open class JsonParser
             object : TypeReference<LinkedHashMap<String, Flag>>() {})
         flags.putAll(tempFlags)
 
-        val tempShipsList = mapper.readValue(zShip.getInputStream(zShip.getEntry("$TYPE_SHIP_LIST$FILE_JSON")),
+        val tempShipsList: LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>
+                = mapper.readValue(zShip.getInputStream(zShip.getEntry("$TYPE_SHIP_LIST$FILE_JSON")),
             object : TypeReference<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>>() {})
         shipsList.putAll(tempShipsList)
 
