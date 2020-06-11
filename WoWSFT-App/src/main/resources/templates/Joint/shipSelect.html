@@ -5,9 +5,9 @@
     <div id="notification" th:if="${single and warship == null}">
         <div>Click on a ship for fitting.</div>
     </div>
-    <div class="ship" th:attr="data-ship-index=${warship.index}, data-ship-position=${single ? '0' : dataIndex}" th:if="${warship != null}">
+    <div class="ship" th:attr="data-ship-index=${warship.index}" th:if="${warship != null}">
         <div class="name">
-            <div class="shipTree">
+            <div class="shipTree" th:if="${single}">
                 <a th:href="${'/ship?index=' + warship.prevShipIndex.toUpperCase()}"
                    th:if="${warship.research and !#strings.isEmpty(warship.prevShipIndex)}">
                     <img th:src="'https://cdn.wowsft.com/images/vehicles/ship_previews/' + ${warship.prevShipIndex} + '.png'" />
@@ -21,7 +21,7 @@
                 <img th:if="${warship.realShipType.toUpperCase() == 'TEST_SAMPLE'}" class="wip_overlay" th:src="@{https://cdn.wowsft.com/images/Icon/WIP3_01.png}" />
                 <img th:title="${global.get(IDS + warship.index +'_DESCR')}" th:src="${warship.imageSmall}" />
             </div>
-            <div class="shipTree">
+            <div class="shipTree" th:if="${single}">
                 <th:block th:each="comp : ${warship.shipUpgradeInfo.components.?[value.?[nextShips != null and nextShips.size() > 0].size() > 0]}"
                           th:if="${warship.research and warship.shipUpgradeInfo.components.?[value.?[nextShips != null and nextShips.size() > 0].size() > 0].size() > 0}">
                     <th:block th:each="module : ${comp.value}" th:if="${module.nextShips != null and module.nextShips.size() > 0}">

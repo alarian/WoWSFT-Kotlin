@@ -6,8 +6,8 @@
     //    <![CDATA[
 
         $(function () {
-            var curIndex = [[${dataIndex}]];
-            drawTorpedoes($('[data-ship-position=' + curIndex + ']'), [[${warship.components.torpedoes[warship.modules.torpedoes].launchers}]]);
+            var curIndex = [[${index}]];
+            drawTorpedoes($('[data-ship-index=' + curIndex + ']'), [[${warship.components.torpedoes[warship.modules.torpedoes].launchers}]]);
         });
 
     //    ]]>

@@ -319,6 +319,7 @@ function callPage($ship)
     var $checked = $ship.find('.limit_skill').is(':checked');
 
     var $shipIndex = $ship.attr('data-ship-index');
+    var $shipDom = $('.ship[data-ship-index=' + $shipIndex + ']');
     var url = makeUrl($ship);
 
     $.ajax({
@@ -326,8 +327,8 @@ function callPage($ship)
         type: 'post',
         success: function (data) {
             if (data.status === undefined) {
-                $('.info_box.replace').remove();
-                $('.ship[data-ship-index=' + $shipIndex + ']').append(data);
+                $shipDom.find('.info_box.replace').remove();
+                $shipDom.append(data);
                 // $('.ship').remove();
                 // $('.main').prepend(data);
 
@@ -341,9 +342,11 @@ function callPage($ship)
                 }
                 // $('[data-ship-index=' + $shipIndex + ']').find('.limit_skill').prop('checked', $checked);
 
-                history.replaceState({
-                    id: $shipIndex
-                }, '', url);
+                if (compare === undefined || !compare) {
+                    history.replaceState({
+                        id: $shipIndex
+                    }, '', url);
+                }
             } else {
                 console.log(data);
             }

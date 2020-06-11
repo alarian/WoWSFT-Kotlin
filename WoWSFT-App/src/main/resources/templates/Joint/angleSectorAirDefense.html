@@ -3,14 +3,14 @@
 <body>
 <th:block th:fragment="angleSectorAirDefense">
     <script th:inline="javascript" data-script="airDefenseSector">
-        //    <![CDATA[
+    //    <![CDATA[
 
         $(function () {
-            var curIndex = [[${dataIndex}]];
-            drawAirDefense($('[data-ship-position=' + curIndex + ']'), [[${warship.auraFar}]], [[${warship.auraMedium}]], [[${warship.auraNear}]])
+            var curIndex = [[${index}]];
+            drawAirDefense($('[data-ship-index=' + curIndex + ']'), [[${warship.auraFar}]], [[${warship.auraMedium}]], [[${warship.auraNear}]])
         });
 
-        //    ]]>
+    //    ]]>
     </script>
     <div title="Air Defense Sector">
         <canvas data-type="airDefenseCanvas" width="200" height="200">

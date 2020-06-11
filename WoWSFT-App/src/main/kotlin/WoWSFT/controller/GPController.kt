@@ -85,7 +85,6 @@ class GPController(
 
         if (index.isNotEmpty()) {
             model.addAttribute("index", index.toUpperCase())
-            model.addAttribute("dataIndex", 0)
             model.addAttribute("commanders", commanders)
             model.addAttribute("flags", flagsLHM)
 
@@ -100,6 +99,42 @@ class GPController(
         model.addAttribute("nations", shipsList)
 
         return "FittingTool/ftHome"
+    }
+
+    @GetMapping("/compare")
+    fun getComparison(
+        model: Model
+    ): String
+    {
+        return "Comparison/comparison"
+    }
+
+    @PostMapping("/compare")
+    fun postComparison(
+        model: Model,
+        @RequestParam(required = false, defaultValue = "") index: String,
+        @RequestParam(required = false, defaultValue = "") modules: String,
+        @RequestParam(required = false, defaultValue = "") upgrades: String,
+        @RequestParam(required = false, defaultValue = "") consumables: String,
+        @RequestParam(required = false, defaultValue = "PCW001") commander: String,
+        @RequestParam(required = false, defaultValue = "0") skills: Long,
+        @RequestParam(required = false, defaultValue = "0") flags: Int,
+        @RequestParam(required = false, defaultValue = "100") ar: Int
+    ): String
+    {
+        model.addAttribute("single", false)
+        model.addAttribute(IDS, IDS_)
+        model.addAttribute(GLOBAL, global[lang])
+
+        model.addAttribute("index", index.toUpperCase())
+        model.addAttribute("commanders", commanders)
+        model.addAttribute("flags", flagsLHM)
+
+        val sSkills = if (skills > maxBitsToInt) 0 else skills
+        val ship = getShip(index.toUpperCase(), modules, upgrades, consumables, sSkills, commander.toUpperCase(), flags, ar)
+        model.addAttribute(TYPE_WARSHIP, ship)
+
+        return "Joint/shipSelect :: warshipStats"
     }
 
     @Throws(Exception::class)

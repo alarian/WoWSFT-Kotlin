@@ -6,8 +6,8 @@
     //    <![CDATA[
 
         $(function () {
-            var curIndex = [[${dataIndex}]];
-            drawArtillery($('[data-ship-position=' + curIndex + ']'), [[${warship.components.artillery[warship.modules.artillery].turrets}]]);
+            var curIndex = [[${index}]];
+            drawArtillery($('[data-ship-index=' + curIndex + ']'), [[${warship.components.artillery[warship.modules.artillery].turrets}]]);
         });
 
     //    ]]>
