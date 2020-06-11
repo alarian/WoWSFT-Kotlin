@@ -28,6 +28,7 @@
 </header>
 <main>
     <th:block th:replace="Joint/adToggle :: adToggle"></th:block>
+    <br />
     <div class="research_nation">
         <button class="button_nation initiate" th:each="nation : ${nations}" th:if="${nation.value.entrySet().?[!key.contains('PREMIUM') and !key.contains('TEST')].size() > 0}" th:attr="data-nation=${nation.key}">
             <img th:src="${'https://cdn.wowsft.com/images/nation_flags/small/flag_' + nation.key + '.png'}"/><br />

@@ -1,0 +1,632 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /*font-size: 100%;*/
+    color: inherit;
+    list-style: none;
+    text-decoration: none;
+    background: transparent;
+}
+
+html {
+    touch-action: manipulation;
+}
+
+html, body {
+    width: 100%;
+    /*height: 100%;*/
+    margin: 0;
+    padding: 0;
+    /*overflow-x: hidden;*/ /* Comparison */
+}
+
+body {
+    cursor: default;
+    /*min-width: 1408px;*/
+    /*max-width: 1792px;*/
+    /*min-height: 1300px;*/
+    background: rgba(0, 0, 0, 0.1);
+    color: black;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 22px;
+
+    -ms-overflow-style: none;
+    /*overflow: auto;*/
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+body::-webkit-scrollbar {
+    display: none !important;
+}
+
+.top {
+    /*display: inline-block;*/
+    background: rgba(173, 216, 230, 0.9);
+    width: 100%;
+    z-index: 5;
+    /*text-align: left;*/
+}
+
+.top ul {
+    overflow: hidden;
+    font-size: 0;
+}
+
+.top li {
+    font-size: 14px;
+    display: inline-block;
+}
+
+.top li:hover, .top li:active {
+    background: deepskyblue;
+    cursor: pointer;
+}
+
+.top li a:not(#patreon) {
+    display: block;
+    padding: 16px;
+}
+
+a#patreon {
+    display: block;
+    margin: 8px;
+    padding: 8px;
+    /*border-radius: 9999px;*/
+    background-color: rgb(232, 91, 70);
+}
+
+a#patreon span {
+    color: white;
+}
+
+img#logo {
+    width: 90%;
+    max-width: 300px;
+    height: auto;
+}
+
+.main {
+    height: 100%;
+}
+
+main#arty {
+    padding: 5px;
+}
+
+.bottom-fix {
+    padding: 20px 10%;
+    word-break: keep-all;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.bottom-fix div {
+    max-width: 700px;
+    display: inline-block;
+}
+
+.bottom-fix p {
+    text-align: left;
+}
+
+#notification {
+    padding: 20px 10%;
+    word-break: keep-all;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+#notification div {
+    max-width: 700px;
+    display: inline-block;
+}
+
+#notification ul {
+    display: inline-block;
+    text-align: left;
+    max-width: 700px;
+}
+
+.shipsList {
+    text-align: left;
+    display: block;
+    background: rgba(173, 216, 230, 0.9);
+    position: absolute;
+    top: 0;
+    /*overflow-x: hidden;*/
+    z-index: 5;
+}
+
+.shipsList div {
+    z-index: inherit;
+}
+
+.shipsList span {
+    display: block;
+    width: 150px;
+    padding: 10px 14px;
+}
+
+.shipsList_expand {
+    text-align: center;
+}
+
+.shipsList_top {
+    line-height: 34px;
+}
+
+.shipsList_top.contract::after {
+    content: ' ▲';
+}
+
+.shipsList_top.expand::after {
+    content: ' ▼';
+}
+
+.shipsList_expand .nation {
+    text-align: left;
+}
+
+@media screen and (max-width: 880px) {
+    .shipsList {
+        top: 54px;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .shipsList {
+        /*position: absolute;*/
+        left: 50%;
+        margin-left: -960px;
+    }
+}
+
+.shipsList .nation span:hover, .shipsList .nation span:active {
+    background: deepskyblue;
+    cursor: pointer;
+}
+
+.dropdown_main, .dropdown_sub {
+    text-align: left;
+    display: none;
+    position: absolute;
+    background: rgba(173, 216, 230, 0.9);
+    left: 150px;
+    margin-top: -42px;
+}
+
+.dropdown_sub span {
+    width: 200px;
+}
+
+.shipsList_expand .nation:hover > .dropdown_main, .shipsList_expand .nation:active > .dropdown_main,
+.dropdown_main div:hover > .dropdown_main, .dropdown_main div:active > .dropdown_main,
+.dropdown_main div:hover > .dropdown_sub, .dropdown_main div:active > .dropdown_sub {
+    display: block;
+    cursor: pointer;
+}
+
+.shipTree {
+    display: inline-block;
+    min-width: 72px;
+    vertical-align: bottom;
+}
+
+.shipTree a {
+    display: block;
+}
+
+.shipTree a img {
+    width: 72px;
+}
+
+.shipTree a span {
+    font-size: 12px;
+    width: 72px;
+    display: block;
+    word-break: keep-all;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.info_box {
+    text-align: center;
+    margin: 0 auto;
+    border: 0;
+    vertical-align: top;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.info_box_inner {
+    display: inline-block;
+    vertical-align: top;
+    /*background: white;*/
+    text-decoration: none;
+    opacity: 1;
+    text-align: center;
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+    white-space: normal;
+    padding: 4px;
+}
+
+.info_box_inner table {
+    border-spacing: 0;
+}
+
+.panel_left {
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+}
+
+.panel_left[data-type=upgrades] {
+    padding: 4px;
+}
+
+.panel_left[data-type=upgrades] ul {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.panel_left table {
+    /*text-align: left;*/
+    /*width: 100%;*/
+    margin: 0 auto;
+    padding: 4px;
+}
+
+.panel_left:not(:last-of-type), .panel_right:not(:last-of-type) {
+    margin-bottom: 4px;
+}
+
+.panel_left[data-type=crewSkills] td {
+    /*padding: 4px;*/
+    position: relative;
+}
+
+.panel_right {
+    width: 360px;
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+}
+
+.panel_right div {
+    vertical-align: top;
+    margin: 0 auto;
+    padding: 4px;
+}
+
+.panel_right table {
+    text-align: left;
+    width: 100%;
+    padding: 4px;
+}
+
+.panel_right table tr td:first-of-type {
+    width: 236px;
+}
+
+.panel_right table tr td[colspan="2"] {
+    width: 352px;
+}
+
+.panel_right table tbody tr td:nth-of-type(2) {
+    width: 116px;
+    text-align: right;
+}
+
+.panel_right tr.subsystem {
+    background: rgba(0, 0, 0, 0.1)
+}
+
+.panel_right[data-type=consumables] {
+    padding: 4px 0;
+}
+
+.panel_right[data-type=consumables] ul {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.module_gap {
+    width: 14px;
+}
+
+.button_module, .button_upgrade,
+.button_skill, .button_uSkill,
+.button_flag, .button_consumable,
+.button_plane_consumable {
+    background: transparent;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 5px;
+    font-size: 10px;
+    width: 60px;
+    height: 60px;
+    word-wrap: normal;
+    cursor: pointer;
+    vertical-align: top;
+    overflow: hidden;
+    white-space: normal;
+    margin: 2px;
+    z-index: 2;
+    padding: 0;
+}
+
+button span {
+    z-index: 0;
+}
+
+.button_module, .button_flag {
+    width: 72px;
+    height: 72px;
+    overflow: unset;
+}
+
+.button_module img, .button_flag img {
+    vertical-align: middle;
+}
+
+.button_upgrade, .button_consumable {
+    border: 1px solid rgb(210,210,210);
+    border-radius: 5px;
+}
+
+.disable {
+    display: none;
+}
+
+.hide {
+    display: none;
+}
+
+.hidden {
+    width: 0;
+    height: 0;
+    display: none;
+    visibility: hidden;
+}
+
+button img {
+    width: 32px;
+}
+
+.button_skill img {
+    width: 50px;
+    vertical-align: middle;
+}
+
+.button_nation
+{
+    background-color: transparent;
+    text-align: center;
+    border: 0 solid black;
+    border-radius: 5px;
+    font-size: 12px;
+    /*min-width: 140px;*/
+    /*max-width: 140px;*/
+    /*min-height: 140px;*/
+    /*max-height: 140px;*/
+    word-wrap: normal;
+    cursor: pointer;
+    vertical-align: top;
+    margin: 2px;
+}
+
+.button_nation img
+{
+    width: 120px;
+    margin-bottom: 0;
+}
+
+.button_ship {
+    /*width: 120px;*/
+    height: 92px;
+    background-color: transparent;
+    text-align: center;
+    border: 0 solid black;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.button_ship img {
+    width: 124px;
+}
+
+.overlay {
+    position: absolute;
+    top: 6px;
+    left: 4px;
+    background-image: url(https://cdn.wowsft.com/images/Icon/skill_special.png);
+    background-repeat: no-repeat;
+    opacity: 1;
+    padding: 12px;
+    font-size: 0;
+    text-align: center;
+}
+
+.select {
+    border:1px solid rgb(256,0,0);
+    border-radius: 5px;
+}
+
+.switch {
+    cursor: pointer;
+}
+
+button .tooltip {
+    font-size: 12px;
+    visibility: hidden;
+    position: absolute;
+    z-index: 3;
+    width: 200px;
+    border-collapse: collapse;
+    -webkit-transform: translate(40%, -100%);
+    -moz-transform: translate(40%, -100%);
+    -ms-transform: translate(40%, -100%);
+    -o-transform: translate(40%, -100%);
+    transform: translate(40%, -100%);
+}
+
+button .tooltip.invert {
+    -webkit-transform: translate(-100%, -120%);
+    -moz-transform: translate(-100%, -120%);
+    -ms-transform: translate(-100%, -120%);
+    -o-transform: translate(-100%, -120%);
+    transform: translate(-100%, -120%);
+}
+
+button .tooltip tr td:first-of-type {
+    width: 130px;
+    word-break: keep-all;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+button .tooltip tr td:nth-of-type(2) {
+    vertical-align: middle;
+    width: 50px;
+    padding: 0 0 0 20px;
+}
+
+button:hover > .tooltip {
+    /*display: inline-table;*/
+    visibility: visible;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0.9;
+    border: 1px solid black;
+}
+
+.switch {
+    vertical-align: top;
+    margin: 0 auto;
+    padding: 8px;
+}
+
+button .tooltip_desc {
+    border: 1px solid black;
+}
+
+.wip_overlay {
+    position: absolute;
+    width: 214px;
+    z-index: 1;
+    font-size: 0;
+    text-align: center;
+}
+
+.research_nation {
+    padding: 20px 0;
+}
+
+.research_reset {
+    padding-bottom: 20px;
+}
+
+.research_list {
+    text-align: center;
+    display: inline-table;
+    padding: 50px 0;
+}
+
+.tree {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+#chart_div1 circle, #chart_div2 circle {
+    r: 3
+}
+
+#shipSelector {
+    vertical-align: middle;
+    display: inline-flex;
+}
+
+#shipSelector select {
+    /*margin: 2px;*/
+}
+
+.button_arty {
+    background: transparent;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 1);
+    border-radius: 5px;
+    /*font-size: 10px;*/
+    /*width: 60px;*/
+    /*height: 60px;*/
+    word-wrap: normal;
+    cursor: pointer;
+    vertical-align: top;
+    overflow: hidden;
+    white-space: normal;
+    padding: 1px;
+    margin: 0 2px;
+    /*z-index: 2;*/
+    /*padding: 0;*/
+}
+
+#chart_list {
+    margin: 10px 2px;
+}
+
+.research_list table tr:not(:first-child) td:not(:first-child) {
+    border-top: 1px solid black;
+}
+
+.research_list table td:nth-child(even) {
+    background-color: rgb(210,210,210);
+}
+
+.research_list td {
+    width: 130px;
+    vertical-align: middle;
+}
+
+/* Comparison */
+.comparison {
+    display: inline-flex;
+}
+
+#shipUrl, #shipSelect, #removeShip {
+    background: transparent;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,1);
+    border-radius: 5px;
+    word-wrap: normal;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: normal;
+    margin: 2px;
+    z-index: 2;
+    padding: 2px;
+}
+
+#removeShip {
+    position: absolute;
+}
+
+.info_box {
+    display: block;
+}
+
+.info_box.replace {
+    display: inline-block;
+}
+
+.info_box_inner {
+    display: block;
+}
+/* Comparison */

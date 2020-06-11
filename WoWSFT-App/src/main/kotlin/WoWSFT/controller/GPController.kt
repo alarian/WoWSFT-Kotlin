@@ -74,17 +74,19 @@ class GPController(
         @RequestParam(required = false, defaultValue = "PCW001") commander: String,
         @RequestParam(required = false, defaultValue = "0") skills: Long,
         @RequestParam(required = false, defaultValue = "0") flags: Int,
-        @RequestParam(required = false, defaultValue = "100") ar: Int
+        @RequestParam(required = false, defaultValue = "100") ar: Int,
+        @RequestParam(required = false, defaultValue = "0") pos: Int
     ): String
     {
         val sSkills: Long
 
-        model.addAttribute("single", true)
+        model.addAttribute("single", pos == 0)
         model.addAttribute(IDS, IDS_)
         model.addAttribute(GLOBAL, global[lang])
 
         if (index.isNotEmpty()) {
             model.addAttribute("index", index.toUpperCase())
+            model.addAttribute("dataIndex", pos)
             model.addAttribute("commanders", commanders)
             model.addAttribute("flags", flagsLHM)
 
@@ -119,14 +121,16 @@ class GPController(
         @RequestParam(required = false, defaultValue = "PCW001") commander: String,
         @RequestParam(required = false, defaultValue = "0") skills: Long,
         @RequestParam(required = false, defaultValue = "0") flags: Int,
-        @RequestParam(required = false, defaultValue = "100") ar: Int
+        @RequestParam(required = false, defaultValue = "100") ar: Int,
+        @RequestParam(required = false, defaultValue = "0") pos: Int
     ): String
     {
-        model.addAttribute("single", false)
+        model.addAttribute("single", pos == 0)
         model.addAttribute(IDS, IDS_)
         model.addAttribute(GLOBAL, global[lang])
 
         model.addAttribute("index", index.toUpperCase())
+        model.addAttribute("dataIndex", pos)
         model.addAttribute("commanders", commanders)
         model.addAttribute("flags", flagsLHM)
 

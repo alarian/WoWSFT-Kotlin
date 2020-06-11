@@ -224,7 +224,7 @@ var waitTime = 1500;
 var timer = [];
 function delayCall($ship)
 {
-    var index = $ship.attr('data-ship-index');
+    var index = $ship.attr('data-ship-index') + '_' + $ship.attr('data-ship-position');
     window.clearTimeout(timer[index]);
     timer[index] = window.setTimeout(function() {
         callPage($ship);
@@ -298,7 +298,8 @@ function makeUrl($ship)
         + (skills > 0 ? '&skills=' + skills.toString() : '')
         + (ar > 0 ? '&ar=' + ar : '')
         + (flags > 0 ? '&flags=' + flags.toString() : '')
-        + (consumables !== '' ? '&consumables=' + consumables : '');
+        + (consumables !== '' ? '&consumables=' + consumables : '')
+        + '&pos=' + $ship.attr('data-ship-position');
         // + '&lang=' + lang;
 
     return url;
@@ -319,7 +320,8 @@ function callPage($ship)
     var $checked = $ship.find('.limit_skill').is(':checked');
 
     var $shipIndex = $ship.attr('data-ship-index');
-    var $shipDom = $('.ship[data-ship-index=' + $shipIndex + ']');
+    var $shipPosition = $ship.attr('data-ship-position');
+    var $shipDom = $('.ship[data-ship-index=' + $shipIndex + '][data-ship-position=' + $shipPosition + ']');
     var url = makeUrl($ship);
 
     $.ajax({
@@ -335,9 +337,9 @@ function callPage($ship)
                 for (var x in $toggleDecide) {
                     var temp = '.toggle.' + x.toString();
                     if ($toggleDecide[x] === 'hide') {
-                        $('[data-ship-index=' + $shipIndex + ']').find(temp).addClass('hide')
+                        $('[data-ship-index=' + $shipIndex + '][data-ship-position=' + $shipPosition + ']').find(temp).addClass('hide')
                     } else {
-                        $('[data-ship-index=' + $shipIndex + ']').find(temp).removeClass('hide')
+                        $('[data-ship-index=' + $shipIndex + '][data-ship-position=' + $shipPosition + ']').find(temp).removeClass('hide')
                     }
                 }
                 // $('[data-ship-index=' + $shipIndex + ']').find('.limit_skill').prop('checked', $checked);
@@ -420,4 +422,37 @@ $(document).on('click', '#adToggle', function () {
             console.log(data)
         }
     })
+})
+
+$(document).on('click', '#shipSelect', function () {
+    var url = $('#shipUrl').val();
+
+    if (url === undefined) {
+        return false;
+    } else {
+        var split = url.split('/ship');
+        if (split.length !== 2) {
+            return false;
+        }
+        url = '/compare' + split[1];
+        curIndex++;
+        url = url + '&pos=' + curIndex;
+        url = url.replace('&pos=0', '');
+    }
+
+    $.ajax({
+        url: url,
+        type: 'post',
+        success: function (data) {
+            if (data.status === undefined) {
+                $('.comparison').append(data);
+            }
+        }
+    });
+})
+
+$(document).on('click', '#removeShip', function () {
+    var $this = $(this),
+        $ship = $this.parents('.ship');
+    $ship.remove();
 })
