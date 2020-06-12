@@ -118,7 +118,7 @@ $(document).on('click', '.button_skill', function () {
         $pts = $ship.find('.panel_left[data-type=crewSkills]').find('.points'),
         $check = $ship.find('.limit_skill'),
         $sCommander = $ship.find('[name=commander]').val(),
-        $curCommander = $('[data-commander-index=' + $sCommander + ']'),
+        $curCommander = $ship.find('[data-commander-index=' + $sCommander + ']'),
         $skills = $curCommander.find('.button_skill.select'),
         $totalSpts = 0;
 
@@ -160,13 +160,13 @@ $(document).on('click', '.button_skill', function () {
     }
 
     var adrenalRush = $curCommander.find('.button_skill[data-index=1][data-position=6]');
-    var adrenalSlider = $('.adrenalineRush');
+    var adrenalSlider = $ship.find('.adrenalineRush');
     if (adrenalRush.hasClass('select')) {
         adrenalSlider.css('display', 'inline-flex')
     } else {
         adrenalSlider.css('display', 'none');
-        $('.arSlider').val(100);
-        $('.arSliderValue').text('100');
+        $ship.find('.arSlider').val(100);
+        $ship.find('.arSliderValue').text('100');
     }
 
     $pts.text($totalSpts);
@@ -344,7 +344,7 @@ function callPage($ship)
                 }
                 // $('[data-ship-index=' + $shipIndex + ']').find('.limit_skill').prop('checked', $checked);
 
-                if (compare === undefined || !compare) {
+                if (!compare) {
                     history.replaceState({
                         id: $shipIndex
                     }, '', url);
