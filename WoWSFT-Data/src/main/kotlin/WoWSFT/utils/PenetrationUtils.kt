@@ -17,7 +17,7 @@ class PenetrationUtils
     private val M = 0.0289644 // MOLAR MASS OF AIR # kg / mol
 
     private val intervalDeg = 0.10
-    private val dt = 0.027 // TIME STEP
+    private val dt = 0.045 // TIME STEP
 
     fun setPenetration(shell: Shell, maxVertAngle: Double, minDistV: Double, maxDist: Double, apShell: Boolean)
     {
