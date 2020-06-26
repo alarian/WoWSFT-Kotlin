@@ -59,7 +59,7 @@
                     </tr>
                     <tr class="toggle guns">
                         <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_DISPERSION')}"></td>
-                        <td th:text="${#numbers.formatInteger(T(Math).ceil(((turret0.idealRadius * artillery.GMIdealRadius - turret0.minRadius) / 1000.0 * (artillery.maxDist * suo.maxDistCoef / 30.0) + turret0.minRadius) * 30.0 * turret0.idealRadiusModifier), 1, 'COMMA')} + ' m'"></td>
+                        <td th:text="${#numbers.formatInteger(T(Math).ceil(((turret0.idealRadius * artillery.GMIdealRadius - turret0.minRadius) / turret0.idealDistance * (artillery.maxDist * suo.maxDistCoef / 30.0) + turret0.minRadius) * 30.0 * turret0.idealRadiusModifier), 1, 'COMMA')} + ' m'"></td>
                     </tr>
                     <th:block th:each="shell : ${artillery.shells}" th:with="ammo=${shell.value}">
                         <tr class="subsystem switch" th:attr="data-type=${ammo.index}">
@@ -430,7 +430,7 @@
                         </tr>
                         <tr class="toggle" th:classappend="${gun.index} + ' hide'">
                             <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_DISPERSION')}"></td>
-                            <td th:text="${#numbers.formatInteger(T(Math).ceil(((gun.idealRadius * gun.GSIdealRadius - gun.minRadius) / 1000.0 * (atba.maxDist / 30.0) + gun.minRadius) * 30.0 * gun.idealRadiusModifier), 1, 'COMMA')} + ' m'"></td>
+                            <td th:text="${#numbers.formatInteger(T(Math).ceil(((gun.idealRadius * gun.GSIdealRadius - gun.minRadius) / gun.idealDistance * (atba.maxDist / 30.0) + gun.minRadius) * 30.0 * gun.idealRadiusModifier), 1, 'COMMA')} + ' m'"></td>
                         </tr>
                         <th:block th:if="${gun.ammoType == 'HE'}">
                             <tr class="toggle" th:classappend="${gun.index} + ' hide'">
