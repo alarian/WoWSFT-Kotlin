@@ -319,8 +319,8 @@
                                 <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_AMMO_COUNT_' + plane.planeType.replace('Bomber', '').toUpperCase())}"></td>
                                 <td th:text="${#numbers.formatInteger(plane.attackCount, 1, 'COMMA')}"></td>
                             </tr>
-                            <th:block th:if="${plane.torpedo.ammoType != 'torpedo'}"
-                                      th:with="ammoObj=${plane.rocket.ammoType == 'HE' ? plane.rocket : plane.bomb}">
+                            <th:block th:if="${plane.ammoType != 'torpedo'}"
+                                      th:with="ammoObj=${plane.ammoType == 'rocket' ? plane.rocket : plane.bomb}">
                                 <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
                                     <td th:text="${'Maximum Damage'}"></td>
                                     <td th:text="${#numbers.formatInteger(ammoObj.alphaDamage, 1, 'COMMA')}"></td>
@@ -336,7 +336,7 @@
                                     </tr>
                                 </th:block>
                             </th:block>
-                            <th:block th:if="${plane.torpedo.ammoType == 'torpedo'}">
+                            <th:block th:if="${plane.ammoType == 'torpedo'}">
                                 <tr class="toggle" th:classappend="${plane.torpedo.ammoType} + ' hide'">
                                     <td th:text="${'Maximum Damage'}"></td>
                                     <td th:text="${#numbers.formatInteger(torpedoBomber.torpedo.alphaDamage / 3.0 + torpedoBomber.torpedo.damage, 1, 'COMMA')}"></td>
