@@ -58,11 +58,10 @@ class JsonParser
     private val misc = HashMap<String, Any>()
     private val penetrationUtils = PenetrationUtils()
 
-    private val mapper = ObjectMapper().registerKotlinModule()
-    private val job = SupervisorJob()
-
     companion object {
         private val log = LoggerFactory.getLogger(JsonParser::class.java)
+        private val mapper = ObjectMapper().registerKotlinModule()
+        private val job = SupervisorJob()
     }
 
     init {
@@ -81,6 +80,7 @@ class JsonParser
     fun setGlobal()
     {
         log.info("Setting up Global")
+
         for (language in globalLanguage) {
             val globalFile = ClassPathResource("/json/live/global-$language$FILE_JSON")
             val temp = mapper.readValue(globalFile.inputStream, object : TypeReference<HashMap<String, Any>>() {})
@@ -103,9 +103,7 @@ class JsonParser
                 if (!excludeShipGroups.contains(ship.group)) {
                     ship.shipUpgradeInfo.components.forEach { (cType, c) ->
                         c.forEach { su ->
-                            for (s in excludeCompStats) {
-                                su.components.remove(s)
-                            }
+                            excludeCompStats.forEach { su.components.remove(it) }
                             su.elem = componentsList.indexOf(cType)
                         }
                     }

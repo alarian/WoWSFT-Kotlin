@@ -12,6 +12,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework:spring-context-support")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
+
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 //    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 }
