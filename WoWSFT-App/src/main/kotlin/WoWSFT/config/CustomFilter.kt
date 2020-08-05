@@ -5,7 +5,6 @@ import WoWSFT.model.Constant.CDN
 import WoWSFT.model.Constant.LOAD_FINISH
 import WoWSFT.model.Constant.SLASH
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.ComponentScan
@@ -23,8 +22,8 @@ import kotlin.collections.HashSet
 @EnableConfigurationProperties(CustomProperties::class)
 @ComponentScan("WoWSFT")
 class CustomFilter(
-    @Autowired @Qualifier(LOAD_FINISH) private val loadFinish: HashMap<String, Int>,
-    @Autowired private val customProperties: CustomProperties
+    @Qualifier(LOAD_FINISH) private val loadFinish: HashMap<String, Int>,
+    private val customProperties: CustomProperties
 ) : Filter
 {
     companion object {
@@ -33,24 +32,6 @@ class CustomFilter(
         private val blockIP = HashSet<String>()
         private val ipMap = HashMap<String, BlockIp>()
         private val ignoreUri = HashSet<String>()
-        private const val headerSrc = "'self' $CDN"
-        private const val googleSrc =
-            "https://tagmanager.google.com/ https://www.googletagmanager.com/ " +
-            "https://www.gstatic.com/ fonts.googleapis.com/ https://www.google-analytics.com/"
-//        private const val headerUnsafe = "";
-        private const val headerUnsafe = "'unsafe-inline'"
-        private const val none = "'none'"
-
-        private const val contentSecurityPolicy =
-            "default-src $none;" +
-            "object-src $none;" +
-            "connect-src 'self';" +
-            "base-uri 'self';" +
-            "img-src $headerSrc https://ssl.gstatic.com/ https://www.google-analytics.com/;" +
-            "script-src $headerUnsafe $headerSrc $googleSrc data:;" +
-            "style-src $headerUnsafe $headerSrc $googleSrc;" +
-            "font-src https://tagmanager.google.com/ https://fonts.gstatic.com/;" +
-            "form-action $none; frame-ancestors $none"
 
         init {
             ignoreUri.add("/favicon")
@@ -76,7 +57,7 @@ class CustomFilter(
         response.setHeader("Pragma", "no-cache")
 
         if (isRelease) {
-//            response.setHeader("Content-Security-Policy", contentSecurityPolicy)
+//            response.setHeader("Content-Security-Policy", CustomHeader.contentSecurityPolicy)
             response.setHeader("Strict-Transport-Security", "max-age=15768000; includeSubDomains")
             response.setHeader("X-Content-Type-Options", "nosniff")
             response.setHeader("X-Frame-Options", "DENY")

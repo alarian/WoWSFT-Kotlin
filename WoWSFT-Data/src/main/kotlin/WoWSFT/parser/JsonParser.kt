@@ -81,10 +81,9 @@ class JsonParser
     {
         log.info("Setting up Global")
 
-        for (language in globalLanguage) {
-            val globalFile = ClassPathResource("/json/live/global-$language$FILE_JSON")
-            val temp = mapper.readValue(globalFile.inputStream, object : TypeReference<HashMap<String, Any>>() {})
-            global[language] = temp
+        globalLanguage.forEach {
+            val globalFile = ClassPathResource("/json/live/global-$it$FILE_JSON")
+            global[it] = mapper.readValue(globalFile.inputStream, object: TypeReference<HashMap<String, Any>>() {})
         }
     }
 
@@ -94,7 +93,7 @@ class JsonParser
         log.info("Setting up GameParams")
 
         val zf = ZipFile(ClassPathResource("/json/live/GameParams.zip").file.path)
-        val temp = mapper.readValue(zf.getInputStream(zf.entries().nextElement()), object : TypeReference<LinkedHashMap<String, LinkedHashMap<String, Any>>>() {})
+        val temp = mapper.readValue(zf.getInputStream(zf.entries().nextElement()), object: TypeReference<LinkedHashMap<String, LinkedHashMap<String, Any>>>() {})
 
         temp.forEach { (key, value) ->
             val typeInfo = mapper.convertValue(value["typeinfo"], TypeInfo::class.java)
@@ -112,7 +111,7 @@ class JsonParser
             } else if (typeInfo.type.equals("Modernization", ignoreCase = true)) {
                 val modernization = mapper.convertValue(value, Modernization::class.java)
                 if (modernization.slot >= 0) {
-                    paramService.setBonusParams(key, mapper.convertValue(modernization, object : TypeReference<LinkedHashMap<String, Any>>() {}), modernization.bonus)
+                    paramService.setBonusParams(key, mapper.convertValue(modernization, object: TypeReference<LinkedHashMap<String, Any>>() {}), modernization.bonus)
                     upgrades[modernization.slot]!![modernization.name] = modernization
                 }
             } else if (typeInfo.type.equals("Ability", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !key.contains("Super")) {
@@ -133,7 +132,7 @@ class JsonParser
                 val flag = mapper.convertValue(value, Flag::class.java)
                 if (flag.group == 0) {
                     flag.identifier = "$IDS_${flag.name.toUpperCase()}"
-                    paramService.setBonusParams(key, mapper.convertValue(flag, object : TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus)
+                    paramService.setBonusParams(key, mapper.convertValue(flag, object: TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus)
                     flags[flag.name] = flag
                 }
             } else if (miscList.contains(typeInfo.type)) {
@@ -191,7 +190,7 @@ class JsonParser
                         airArmament -> cValue.forEach { cVal -> ship.components.airArmament[cVal] = mapper.convertValue(ship.tempComponents[cVal], AirArmament::class.java) }
                         flightControl -> cValue.forEach { cVal -> ship.components.flightControl[cVal] = mapper.convertValue(ship.tempComponents[cVal], FlightControl::class.java) }
                         fighter, diveBomber, torpedoBomber -> cValue.forEach { cVal ->
-                            val tempPlaneType = mapper.convertValue(ship.tempComponents[cVal], object : TypeReference<HashMap<String, String>>() {})
+                            val tempPlaneType = mapper.convertValue(ship.tempComponents[cVal], object: TypeReference<HashMap<String, String>>() {})
                             ship.planes[cVal] = tempPlaneType["planeType"]!!
                         }
                     }
@@ -274,7 +273,7 @@ class JsonParser
                                 var prevType = component.prevType
                                 var compXP = 0
                                 while (currentPosition > 1 && prev.isNotEmpty() && prevType.isNotEmpty() && gameParamsHM.containsKey(current)) {
-                                    val comp: HashMap<String, Any> = mapper.convertValue(gameParamsHM[current], object : TypeReference<HashMap<String, Any>>() {})
+                                    val comp: HashMap<String, Any> = mapper.convertValue(gameParamsHM[current], object: TypeReference<HashMap<String, Any>>() {})
                                     compXP += comp["costXP"] as Int
                                     if (prev.isNotEmpty()) {
                                         val tempSUList: List<ShipUpgrade> = ship.shipUpgradeInfo.components[prevType] ?: listOf()
@@ -400,7 +399,7 @@ class JsonParser
         commanders.forEach { (_, commander) ->
             commander.crewSkills.forEach { r ->
                 r.forEach { s ->
-                    s.bonus = CommonUtils.getBonus(mapper.convertValue(s, object : TypeReference<LinkedHashMap<String, Any>>() {}))
+                    s.bonus = CommonUtils.getBonus(mapper.convertValue(s, object: TypeReference<LinkedHashMap<String, Any>>() {}))
                 }
             }
         }
@@ -463,10 +462,10 @@ class JsonParser
             val deferred = ships.map { (_, ship) ->
                 scope.async {
                     if (ship.shipUpgradeInfo.components[artillery]!!.size > 0) {
-                        for (su in ship.shipUpgradeInfo.components[artillery]!!) {
+                        ship.shipUpgradeInfo.components[artillery]!!.forEach { su ->
                             val tempId = su.components[artillery]!![su.components[artillery]!!.size - 1]
 
-                            for (ammo in ship.components.artillery[tempId]!!.turrets[0].ammoList) {
+                            ship.components.artillery[tempId]!!.turrets[0].ammoList.forEach { ammo ->
                                 val shell = shells[ammo]
                                 if (shell != null) {
                                     penetrationUtils.setPenetration(
@@ -502,37 +501,30 @@ class JsonParser
     @Throws(IOException::class)
     private fun getGameParamsDir(): String
     {
-        var directory: String = ClassPathResource("/json/live/GameParams.zip").url.path.replaceFirst(SLASH, "")
-        if (directory.startsWith("var") || directory.startsWith("Users")) {
-            directory = "${SLASH}${directory}"
+        return ClassPathResource("/json/live/GameParams.zip").url.path.replaceFirst(SLASH, "").also {
+            if (it.startsWith("var") || it.startsWith("Users")) "${SLASH}${it}"
         }
-        return directory
     }
 
     private fun getEmptyFolder(directory: String): File
     {
-        val folder = File(directory)
-        if (!folder.exists() || !folder.isDirectory) {
-            folder.mkdir()
-        } else {
-            folder.listFiles { f -> f.delete() }
+        return File(directory).also {
+            if (!it.exists() || !it.isDirectory) it.mkdir()
+            else it.listFiles { f -> f.delete() }
         }
-        return folder
     }
 
     @Throws(IOException::class)
     private fun createZipFile(folder: File, directory: String)
     {
         val fos = FileOutputStream(directory)
-        val zos = ZipOutputStream(fos)
-
-        folder.listFiles()?.forEach { file ->
-            zos.putNextEntry(ZipEntry(file.name))
-            zos.write(file.readBytes())
-            zos.closeEntry()
-        }
-
-        zos.close()
+        ZipOutputStream(fos).also {
+            folder.listFiles()?.forEach { file ->
+                it.putNextEntry(ZipEntry(file.name))
+                it.write(file.readBytes())
+                it.closeEntry()
+            }
+        }.close()
         fos.close()
     }
 }

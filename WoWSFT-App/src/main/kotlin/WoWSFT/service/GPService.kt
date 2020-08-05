@@ -2,7 +2,6 @@ package WoWSFT.service
 
 import WoWSFT.model.Constant.*
 import WoWSFT.model.gameparams.consumable.Consumable
-import WoWSFT.model.gameparams.consumable.ConsumableSub
 import WoWSFT.model.gameparams.modernization.Modernization
 import WoWSFT.model.gameparams.ship.Ship
 import WoWSFT.model.gameparams.ship.component.artillery.Shell
@@ -10,7 +9,6 @@ import WoWSFT.model.gameparams.ship.component.planes.Plane
 import WoWSFT.model.gameparams.ship.component.torpedo.TorpedoAmmo
 import WoWSFT.utils.CommonUtils
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,10 +16,10 @@ import java.util.zip.ZipFile
 
 @Service
 class GPService(
-    @Autowired @Qualifier(TYPE_CONSUMABLE) private val consumables: LinkedHashMap<String, Consumable>,
-    @Autowired @Qualifier(TYPE_UPGRADE) private val upgrades: LinkedHashMap<Int, LinkedHashMap<String?, Modernization>>,
-    @Autowired @Qualifier(TYPE_SHIP) private val zShip: ZipFile,
-    @Autowired @Qualifier(TYPE_SHELL) private val zShell: ZipFile
+    @Qualifier(TYPE_CONSUMABLE) private val consumables: LinkedHashMap<String, Consumable>,
+    @Qualifier(TYPE_UPGRADE) private val upgrades: LinkedHashMap<Int, LinkedHashMap<String?, Modernization>>,
+    @Qualifier(TYPE_SHIP) private val zShip: ZipFile,
+    @Qualifier(TYPE_SHELL) private val zShell: ZipFile
 ) {
     companion object {
         private val mapper = ObjectMapper()

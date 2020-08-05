@@ -11,7 +11,8 @@ import WoWSFT.service.GPService
 import WoWSFT.service.ParamService
 import WoWSFT.service.ParserService
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.beans.factory.annotation.Autowired
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseCookie
@@ -25,16 +26,16 @@ import javax.servlet.http.HttpServletResponse
 
 @Controller
 class GPController(
-    @Autowired private val customProperties: CustomProperties,
-    @Autowired @Qualifier(LOAD_FINISH) private val loadFinish: HashMap<String, Int>,
-    @Autowired @Qualifier(NOTIFICATION) private val notification: LinkedHashMap<String, LinkedHashMap<String, String>>,
-    @Autowired @Qualifier(GLOBAL) private val global: HashMap<String, HashMap<String, Any>>,
-    @Autowired @Qualifier(TYPE_SHIP_LIST) private val shipsList: LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>,
-    @Autowired @Qualifier(TYPE_COMMANDER) private val commanders: LinkedHashMap<String, Commander>,
-    @Autowired @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>,
-    @Autowired private val gpService: GPService,
-    @Autowired private val paramService: ParamService,
-    @Autowired private val parserService: ParserService
+    private val customProperties: CustomProperties,
+    @Qualifier(LOAD_FINISH) private val loadFinish: HashMap<String, Int>,
+    @Qualifier(NOTIFICATION) private val notification: LinkedHashMap<String, LinkedHashMap<String, String>>,
+    @Qualifier(GLOBAL) private val global: HashMap<String, HashMap<String, Any>>,
+    @Qualifier(TYPE_SHIP_LIST) private val shipsList: LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>,
+    @Qualifier(TYPE_COMMANDER) private val commanders: LinkedHashMap<String, Commander>,
+    @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>,
+    private val gpService: GPService,
+    private val paramService: ParamService,
+    private val parserService: ParserService
 ) : ExceptionController()
 {
     companion object {
@@ -48,8 +49,7 @@ class GPController(
     fun setLanguage(model: Model, request: HttpServletRequest)
     {
         model.addAttribute("lang", lang)
-        val cookie = getAdStatus(request)
-        model.addAttribute("adStatus", cookie == null || cookie.value == "1")
+        getAdStatus(request).run { model.addAttribute("adStatus", this == null || this.value == "1") }
     }
 
     @GetMapping("")
@@ -59,6 +59,7 @@ class GPController(
             return "loadPage"
         }
         model.addAttribute(NOTIFICATION, notification[lang])
+
         return "home"
     }
 
@@ -149,20 +150,24 @@ class GPController(
 
         parserService.parseModules(ship, modules)
         gpService.setShipAmmo(ship)
-        parserService.parseConsumables(ship, consumables)
-        parserService.parseUpgrades(ship, upgrades)
-        parserService.parseFlags(ship, flags)
-        parserService.parseSkills(ship, skills, ar)
-        paramService.setAA(ship)
 
-        if ("PCW001" != sCommander && (commanders[sCommander] == null || !commanders[sCommander]!!.crewPersonality.ships.nation.contains(ship.typeinfo.nation))) {
-            sCommander = "PCW001"
+        runBlocking {
+            launch { parserService.parseConsumables(ship, consumables) }
+            launch { parserService.parseUpgrades(ship, upgrades) }
+            launch { parserService.parseFlags(ship, flags) }
+            launch { parserService.parseSkills(ship, skills, ar) }
+        }.run {
+            paramService.setAA(ship)
+
+            if ("PCW001" != sCommander && (commanders[sCommander] == null || !commanders[sCommander]!!.crewPersonality.ships.nation.contains(ship.typeinfo.nation))) {
+                sCommander = "PCW001"
+            }
+            ship.commander = commanders[sCommander]
+
+            paramService.setParameters(ship)
+
+            return ship
         }
-
-        ship.commander = commanders[sCommander]
-        paramService.setParameters(ship)
-
-        return ship
     }
 
     @GetMapping("/arty")
@@ -199,15 +204,13 @@ class GPController(
                         response: HttpServletResponse, @RequestParam toggle: Boolean): String
     {
         toggleAd(response, toggle)
+
         return "SUCCESS"
     }
 
     private fun getAdStatus(request: HttpServletRequest): Cookie?
     {
-        if (!request.cookies.isNullOrEmpty()) {
-            return request.cookies.firstOrNull { c -> c.name == WOWSFT_AD }
-        }
-        return null
+        return if (!request.cookies.isNullOrEmpty()) request.cookies.firstOrNull { c -> c.name == WOWSFT_AD } else null
     }
 
     private fun toggleAd(response: HttpServletResponse, toggle: Boolean)

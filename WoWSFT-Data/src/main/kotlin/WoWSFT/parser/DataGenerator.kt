@@ -15,7 +15,7 @@ import java.io.IOException
 class DataGenerator(
     @Qualifier(JSON_PARSER) private val jsonParser: JsonParser,
     private var context: ApplicationContext
-) : CommandLineRunner, ApplicationContextAware
+): CommandLineRunner, ApplicationContextAware
 {
     companion object {
         private val log = LoggerFactory.getLogger(DataGenerator::class.java)

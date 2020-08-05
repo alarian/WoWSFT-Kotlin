@@ -5,7 +5,6 @@ import WoWSFT.model.Constant.hull
 import WoWSFT.model.gameparams.flag.Flag
 import WoWSFT.model.gameparams.ship.Ship
 import WoWSFT.model.gameparams.ship.upgrades.ShipUpgrade
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.util.*
@@ -13,7 +12,7 @@ import kotlin.math.abs
 
 @Service
 class ParserService(
-    @Autowired @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>
+    @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>
 )
 {
     fun parseModules(ship: Ship, bits: String)

@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct
 
 @EnableAsync
 @SpringBootApplication
-class Application : SpringBootServletInitializer()
+class Application: SpringBootServletInitializer()
 {
     @PostConstruct
     fun started()

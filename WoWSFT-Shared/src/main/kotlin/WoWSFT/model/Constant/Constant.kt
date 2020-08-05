@@ -71,7 +71,7 @@ import java.math.BigDecimal
     val excludeShipNations = hashSetOf("Events", "disabled", "preserved", "clan")
     val excludeShipSpecies = hashSetOf("Auxiliary", "Submarine")
     val excludeCompStats = hashSetOf("directors", "finders", "radars")
-    val excludeModernization = hashSetOf("extra", "aimingtime")
+    val excludeModernization = hashSetOf("extra", "aimingtime", "consumables")
 
     val coeff = hashSetOf("coef", "maxdist", "idealradius")
     val noUnit = hashSetOf("num")

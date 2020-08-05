@@ -3,7 +3,6 @@ package WoWSFT.parser
 import WoWSFT.model.Constant.JSON_PARSER
 import WoWSFT.model.Constant.LOAD_FINISH
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
@@ -11,8 +10,8 @@ import java.util.*
 
 @Component
 class AsyncHashMap(
-    @Autowired @Qualifier(JSON_PARSER) private val jsonParser: JsonParser,
-    @Autowired @Qualifier(LOAD_FINISH) private val loadFinish: HashMap<String, Int>
+    @Qualifier(JSON_PARSER) private val jsonParser: JsonParser,
+    @Qualifier(LOAD_FINISH) private val loadFinish: HashMap<String, Int>
 ) : CommandLineRunner
 {
     companion object {

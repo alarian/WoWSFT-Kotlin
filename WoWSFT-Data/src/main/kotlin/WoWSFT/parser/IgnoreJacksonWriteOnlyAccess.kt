@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.introspect.Annotated
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector
 
-class IgnoreJacksonWriteOnlyAccess : JacksonAnnotationIntrospector()
+class IgnoreJacksonWriteOnlyAccess: JacksonAnnotationIntrospector()
 {
     override fun findPropertyAccess(m: Annotated?): JsonProperty.Access?
     {

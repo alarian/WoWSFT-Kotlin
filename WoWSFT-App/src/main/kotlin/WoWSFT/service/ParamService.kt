@@ -11,14 +11,13 @@ import WoWSFT.model.gameparams.ship.component.torpedo.Launcher
 import WoWSFT.utils.CommonUtils.getBonus
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class ParamService(
-    @Autowired @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>
+    @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>
 )
 {
     companion object {
