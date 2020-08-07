@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 @WoWSFT
 class Modernization : CommonModifier()
 {
-    var costCR = 0
-    var costGold = 0
     var excludes = mutableListOf<String>()
     var group = mutableListOf<String>()
     var id: Long = 0

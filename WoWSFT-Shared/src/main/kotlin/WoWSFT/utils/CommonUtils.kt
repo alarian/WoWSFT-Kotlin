@@ -35,7 +35,7 @@ object CommonUtils
 
     fun getNumSym(number: Number): String
     {
-        return (if (number.toDouble() >= 0) "+" else "") + replaceZero(number.toString())
+        return (if (number.toFloat() >= 0) "+" else "") + replaceZero(number.toFloat().toString())
     }
 
     fun getDecimalRounded(num: Double, digits: Int): Double

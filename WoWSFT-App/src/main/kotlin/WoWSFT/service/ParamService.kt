@@ -9,6 +9,7 @@ import WoWSFT.model.gameparams.ship.component.airdefense.Aura
 import WoWSFT.model.gameparams.ship.component.planes.Plane
 import WoWSFT.model.gameparams.ship.component.torpedo.Launcher
 import WoWSFT.utils.CommonUtils.getBonus
+import WoWSFT.utils.CommonUtils.getDecimalRounded
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Qualifier
@@ -194,7 +195,11 @@ class ParamService(
                 v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.airplanesDiveBombersHealth * modifier.airplanesHealth).toInt()
                 if (HE.equals(v.bomb.ammoType, ignoreCase = true)) {
                     v.bomb.burnProb = v.bomb.burnProb + modifier.bombProbabilityBonus + (modifier.burnChanceFactorBig - 1.0)
+                    v.bomb.alphaDamage = v.bomb.alphaDamage * modifier.bombAlphaDamageMultiplier
                 }
+                v.speedMoveWithBomb = v.speedMoveWithBomb * modifier.diveBomberSpeedMultiplier
+                v.speedMax = v.speedMax * modifier.diveBomberMaxSpeedMultiplier
+                v.speedMin = v.speedMin * modifier.diveBomberMinSpeedMultiplier
             }
         }
 
@@ -303,7 +308,7 @@ class ParamService(
                         sC.workTime = sC.workTime * modifier.rlsSearchWorkTime
                     } else if ("smokeGenerator".equals(sC.consumableType, ignoreCase = true)) {
                         sC.workTime = sC.workTime * modifier.smokeGeneratorWorkTime
-                        sC.lifeTime = sC.lifeTime * modifier.smokeGeneratorLifeTime
+                        sC.lifeTime = getDecimalRounded(sC.lifeTime * modifier.smokeGeneratorLifeTime, 3)
                         sC.radius = sC.radius * modifier.radiusCoefficient
                     } else if ("regenCrew".equals(sC.consumableType, ignoreCase = true)) {
                         sC.regenerationHPSpeed = sC.regenerationHPSpeed * modifier.regenerationHPSpeed
@@ -342,11 +347,13 @@ class ParamService(
             plane.hangarSettings!!.maxValue = plane.hangarSettings!!.maxValue + modifier.airplanesExtraHangarSize
 
             plane.maxForsageAmount = plane.maxForsageAmount * modifier.forsageDurationCoefficient * modifier.airplanesForsageDuration
-            plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.flightSpeedCoefficient
+            plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.flightSpeedCoefficient * modifier.airplanesSpeed *
+                    (oneCoeff + ship.adrenaline / modifier.hpStep * modifier.squadronSpeedStep)
             plane.speedMove = plane.speedMove * modifier.flightSpeedCoefficient
+            plane.speedMax = plane.speedMax * modifier.planeMaxSpeedMultiplier
+            plane.speedMin = plane.speedMin * modifier.planeMinSpeedMultiplier
             plane.maxVisibilityFactor = plane.maxVisibilityFactor * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
             plane.maxVisibilityFactorByPlane = plane.maxVisibilityFactorByPlane * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
-            plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.airplanesSpeed * (oneCoeff + ship.adrenaline / modifier.hpStep * modifier.squadronSpeedStep)
             plane.consumables.forEach { c ->
                 c.subConsumables.forEach { (_, v) ->
                     if ("AllSkillsCooldownModifier".equals(modifier.modifier, ignoreCase = true)) {

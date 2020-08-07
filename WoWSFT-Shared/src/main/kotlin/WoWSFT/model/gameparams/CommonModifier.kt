@@ -129,13 +129,9 @@ open class CommonModifier
     var switchAmmoReloadCoef = 1.0
     var chanceToSetOnFireBonus = 0.0
     var chanceToSetOnFireBonusBig = 0.0
-        set(value) {
-            field = if (value != 0.0) -value else 0.0
-        }
+        set(value) { field = if (value != 0.0) -value else 0.0 }
     var chanceToSetOnFireBonusSmall = 0.0
-        set(value) {
-            field = if (value != 0.0) -value else 0.0
-        }
+        set(value) { field = if (value != 0.0) -value else 0.0 }
     var thresholdPenetrationCoefficient = 1.0
     var thresholdPenetrationCoefficientBig = 1.0
     var thresholdPenetrationCoefficientSmall = 1.0
@@ -212,5 +208,49 @@ open class CommonModifier
     var innerAADefenseDispExtraBubbles = 0.0
     var airDefenseDispReloadMultiplier = 1.0
     var prioritySectorCooldownMultiplier = 1.0
-    var guaranteedTorpedoVisibilityDistance = 0
+    var guaranteedTorpedoVisibilityDistance = 0.0
+
+    var afterBattleRepair = 1.0
+    var allConsumablesWorkTimeMultiplier = 1.0
+    var artilleryKruppMultiplier = 1.0
+    var bombAlphaDamageMultiplier = 1.0
+    var bombKruppMultiplier = 1.0
+    var canCharge = false
+    var canSell = false
+    var costCR = 0
+    var costGold = 0
+    var creditsFactor =  1.0
+    var crewExpFactor = 1.0
+    var diveBomberAccuracyIncRateCoeff = 1.0
+    var diveBomberMaxSpeedMultiplier = 1.0
+    var diveBomberMinSpeedMultiplier = 1.0
+    var diveBomberSpeedMultiplier = 1.0
+    var diveBomberSpreadMultiplier = 1.0
+    var expFactor = 1.0
+    var fighterAccuracyIncRateCoeff = 1.0
+    var fighterMaxSpeedMultiplier = 1.0
+    var fighterMinSpeedMultiplier = 1.0
+    var fighterSpeedMultiplier = 1.0
+    var fighterSpreadMultiplier = 1.0
+    var freeExpFactor = 1.0
+    var hullHealthCoeff = 1.0
+    var planeAdditionalConsumables = 0
+    var planeMaxSpeedMultiplier = 1.0
+    var planeMinSpeedMultiplier = 1.0
+    var receiveGMDamageCoeff = 1.0
+    var receiveTorpedoDamageCoeff = 1.0
+    var rocketAlphaDamageMultiplier = 1.0
+    var rocketKruppMultiplier = 1.0
+    var tags = emptyList<Any>()
+    var torpedoBomberAccuracyIncRateCoeff = 1.0
+    var torpedoBomberMaxSpeedMultiplier = 1.0
+    var torpedoBomberMinSpeedMultiplier = 1.0
+    var torpedoBomberSpeedMultiplier = 1.0
+    var torpedoDamageCoeff = 1.0
+    var torpedoVisibilityFactorCoeff = 1.0
+    var uwCoeffBonus = 0.0
+    var uwCoeffMultiplier = 1.0
+    var visibilityFactor = 1.0
+    var visibilityFactorByPlane = 1.0
+    var visibilityFactorInSmoke = 1.0
 }
