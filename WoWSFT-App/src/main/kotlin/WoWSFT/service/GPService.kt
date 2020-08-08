@@ -10,6 +10,7 @@ import WoWSFT.model.gameparams.ship.component.torpedo.TorpedoAmmo
 import WoWSFT.utils.CommonUtils
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.zip.ZipFile
@@ -18,9 +19,10 @@ import java.util.zip.ZipFile
 class GPService(
     @Qualifier(TYPE_CONSUMABLE) private val consumables: LinkedHashMap<String, Consumable>,
     @Qualifier(TYPE_UPGRADE) private val upgrades: LinkedHashMap<Int, LinkedHashMap<String?, Modernization>>,
-    @Qualifier(TYPE_SHIP) private val zShip: ZipFile,
-    @Qualifier(TYPE_SHELL) private val zShell: ZipFile
-) {
+    @Qualifier(TYPE_SHIP) private val zShip: String,
+    @Qualifier(TYPE_SHELL) private val zShell: String
+)
+{
     companion object {
         private val mapper = ObjectMapper()
         private val commonUtils = CommonUtils
@@ -29,8 +31,11 @@ class GPService(
 //    @Cacheable(value = "ship", key = "#index")
     @Throws(Exception::class)
     fun getShip(index: String?): Ship
-{
-        val ship = commonUtils.zFetch(zShip, index!!, Ship::class.java) as Ship?
+    {
+        val zFile = ZipFile(zShip)
+        val ship = commonUtils.zFetch(zFile, index!!, Ship::class.java) as Ship?
+        zFile.close()
+
         if (ship != null) {
             setUpgrades(ship)
             setConsumables(ship)
@@ -88,21 +93,23 @@ class GPService(
     @Throws(Exception::class)
     fun setShipAmmo(ship: Ship)
     {
+        val zFile = ZipFile(zShip)
+
         if (ship.components.artillery.size > 0 && ship.components.artillery[ship.modules[artillery]] != null) {
             for (ammo in ship.components.artillery[ship.modules[artillery]]!!.turrets[0].ammoList) {
-                val shell = commonUtils.zFetch(zShip, ammo, Shell::class.java) as Shell
+                val shell = commonUtils.zFetch(zFile, ammo, Shell::class.java) as Shell
                 ship.components.artillery[ship.modules[artillery]]!!.shells[ammo] = shell
             }
         }
 
         if (ship.components.torpedoes.size > 0 && ship.components.torpedoes[ship.modules[torpedoes]] != null) {
             val ammo = ship.components.torpedoes[ship.modules[torpedoes]]!!.launchers[0].ammoList[0]
-            ship.components.torpedoes[ship.modules[torpedoes]]!!.ammo = commonUtils.zFetch(zShip, ammo, TorpedoAmmo::class.java) as TorpedoAmmo
+            ship.components.torpedoes[ship.modules[torpedoes]]!!.ammo = commonUtils.zFetch(zFile, ammo, TorpedoAmmo::class.java) as TorpedoAmmo
         }
 
         if (ship.components.atba.size > 0 && ship.components.atba[ship.modules[atba]] != null) {
             for ((_, value) in ship.components.atba[ship.modules[atba]]!!.secondaries) {
-                val ammo = commonUtils.zFetch(zShip, value.ammoList[0], Shell::class.java) as Shell?
+                val ammo = commonUtils.zFetch(zFile, value.ammoList[0], Shell::class.java) as Shell?
                 if (ammo != null) {
                     value.alphaDamage = ammo.alphaDamage
                     value.alphaPiercingHE = ammo.alphaPiercingHE
@@ -112,34 +119,36 @@ class GPService(
                 }
             }
         }
+
         if (ship.planes.size > 0) {
             if (ship.modules[diveBomber] != null && ship.planes[ship.modules[diveBomber]!!] != null) {
-                val dbPlane = commonUtils.zFetch(zShip, ship.planes[ship.modules[diveBomber]!!]!!, Plane::class.java) as Plane?
+                val dbPlane = commonUtils.zFetch(zFile, ship.planes[ship.modules[diveBomber]!!]!!, Plane::class.java) as Plane?
                 if (dbPlane != null) {
-                    dbPlane.bomb = commonUtils.zFetch(zShip, dbPlane.bombName, Shell::class.java) as Shell
+                    dbPlane.bomb = commonUtils.zFetch(zFile, dbPlane.bombName, Shell::class.java) as Shell
                     setPlaneConsumables(dbPlane)
                     ship.components.diveBomber[ship.modules[diveBomber]!!] = dbPlane
                 }
             }
 
             if (ship.modules[fighter] != null && ship.planes[ship.modules[fighter]!!] != null) {
-                val fPlane = commonUtils.zFetch(zShip, ship.planes[ship.modules[fighter]!!]!!, Plane::class.java) as Plane?
+                val fPlane = commonUtils.zFetch(zFile, ship.planes[ship.modules[fighter]!!]!!, Plane::class.java) as Plane?
                 if (fPlane != null) {
-                    fPlane.rocket = commonUtils.zFetch(zShip, fPlane.bombName, Shell::class.java) as Shell
+                    fPlane.rocket = commonUtils.zFetch(zFile, fPlane.bombName, Shell::class.java) as Shell
                     setPlaneConsumables(fPlane)
                     ship.components.fighter[ship.modules[fighter]!!] = fPlane
                 }
             }
 
             if (ship.modules[torpedoBomber] != null && ship.planes[ship.modules[torpedoBomber]!!] != null) {
-                val tbPlane = commonUtils.zFetch(zShip, ship.planes[ship.modules[torpedoBomber]!!]!!, Plane::class.java) as Plane?
+                val tbPlane = commonUtils.zFetch(zFile, ship.planes[ship.modules[torpedoBomber]!!]!!, Plane::class.java) as Plane?
                 if (tbPlane != null) {
-                    tbPlane.torpedo = commonUtils.zFetch(zShip, tbPlane.bombName, TorpedoAmmo::class.java) as TorpedoAmmo
+                    tbPlane.torpedo = commonUtils.zFetch(zFile, tbPlane.bombName, TorpedoAmmo::class.java) as TorpedoAmmo
                     setPlaneConsumables(tbPlane)
                     ship.components.torpedoBomber[ship.modules[torpedoBomber]!!] = tbPlane
                 }
             }
         }
+        zFile.close()
     }
 
     @Throws(Exception::class)
@@ -161,16 +170,20 @@ class GPService(
     @Throws(Exception::class)
     fun getArtyAmmoOnly(index: String, artyId: String): Shell?
     {
-        val ship = commonUtils.zFetch(zShip, index, Ship::class.java) as Ship?
+        var zFile = ZipFile(zShip)
+        val ship = commonUtils.zFetch(zFile, index, Ship::class.java) as Ship?
+        zFile.close()
+
         if (ship != null && ship.shipUpgradeInfo.components[artillery]!!.size > 0) {
             for (su in ship.shipUpgradeInfo.components[artillery]!!) {
                 if (su.name.equals(artyId, ignoreCase = true)) {
                     val tempId = su.components[artillery]!![su.components[artillery]!!.size - 1]
                     for (ammo in ship.components.artillery[tempId]!!.turrets[0].ammoList) {
-                        val shell = commonUtils.zFetch(zShell, ammo, Shell::class.java) as Shell?
-                        if (shell != null) {
-                            return shell
-                        }
+                        zFile = ZipFile(zShell)
+                        val shell = commonUtils.zFetch(zFile, ammo, Shell::class.java) as Shell?
+                        zFile.close()
+
+                        if (shell != null) { return shell }
                     }
                 }
             }

@@ -9,7 +9,7 @@
     </div>
     <table class="toggle flags">
         <tbody>
-            <tr th:each="i : ${#numbers.sequence(1, T(Math).ceil(flags.size() / 6))}">
+            <tr th:each="i : ${#numbers.sequence(1, T(Math).ceil(flags.size() / 6) + (flags.size() % 6 == 0 ? 0 : 1))}">
                 <td th:each="flag : ${flags}" th:if="${i * 6 > flagStat.index and flagStat.index >= (i - 1) * 6}">
                     <button class="button_flag"
                             th:attr="data-index=${flag.value.sortOrder}"

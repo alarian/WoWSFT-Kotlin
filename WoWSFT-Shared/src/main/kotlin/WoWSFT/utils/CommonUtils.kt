@@ -79,7 +79,7 @@ object CommonUtils
             } else if (angle.stream().anyMatch { param.toLowerCase().contains(it) }) {
                 bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} °"
             } else if (extra.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = getNumSym(cVal as Double)
+                bonus["${MODIFIER}${param.toUpperCase()}"] = getNumSym(cVal as Number)
             } else if (param.toLowerCase().equals("affectedClasses", true)) {
                 val tempList = mapper.convertValue(cVal, object : TypeReference<List<String>?>() {})
                 if (!tempList.isNullOrEmpty()) {

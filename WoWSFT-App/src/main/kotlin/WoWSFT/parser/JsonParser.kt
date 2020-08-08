@@ -25,7 +25,7 @@ open class JsonParser
     @Autowired @Qualifier(GLOBAL)
     private lateinit var global: HashMap<String, HashMap<String, Any>>
     @Autowired @Qualifier(TYPE_SHIP)
-    private lateinit var zShip: ZipFile
+    private lateinit var zShip: String
     @Autowired @Qualifier(TYPE_CONSUMABLE)
     private lateinit var consumables: LinkedHashMap<String, Consumable>
     @Autowired @Qualifier(TYPE_UPGRADE)
@@ -78,29 +78,32 @@ open class JsonParser
     open fun setMisc(): CompletableFuture<String>
     {
         log.info("Setting up Misc")
+        val zFile = ZipFile(zShip)
 
-        val tempConsumables = mapper.readValue(zShip.getInputStream(zShip.getEntry("$TYPE_CONSUMABLE$FILE_JSON")),
+        val tempConsumables = mapper.readValue(zFile.getInputStream(zFile.getEntry("$TYPE_CONSUMABLE$FILE_JSON")),
             object : TypeReference<LinkedHashMap<String, Consumable>>() {})
         consumables.putAll(tempConsumables)
 
-        val tempUpgrades = mapper.readValue(zShip.getInputStream(zShip.getEntry("$TYPE_UPGRADE$FILE_JSON")),
+        val tempUpgrades = mapper.readValue(zFile.getInputStream(zFile.getEntry("$TYPE_UPGRADE$FILE_JSON")),
             object : TypeReference<LinkedHashMap<Int, LinkedHashMap<String, Modernization>>>() {})
         upgrades.putAll(tempUpgrades)
 
-        val tempCommanders = mapper.readValue(zShip.getInputStream(zShip.getEntry("$TYPE_COMMANDER$FILE_JSON")),
+        val tempCommanders = mapper.readValue(zFile.getInputStream(zFile.getEntry("$TYPE_COMMANDER$FILE_JSON")),
             object : TypeReference<LinkedHashMap<String, Commander>>() {})
         commanders.putAll(tempCommanders)
 
-        val tempFlags = mapper.readValue(zShip.getInputStream(zShip.getEntry("$TYPE_FLAG$FILE_JSON")),
+        val tempFlags = mapper.readValue(zFile.getInputStream(zFile.getEntry("$TYPE_FLAG$FILE_JSON")),
             object : TypeReference<LinkedHashMap<String, Flag>>() {})
         flags.putAll(tempFlags)
 
         val tempShipsList: LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>
-                = mapper.readValue(zShip.getInputStream(zShip.getEntry("$TYPE_SHIP_LIST$FILE_JSON")),
+                = mapper.readValue(zFile.getInputStream(zFile.getEntry("$TYPE_SHIP_LIST$FILE_JSON")),
             object : TypeReference<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>>() {})
         shipsList.putAll(tempShipsList)
 
+        zFile.close()
         log.info("Misc Done")
+
         return CompletableFuture.completedFuture("Done")
     }
 }

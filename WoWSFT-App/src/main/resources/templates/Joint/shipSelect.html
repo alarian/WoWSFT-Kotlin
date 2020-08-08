@@ -49,20 +49,20 @@
                                 <tr th:if="${i > 1 and warship.shipUpgradeInfo.maxRows >= i}">
                                     <th:block th:each="col : ${warship.shipUpgradeInfo.cols}" th:if="${col.value > 0}">
                                         <th:block th:with="mods=${warship.shipUpgradeInfo.components.get(col.key).?[position == __${i}__]}">
-                                            <td th:if="${colStat.index > 2}" class="module_gap"></td>
+                                            <td th:if="${colStat.index > 1}" class="module_gap"></td>
                                             <td th:each="module : ${mods}">
                                                 <span th:if="${module.prevType == module.ucTypeShort and module.prevPosition > 0}">&#9660;</span>
                                             </td>
                                             <td th:each="j : ${#numbers.sequence(1, col.value - mods.size())}" th:if="${col.value > mods.size()}"></td>
-                                            <td th:if="${2 > colStat.index}" class="module_gap"></td>
+                                            <td th:if="${1 > colStat.index}" class="module_gap"></td>
                                         </th:block>
                                     </th:block>
                                 </tr>
                                 <tr>
                                     <th:block th:each="col : ${warship.shipUpgradeInfo.cols}" th:if="${col.value > 0}">
                                         <th:block th:with="mods=${warship.shipUpgradeInfo.components.get(col.key).?[position == __${i}__]}">
-                                            <td th:if="${mods.size() == 0 and colStat.index > 2}" class="module_gap"></td>
-                                            <td th:each="module : ${mods}" th:if="${moduleStat.index == 0 and colStat.index > 2}" class="module_gap">
+                                            <td th:if="${mods.size() == 0 and colStat.index > 1}" class="module_gap"></td>
+                                            <td th:each="module : ${mods}" th:if="${moduleStat.index == 0 and colStat.index > 1}" class="module_gap">
                                                 <span th:if="${module.prevType != module.ucTypeShort and module.prevPosition == module.position}">&#9654;</span>
                                             </td>
                                             <td th:each="module : ${mods}">
@@ -70,13 +70,14 @@
                                                         th:classappend="${module.position + moduleStat.index == warship.positions.get(module.ucTypeShort) ? 'select' : ''}"
                                                         th:attr="data-index=${colStat.index}, data-type=${module.ucTypeShort}, data-position=${module.position},
                                                                  data-prev-type=${module.prevType}, data-prev-position=${module.prevPosition}, data-temp-position=${moduleStat.index}">
-                                                    <img th:src="${module.image}" /><br />
+                                                    <img th:src="${module.position + moduleStat.index == warship.positions.get(module.ucTypeShort)
+                                                        ? #strings.replace(module.image, '.png', '_installed.png') : module.image}" /><br />
                                                     <span th:text="${global.get(IDS + module.name.toUpperCase())}"></span>
                                                 </button>
                                             </td>
                                             <td th:each="j : ${#numbers.sequence(1, col.value - mods.size())}" th:if="${col.value > mods.size()}"></td>
-                                            <td th:if="${mods.size() == 0 and 2 > colStat.index}" class="module_gap"></td>
-                                            <td th:each="module : ${mods}" th:if="${2 > colStat.index}" class="module_gap">
+                                            <td th:if="${mods.size() == 0 and 1 > colStat.index}" class="module_gap"></td>
+                                            <td th:each="module : ${mods}" th:if="${1 > colStat.index}" class="module_gap">
                                                 <span th:if="${module.prevType != module.ucTypeShort and module.prevPosition == module.position}"
                                                 >&#9664;</span>
                                                 <span th:if="${i > 1 and warship.shipUpgradeInfo.components.get('hull').size() >= i

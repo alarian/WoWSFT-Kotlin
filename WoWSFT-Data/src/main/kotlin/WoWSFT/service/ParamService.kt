@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service
 @Service
 class ParamService
 {
-    fun setBonusParams(key: String, tempCopy: LinkedHashMap<String, Any>, bonus: LinkedHashMap<String, String>)
+    fun setBonusParams(key: String, tempCopy: LinkedHashMap<String, Any>, bonus: LinkedHashMap<String, String>, specialFlags: Boolean)
     {
         tempCopy.forEach { (param, cVal) ->
             if (cVal is Double && cVal != 0.0) {
-                bonus["$MODIFIER${param.toUpperCase()}"] =
+                bonus["$MODIFIER${param.toUpperCase()}${if (specialFlags) "_MODERNIZATION" else ""}"] =
                     if (excludeModernization.any { param.toLowerCase().contains(it) }) getNumSym(cVal)
                     else "${getNumSym(getBonusCoef(cVal))} %"
             }

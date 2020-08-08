@@ -1,5 +1,6 @@
 package WoWSFT.service
 
+import WoWSFT.model.Constant.flightControl
 import WoWSFT.model.Constant.TYPE_FLAG
 import WoWSFT.model.Constant.hull
 import WoWSFT.model.gameparams.flag.Flag
@@ -17,18 +18,20 @@ class ParserService(
 {
     fun parseModules(ship: Ship, bits: String)
     {
-//        ship.modules = LinkedHashMap()
-//        ship.positions = LinkedHashMap()
-
+        var tempBits = bits
         val baseModules = LinkedHashMap<String, String>()
         val basePositions = LinkedHashMap<String, Int>()
         val list = mutableListOf<Int>()
         val shipUpgrades = LinkedHashMap<String, ShipUpgrade>()
 
-        if (bits.isNotEmpty()) {
-            for (i in bits.indices) {
-                if (Character.isDigit(bits[i])) {
-                    list.add(Character.getNumericValue(bits[i]))
+        if (ship.shipUpgradeInfo.components[flightControl]!!.size > 0 && tempBits.isNotBlank()) {
+            tempBits = "1$tempBits"
+        }
+
+        if (tempBits.isNotEmpty()) {
+            for (i in tempBits.indices) {
+                if (Character.isDigit(tempBits[i])) {
+                    list.add(Character.getNumericValue(tempBits[i]))
                 } else {
                     list.add(1)
                 }
@@ -73,7 +76,7 @@ class ParserService(
             }
         }
 
-        if (bits.isNotEmpty() && ship.modules.size == bits.length) {
+        if (tempBits.isNotEmpty() && ship.modules.size == tempBits.length) {
             shipUpgrades[hull]!!.components.forEach { (x, y) ->
                 if (!ship.modules.containsKey(x) && y.isNotEmpty()) {
                     ship.modules[x] = y[0]
@@ -130,8 +133,8 @@ class ParserService(
             }
         }
 
-        if (bits.length < 12) {
-            for (i in 0 until 12 - bits.length) {
+        if (bits.length < flagsLHM.size) {
+            for (i in 0 until flagsLHM.size - bits.length) {
                 list.add(0)
             }
         }

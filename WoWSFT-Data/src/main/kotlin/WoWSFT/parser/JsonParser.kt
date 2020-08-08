@@ -111,7 +111,7 @@ class JsonParser
             } else if (typeInfo.type.equals("Modernization", ignoreCase = true)) {
                 val modernization = mapper.convertValue(value, Modernization::class.java)
                 if (modernization.slot >= 0) {
-                    paramService.setBonusParams(key, mapper.convertValue(modernization, object: TypeReference<LinkedHashMap<String, Any>>() {}), modernization.bonus)
+                    paramService.setBonusParams(key, mapper.convertValue(modernization, object: TypeReference<LinkedHashMap<String, Any>>() {}), modernization.bonus, false)
                     upgrades[modernization.slot]!![modernization.name] = modernization
                 }
             } else if (typeInfo.type.equals("Ability", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !key.contains("Super")) {
@@ -132,7 +132,7 @@ class JsonParser
                 val flag = mapper.convertValue(value, Flag::class.java)
                 if (flag.group == 0) {
                     flag.identifier = "$IDS_${flag.name.toUpperCase()}"
-                    paramService.setBonusParams(key, mapper.convertValue(flag, object: TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus)
+                    paramService.setBonusParams(key, mapper.convertValue(flag, object: TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus, specialFlags.any { flag.index == it })
                     flags[flag.name] = flag
                 }
             } else if (miscList.contains(typeInfo.type)) {
@@ -240,6 +240,8 @@ class JsonParser
         for (i in 1..3) {
             var hasRow = false
             ship.shipUpgradeInfo.components.forEach { (key, compList) ->
+                if (key == flightControl) { return@forEach }
+
                 colCount.putIfAbsent(key, 0)
                 val posCount = compList.filter { it.position == i }.size
                 if (posCount > 0) {

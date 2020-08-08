@@ -12,7 +12,6 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import java.util.*
-import java.util.zip.ZipFile
 import javax.annotation.PostConstruct
 
 @EnableAsync
@@ -37,15 +36,15 @@ class Application : SpringBootServletInitializer()
     }
 
     @Bean(TYPE_SHIP)
-    fun zShip(): ZipFile
+    fun zShip(): String
     {
-        return ZipFile(ClassPathResource("/json/live/files.zip").file.path)
+        return ClassPathResource("/json/live/files.zip").file.path
     }
 
     @Bean(TYPE_SHELL)
-    fun zShell(): ZipFile
+    fun zShell(): String
     {
-        return ZipFile(ClassPathResource("/json/live/shells.zip").file.path)
+        return ClassPathResource("/json/live/shells.zip").file.path
     }
 
     @Bean(JSON_PARSER)

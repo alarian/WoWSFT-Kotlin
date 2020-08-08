@@ -36,7 +36,7 @@ class ShipUpgrade
     var prevPosition = 0
     var prevElem = 0
     var components = LinkedHashMap<String, MutableList<String>>()
-    val image get() = if (ucTypeShort.isNotEmpty()) "$CDN_IMAGE/modules/${ucTypeShort.toLowerCase()}.png" else ""
+    val image get() = if (ucTypeShort.isNotEmpty()) "$CDN_IMAGE/modules/icon_module${ucType}.png" else ""
 
     companion object {
         @JsonIgnore

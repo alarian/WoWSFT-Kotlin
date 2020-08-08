@@ -47,8 +47,12 @@ $(document).on('click', '.button_module', function(){
 
     for (var i = 0; i < $modules.length; i++) {
         $modules.eq(i).removeClass('select');
+        var $subImage = $modules.eq(i).find('img');
+        $subImage.attr('src', $subImage.attr('src').replace('_installed.png', '.png'));
     }
     $this.addClass('select');
+    var $image = $this.find('img');
+    $image.attr('src', $image.attr('src').replace('.png', '_installed.png'));
 
     delayCall($ship);
 });
