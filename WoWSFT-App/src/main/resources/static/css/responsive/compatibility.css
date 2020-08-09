@@ -26,7 +26,7 @@ body {
     /*min-width: 1408px;*/
     /*max-width: 1792px;*/
     /*min-height: 1300px;*/
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.30);
     color: black;
     text-align: center;
     margin: 0 auto;
@@ -366,9 +366,19 @@ button span {
     z-index: 0;
 }
 
-.button_module, .button_flag {
-    width: 72px;
-    height: 72px;
+.button_module {
+    width: 84px;
+    height: 84px;
+    overflow: unset;
+}
+
+.button_module img {
+    width: 42px;
+}
+
+.button_flag {
+    width: 78px;
+    height: 78px;
     overflow: unset;
 }
 
@@ -379,6 +389,10 @@ button span {
 .button_upgrade, .button_consumable {
     border: 1px solid rgb(210,210,210);
     border-radius: 5px;
+}
+
+.button_upgrade img {
+    width: 50px;
 }
 
 .disable {
