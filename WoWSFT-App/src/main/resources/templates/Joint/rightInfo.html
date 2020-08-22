@@ -109,6 +109,14 @@
                                 <td th:text="${'Burn Probability'}"></td>
                                 <td th:text="${#numbers.formatDecimal(ammo.burnProb * 100, 1, 1)} + ' %'"></td>
                             </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="${'- Per Salvo'}"></td>
+                                <td th:text="${#numbers.formatDecimal(100 - T(Math).pow(1 - ammo.burnProb, artillery.numBarrels) * 100, 1, 1)} + ' %'"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                                <td th:text="${'- Fire Per Minute'}"></td>
+                                <td th:text="${#numbers.formatDecimal((60.0 / turret0.shotDelay) * (1 - T(Math).pow(1 - ammo.burnProb, artillery.numBarrels)), 1, 2)}"></td>
+                            </tr>
                         </th:block>
                         <th:block th:if="${ammo.ammoType == 'AP'}">
                             <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
@@ -697,7 +705,7 @@
             <ul th:each="slot : ${consumables}" th:if="${slot.size() > slot.?[__${warship.shipUpgradeInfo.components.get('hull').get(warship.positions.get('hull') - 1).disabledAbilities.contains(name)}__].size()}">
                 <li th:each="consumable : ${slot}">
                     <button class="button_consumable"
-                            th:classappend="${(selection.size() == 0 and consumableStat.index == 0) or (selection.size() > 0 and selection.get(slotStat.index) == consumableStat.index + 1) ? 'select' : 'hide'}
+                            th:classappend="${(selection.size() == 0 and consumableStat.index == 0) or (selection.size() > 0 and selection.get(slotStat.index) == consumableStat.index + 1) ? 'select' : ''}
                                         + ${#lists.contains(warship.shipUpgradeInfo.components.get('hull').get(warship.positions.get('hull') - 1).disabledAbilities, consumable.name) ? ' disable' : ''}"
                             th:attr="data-index=${slotStat.index}, data-position=${consumableStat.index + 1}">
                         <img th:src="${'https://cdn.wowsft.com/images/consumables/consumable_' + consumable.name + '.png'}"/>

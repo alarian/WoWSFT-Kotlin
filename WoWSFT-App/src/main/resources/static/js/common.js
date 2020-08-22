@@ -87,12 +87,12 @@ $(document).on('click', '.button_consumable', function (e) {
     if (!$this.hasClass('select')) {
         for (var i = 0; i < $consumables.length; i++) {
             $consumables.eq(i).removeClass('select');
-            $consumables.eq(i).addClass('hide');
+            // $consumables.eq(i).addClass('hide');
         }
         $this.addClass('select');
-        $this.removeClass('hide');
-    } else {
-        $consumables.removeClass('hide');
+        // $this.removeClass('hide');
+    // } else {
+        // $consumables.removeClass('hide');
     }
 });
 
@@ -106,11 +106,11 @@ $(document).on('click', function () {
         }
     }
 
-    for (var i = 0; i < $consumables.length; i++) {
-        if (!$consumables.eq(i).hasClass('select')) {
-            $consumables.eq(i).addClass('hide');
-        }
-    }
+    // for (var i = 0; i < $consumables.length; i++) {
+    //     if (!$consumables.eq(i).hasClass('select')) {
+    //         $consumables.eq(i).addClass('hide');
+    //     }
+    // }
 });
 
 var $maxSpts = 19;

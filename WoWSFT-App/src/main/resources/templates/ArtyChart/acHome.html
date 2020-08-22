@@ -41,19 +41,21 @@
                 <option th:text="${global.get(IDS + realShipType.key)}" th:value="${realShipType.key}"></option>
             </th:block>
         </select>
-        <th:block th:each="nation : ${nations}" th:id="${nation.key}" th:class="${'nationShipType ' + (nationStat.index == 0 ? 'show' : 'hide')}">
+        <th:block th:each="nation : ${nations}" th:id="${nation.key}">
             <select th:each="realShipType : ${nation.value}" th:if="${realShipType.key != 'AIRCARRIER'}" th:class="${'shipList ' + nation.key + ' ' + realShipType.key + ' ' + (nationStat.index == 0 and realShipTypeStat.index == 0 ? 'show' : 'hide')}">
                 <th:block th:each="shipType : ${realShipType.value}" th:if="${shipType.key != 'AIRCARRIER'}">
+                    <option disabled="disabled" th:text="${global.get(IDS + shipType.key)}"></option>
                     <th:block th:each="tier : ${shipType.value}">
+                        <option disabled="disabled" th:utext="'&ensp;Tier ' + ${tier.key}"></option>
                         <th:block th:each="ship : ${tier.value}">
-                            <option th:text="${global.get(IDS + ship.index.toUpperCase() + '_FULL')}"  th:attr="ship-id=${ship.index}"></option>
+                            <option th:utext="'&emsp;' + ${global.get(IDS + ship.index.toUpperCase() + '_FULL')}"  th:attr="ship-id=${ship.index}"></option>
                         </th:block>
                     </th:block>
                 </th:block>
             </select>
         </th:block>
-        <th:block th:each="nation : ${nations}" th:id="${nation.key}" th:class="${'nationShipType ' + (nationStat.index == 0 ? 'show' : 'hide')}">
-            <th:block th:each="realShipType : ${nation.value}" th:if="${realShipType.key != 'AIRCARRIER'}" th:class="${'shipList ' + nation.key + ' ' + realShipType.key + ' ' + (nationStat.index == 0 and realShipTypeStat.index == 0 ? 'show' : 'hide')}">
+        <th:block th:each="nation : ${nations}" th:id="${nation.key}">
+            <th:block th:each="realShipType : ${nation.value}" th:if="${realShipType.key != 'AIRCARRIER'}">
                 <th:block th:each="shipType : ${realShipType.value}" th:if="${shipType.key != 'AIRCARRIER'}">
                     <th:block th:each="tier : ${shipType.value}">
                         <th:block th:each="ship : ${tier.value}">

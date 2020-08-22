@@ -391,7 +391,7 @@ button span {
     border-radius: 5px;
 }
 
-.button_upgrade img {
+.button_upgrade img, .button_consumable img, .button_plane_consumable img {
     width: 50px;
 }
 
