@@ -63,7 +63,7 @@ class GPController(
         return "home"
     }
 
-    @RequestMapping("/ship", method = [RequestMethod.GET, RequestMethod.POST])
+    @RequestMapping(value = ["/ship", "/compare"], method = [RequestMethod.GET, RequestMethod.POST])
     @Throws(Exception::class)
     fun getWarship(
         request: HttpServletRequest,
@@ -79,11 +79,11 @@ class GPController(
         @RequestParam(required = false, defaultValue = "0") pos: Int
     ): String
     {
-        val sSkills: Long
-
-        model.addAttribute("single", pos == 0)
-        model.addAttribute(IDS, IDS_)
-        model.addAttribute(GLOBAL, global[lang])
+        if (request.requestURI.equals("/ship", ignoreCase = true) || request.method.equals("post", ignoreCase = true)) {
+            model.addAttribute("single", pos == 0)
+            model.addAttribute(IDS, IDS_)
+            model.addAttribute(GLOBAL, global[lang])
+        }
 
         if (index.isNotEmpty()) {
             model.addAttribute("index", index.toUpperCase())
@@ -91,55 +91,26 @@ class GPController(
             model.addAttribute("commanders", commanders)
             model.addAttribute("flags", flagsLHM)
 
-            sSkills = if (skills > maxBitsToInt) 0 else skills
+            val sSkills = if (skills > maxBitsToInt) 0 else skills
             val ship = getShip(index.toUpperCase(), modules, upgrades, consumables, sSkills, commander.toUpperCase(), flags, ar)
             model.addAttribute(TYPE_WARSHIP, ship)
 
             if ("post".equals(request.method, ignoreCase = true)) {
-                return "Joint/rightInfo :: rightInfo"
+                return if (request.requestURI.equals("/ship", ignoreCase = true)) {
+                    "Joint/rightInfo :: rightInfo"
+                } else {
+                    "Joint/shipSelect :: warshipStats"
+                }
             }
         }
-        model.addAttribute("nations", shipsList)
 
-        return "FittingTool/ftHome"
-    }
+        return if (request.requestURI.equals("/ship", ignoreCase = true)) {
+            model.addAttribute("nations", shipsList)
 
-    @GetMapping("/compare")
-    fun getComparison(
-        model: Model
-    ): String
-    {
-        return "Comparison/comparison"
-    }
-
-    @PostMapping("/compare")
-    fun postComparison(
-        model: Model,
-        @RequestParam(required = false, defaultValue = "") index: String,
-        @RequestParam(required = false, defaultValue = "") modules: String,
-        @RequestParam(required = false, defaultValue = "") upgrades: String,
-        @RequestParam(required = false, defaultValue = "") consumables: String,
-        @RequestParam(required = false, defaultValue = "PCW001") commander: String,
-        @RequestParam(required = false, defaultValue = "0") skills: Long,
-        @RequestParam(required = false, defaultValue = "0") flags: Int,
-        @RequestParam(required = false, defaultValue = "100") ar: Int,
-        @RequestParam(required = false, defaultValue = "0") pos: Int
-    ): String
-    {
-        model.addAttribute("single", pos == 0)
-        model.addAttribute(IDS, IDS_)
-        model.addAttribute(GLOBAL, global[lang])
-
-        model.addAttribute("index", index.toUpperCase())
-        model.addAttribute("dataIndex", pos)
-        model.addAttribute("commanders", commanders)
-        model.addAttribute("flags", flagsLHM)
-
-        val sSkills = if (skills > maxBitsToInt) 0 else skills
-        val ship = getShip(index.toUpperCase(), modules, upgrades, consumables, sSkills, commander.toUpperCase(), flags, ar)
-        model.addAttribute(TYPE_WARSHIP, ship)
-
-        return "Joint/shipSelect :: warshipStats"
+            "FittingTool/ftHome"
+        } else {
+            "Comparison/comparison"
+        }
     }
 
     @Throws(Exception::class)

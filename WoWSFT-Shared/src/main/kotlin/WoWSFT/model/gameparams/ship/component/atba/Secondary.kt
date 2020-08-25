@@ -17,6 +17,7 @@ class Secondary
     var barrelDiameter = 0.0
     @JsonInclude
     var deadZone = listOf<List<Double>>()
+    var pitchDeadZones = listOf<List<Double>>()
     var delim = 0.0
     var horizSector = listOf<Double>()
     var id = 0L

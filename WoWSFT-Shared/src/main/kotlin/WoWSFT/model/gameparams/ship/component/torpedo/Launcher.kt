@@ -14,6 +14,7 @@ class Launcher
     var canRotate = false
     @JsonInclude
     var deadZone = listOf<List<Double>>()
+    var pitchDeadZones = listOf<List<Double>>()
     var horizSector = listOf<Double>()
     var id = 0L
     var index = ""

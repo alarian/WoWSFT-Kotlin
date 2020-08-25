@@ -81,7 +81,7 @@ function drawArtillery(currentIndex, turrets)
                 } else {
                     if (maxAngle >= 90 && 0 >= minAngle) {
                         horizFactor = -90;
-                    } else if ((maxAngle >= 0 && -90 >= minAngle) || (0 >= maxAngle && -90 >= minAngle)) {
+                    } else if ((maxAngle >= 0 && -90 >= minAngle) || (0 >= maxAngle && -90 >= minAngle) || (0 >= maxAngle && minAngle >= 0)) {
                         horizFactor = 90;
                     }
                 }
@@ -97,7 +97,7 @@ function drawArtillery(currentIndex, turrets)
                         horizFactor = 90;
                     }
                 } else {
-                    if (maxAngle >= 90 && 0 >= minAngle) {
+                    if ((maxAngle >= 90 && 0 >= minAngle) || (0 >= maxAngle && 0 >= minAngle)) {
                         horizFactor = -90;
                     } else if ((maxAngle >= 0 && -90 >= minAngle) || (0 >= maxAngle && -90 >= minAngle)) {
                         horizFactor = 90;

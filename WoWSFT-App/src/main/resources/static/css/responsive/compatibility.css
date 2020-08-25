@@ -369,11 +369,11 @@ button span {
 .button_module {
     width: 84px;
     height: 84px;
-    overflow: unset;
+    overflow: hidden;
 }
 
 .button_module img {
-    width: 42px;
+    width: 56px;
 }
 
 .button_flag {

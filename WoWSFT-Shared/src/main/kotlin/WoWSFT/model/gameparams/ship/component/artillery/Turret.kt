@@ -16,6 +16,7 @@ class Turret
     var coeffPerSecondMin = 0.0
     @JsonInclude
     var deadZone = listOf<List<Double>>()
+    var pitchDeadZones = listOf<List<Double>>()
     var delim = 0.0
     var ellipseRangeMax = 0.0
     var ellipseRangeMin = 0.0
