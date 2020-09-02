@@ -65,6 +65,7 @@ class ConsumableSub
     @JsonIgnore var titleIDs = ""
     @JsonIgnore var targetEffect = ""
     @JsonIgnore var waterEffect = ""
+    @JsonIgnore var SpecialSoundID = ""
 
     var bonus = LinkedHashMap<String, String>()
 }
