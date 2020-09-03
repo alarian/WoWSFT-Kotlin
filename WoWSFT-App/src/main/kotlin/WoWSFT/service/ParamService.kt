@@ -259,8 +259,8 @@ class ParamService(
                 v.floodTime = v.floodTime * modifier.floodTime * modifier.critTimeCoefficient
                 v.maxSpeed = v.maxSpeed * modifier.speedCoef
                 v.rudderTime = v.rudderTime * modifier.sgRudderTime
-                v.visibilityFactor = v.visibilityFactor * modifier.visibilityDistCoeff
-                v.visibilityFactorByPlane = v.visibilityFactorByPlane * modifier.visibilityDistCoeff
+                v.visibilityFactor = v.visibilityFactor * modifier.visibilityDistCoeff * modifier.visibilityFactor
+                v.visibilityFactorByPlane = v.visibilityFactorByPlane * modifier.visibilityDistCoeff * modifier.visibilityFactorByPlane
                 if (!excludeShipSpecies.contains(ship.typeinfo.species)) {
                     v.visibilityFactor = v.visibilityFactor * modifier.cruiserCoefficient
                     v.visibilityFactorByPlane = v.visibilityFactorByPlane * modifier.cruiserCoefficient
