@@ -139,7 +139,7 @@ open class CommonModifier
     var torpedoBombersPrepareCoefficient = 1.0
     var vitalityCoefficient = 1.0
     var fightersPassiveEfficiencyCoefficient = 1.0
-    var additionalConsumables = 0.0
+    var additionalConsumables = 0
     var healthPerLevel = 0.0
     var torpedoRangeCoefficient = 1.0
     var torpedoSpeedBonus = 0.0
@@ -217,7 +217,7 @@ open class CommonModifier
     var fighterSpreadMultiplier = 1.0
     var freeExpFactor = 1.0
     var hullHealthCoeff = 1.0
-    var planeAdditionalConsumables = 0.0
+    var planeAdditionalConsumables = 0
     var planeMaxSpeedMultiplier = 1.0
     var planeMinSpeedMultiplier = 1.0
     var receiveGMDamageCoeff = 1.0
