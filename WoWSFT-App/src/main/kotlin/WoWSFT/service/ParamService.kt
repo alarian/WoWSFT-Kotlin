@@ -176,13 +176,16 @@ class ParamService(
                 v.ammo.speed = v.ammo.speed + modifier.torpedoSpeedBonus
                 v.ammo.speed = v.ammo.speed * modifier.torpedoSpeedMultiplier
                 v.ammo.uwCritical = v.ammo.uwCritical + (modifier.floodChanceFactor - 1.0)
+                v.ammo.visibilityFactor = v.ammo.visibilityFactor * modifier.torpedoVisibilityFactor
+                v.ammo.alphaDamage = v.ammo.alphaDamage * modifier.torpedoDamageCoeff
+                v.ammo.damage = v.ammo.damage * modifier.torpedoDamageCoeff
             }
         }
 
         ship.components.fighter.forEach { (c, v) ->
             if (c.equals(ship.modules[fighter], ignoreCase = true)) {
                 setPlanes(ship, v, modifier)
-                v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.airplanesFightersHealth * modifier.airplanesHealth).toInt()
+                v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.fighterHealth * modifier.planeHealth).toInt()
                 if (HE.equals(v.rocket.ammoType, ignoreCase = true)) {
                     v.rocket.burnProb = v.rocket.burnProb + modifier.rocketProbabilityBonus + (modifier.burnChanceFactorSmall - 1.0)
                 }
@@ -192,7 +195,7 @@ class ParamService(
         ship.components.diveBomber.forEach { (c, v) ->
             if (c.equals(ship.modules[diveBomber], ignoreCase = true)) {
                 setPlanes(ship, v, modifier)
-                v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.airplanesDiveBombersHealth * modifier.airplanesHealth).toInt()
+                v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.diveBomberHealth * modifier.planeHealth).toInt()
                 if (HE.equals(v.bomb.ammoType, ignoreCase = true)) {
                     v.bomb.burnProb = v.bomb.burnProb + modifier.bombProbabilityBonus + (modifier.burnChanceFactorBig - 1.0)
                     v.bomb.alphaDamage = v.bomb.alphaDamage * modifier.bombAlphaDamageMultiplier
@@ -206,17 +209,17 @@ class ParamService(
         ship.components.torpedoBomber.forEach { (c, v) ->
             if (c.equals(ship.modules[torpedoBomber], ignoreCase = true)) {
                 setPlanes(ship, v, modifier)
-                v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.airplanesTorpedoBombersHealth * modifier.airplanesHealth).toInt()
+                v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.torpedoBomberHealth * modifier.planeHealth).toInt()
                 v.torpedo.maxDist = v.torpedo.maxDist * modifier.planeTorpedoRangeCoefficient
                 v.torpedo.speed = v.torpedo.speed + modifier.planeTorpedoSpeedBonus
-                v.torpedo.speed = v.torpedo.speed * modifier.airplanesTorpedoSpeedMultiplier
+                v.torpedo.speed = v.torpedo.speed * modifier.planeTorpedoSpeedMultiplier
                 v.torpedo.uwCritical = v.torpedo.uwCritical + (modifier.floodChanceFactorPlane - 1.0)
             }
         }
 
         ship.components.airArmament.forEach { (c, v) ->
             if (c.equals(ship.modules[airArmament], ignoreCase = true)) {
-                v.deckPlaceCount = (v.deckPlaceCount + modifier.airplanesExtraHangarSize).toInt()
+                v.deckPlaceCount = (v.deckPlaceCount + modifier.planeExtraHangarSize).toInt()
             }
         }
 
@@ -322,8 +325,8 @@ class ParamService(
                         sC.numConsumables = sC.numConsumables + modifier.additionalConsumables
                     }
 
-                    sC.reloadTime = sC.reloadTime * modifier.abilReloadTimeFactor
-                    sC.workTime = sC.workTime * modifier.shipConsumablesWorkTimeMultiplier
+                    sC.reloadTime = sC.reloadTime * modifier.consumableReloadTime
+                    sC.workTime = sC.workTime * modifier.consumablesWorkTime
                 }
             }
         }
@@ -333,7 +336,7 @@ class ParamService(
     {
         if (aura != null) {
             if (aura.innerBubbleCount > 0) {
-                aura.innerBubbleCount = aura.innerBubbleCount + modifier.aaExtraBubbles
+                aura.innerBubbleCount = aura.innerBubbleCount + modifier.aaExtraBubbles + modifier.aaInnerExtraBubbles
                 aura.bubbleDamage = aura.bubbleDamage * modifier.aaOuterDamage * modifier.advancedOuterAuraDamageCoefficient
             }
             aura.areaDamage = aura.areaDamage * modifier.aaNearDamage * modifier.nearAuraDamageCoefficient
@@ -343,29 +346,32 @@ class ParamService(
     private fun setPlanes(ship: Ship, plane: Plane, modifier: CommonModifier)
     {
         if (plane.hangarSettings != null) {
-            plane.hangarSettings!!.timeToRestore = plane.hangarSettings!!.timeToRestore * modifier.planeSpawnTimeCoefficient * modifier.airplanesSpawnTime
-            plane.hangarSettings!!.maxValue = plane.hangarSettings!!.maxValue + modifier.airplanesExtraHangarSize
+            plane.hangarSettings!!.timeToRestore = plane.hangarSettings!!.timeToRestore * modifier.planeSpawnTimeCoefficient * modifier.planeSpawnTime
+            plane.hangarSettings!!.maxValue = plane.hangarSettings!!.maxValue + modifier.planeExtraHangarSize.toInt()
 
-            plane.maxForsageAmount = plane.maxForsageAmount * modifier.forsageDurationCoefficient * modifier.airplanesForsageDuration
-            plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.flightSpeedCoefficient * modifier.airplanesSpeed *
+            plane.maxForsageAmount = plane.maxForsageAmount * modifier.forsageDurationCoefficient * modifier.planeForsageDuration
+            plane.speedMoveWithBomb = plane.speedMoveWithBomb * modifier.flightSpeedCoefficient * modifier.planeSpeed *
                     (oneCoeff + ship.adrenaline / modifier.hpStep * modifier.squadronSpeedStep)
             plane.speedMove = plane.speedMove * modifier.flightSpeedCoefficient
             plane.speedMax = plane.speedMax * modifier.planeMaxSpeedMultiplier
             plane.speedMin = plane.speedMin * modifier.planeMinSpeedMultiplier
-            plane.maxVisibilityFactor = plane.maxVisibilityFactor * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
-            plane.maxVisibilityFactorByPlane = plane.maxVisibilityFactorByPlane * modifier.squadronCoefficient * modifier.squadronVisibilityDistCoeff
+            plane.maxVisibilityFactor = plane.maxVisibilityFactor * modifier.squadronCoefficient *
+                    modifier.squadronVisibilityDistCoeff * modifier.planeVisibilityFactor
+            plane.maxVisibilityFactorByPlane = plane.maxVisibilityFactorByPlane * modifier.squadronCoefficient *
+                    modifier.squadronVisibilityDistCoeff * modifier.planeVisibilityFactor
             plane.consumables.forEach { c ->
                 c.subConsumables.forEach { (_, v) ->
                     if ("AllSkillsCooldownModifier".equals(modifier.modifier, ignoreCase = true)) {
                         v.reloadTime = v.reloadTime * modifier.reloadCoefficient
                     }
-                    v.reloadTime = v.reloadTime * modifier.abilReloadTimeFactor
+                    v.reloadTime = v.reloadTime * modifier.planeConsumableReloadTime
                     v.fightersNum = v.fightersNum + if (v.fightersNum > 0) modifier.extraFighterCount else 0.0
 
                     if ("regenerateHealth".equals(v.consumableType, ignoreCase = true)) {
-                        v.regenerationRate = v.regenerationRate * modifier.regenerationPlaneRate
+                        v.regenerationRate = v.regenerationRate * modifier.planeRegenerationRate
                     }
-                    v.workTime = v.workTime * modifier.squadronConsumablesWorkTimeMultiplier
+                    v.workTime = v.workTime * modifier.planeConsumablesWorkTime
+                    v.numConsumables = v.numConsumables + modifier.planeAdditionalConsumables
                 }
             }
         }

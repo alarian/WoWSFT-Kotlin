@@ -65,17 +65,6 @@ open class CommonModifier
     @JsonProperty("SGRudderTime")
     var sgRudderTime = 1.0
     var airDefenseDispWorkTime = 1.0
-    var airplanesDiveBombersHealth = 1.0
-    var airplanesEmptyReturnSpeed = 1.0
-    var airplanesExtraHangarSize = 0
-    var airplanesFighterAimingTime = 0.0
-    var airplanesFightersHealth = 1.0
-    var airplanesForsageDuration = 1.0
-    var airplanesHealth = 1.0
-    var airplanesSpawnTime = 1.0
-    var airplanesSpeed = 1.0
-    var airplanesTorpedoAimingTime = 0.0
-    var airplanesTorpedoBombersHealth = 1.0
     var burnProb = 1.0
     var burnTime = 1.0
     var crashCrewWorkTime = 1.0
@@ -150,7 +139,7 @@ open class CommonModifier
     var torpedoBombersPrepareCoefficient = 1.0
     var vitalityCoefficient = 1.0
     var fightersPassiveEfficiencyCoefficient = 1.0
-    var additionalConsumables = 0
+    var additionalConsumables = 0.0
     var healthPerLevel = 0.0
     var torpedoRangeCoefficient = 1.0
     var torpedoSpeedBonus = 0.0
@@ -187,7 +176,6 @@ open class CommonModifier
     var prioSectorStartPhaseStrengthCoefficient = 1.0
     var prioSectorStrengthCoefficient = 1.0
 
-    var abilReloadTimeFactor = 1.0
     var burnChanceFactorBig = 1.0
     var burnChanceFactorSmall = 1.0
     var collisionDamageApply = 1.0
@@ -197,13 +185,9 @@ open class CommonModifier
     var floodChanceFactor = 1.0
     var floodChanceFactorPlane = 1.0
     var regenerationHPSpeed = 1.0
-    var regenerationPlaneRate = 1.0
     var speedCoef= 1.0
 
     var torpedoSpeedMultiplier = 1.0
-    var airplanesTorpedoSpeedMultiplier = 1.0
-    var shipConsumablesWorkTimeMultiplier = 1.0
-    var squadronConsumablesWorkTimeMultiplier = 1.0
     @JsonProperty("InnerAADefenseDispExtraBubbles")
     var innerAADefenseDispExtraBubbles = 0.0
     var airDefenseDispReloadMultiplier = 1.0
@@ -211,7 +195,6 @@ open class CommonModifier
     var guaranteedTorpedoVisibilityDistance = 0.0
 
     var afterBattleRepair = 1.0
-    var allConsumablesWorkTimeMultiplier = 1.0
     var artilleryKruppMultiplier = 1.0
     var bombAlphaDamageMultiplier = 1.0
     var bombKruppMultiplier = 1.0
@@ -234,7 +217,7 @@ open class CommonModifier
     var fighterSpreadMultiplier = 1.0
     var freeExpFactor = 1.0
     var hullHealthCoeff = 1.0
-    var planeAdditionalConsumables = 0
+    var planeAdditionalConsumables = 0.0
     var planeMaxSpeedMultiplier = 1.0
     var planeMinSpeedMultiplier = 1.0
     var receiveGMDamageCoeff = 1.0
@@ -253,4 +236,43 @@ open class CommonModifier
     var visibilityFactor = 1.0
     var visibilityFactorByPlane = 1.0
     var visibilityFactorInSmoke = 1.0
+
+    @JsonProperty("AAInnerExtraBubbles")
+    var aaInnerExtraBubbles = 0
+    @JsonProperty("AAMaxHP")
+    var aaMaxHP = 1.0
+    @JsonProperty("ConsumableReloadTime")
+    var consumableReloadTime = 1.0
+    @JsonProperty("ConsumablesWorkTime")
+    var consumablesWorkTime = 1.0
+    @JsonProperty("SGRudderPower")
+    var sgRudderPower = 1.0
+    var artilleryDamageCoef = 1.0
+    var burnChanceMultiplier = 1.0
+    var diveBomberHealth = 1.0
+    var engineForsageCoef = 1.0
+    var fighterAimingTimeZone =  1.0
+    var fighterAimingTime = 0.0
+    var fighterHealth = 1.0
+    var healthHullCoeff = 1.0
+    var healthRegen = 0.0
+    var healthRegenPercent = 0.0
+    var planeConsumableReloadTime = 1.0
+    var planeConsumablesWorkTime = 1.0
+    var planeEmptyReturnSpeed = 1.0
+    var planeExtraHangarSize = 0.0
+    var planeForsageDuration = 1.0
+    var planeForsageRegeneration = 1.0
+    var planeHealth = 1.0
+    var planeHealthRegenPercent = 0.0
+    var planeRegenerationRate = 1.0
+    var planeSpawnTime = 1.0
+    var planeSpeed = 1.0
+    var planeTorpedoSpeedMultiplier = 1.0
+    var planeVisibilityFactor = 1.0
+    var receiveArtilleryDamageCoeff = 1.0
+    var torpedoBomberAimingTime = 0.0
+    var torpedoBomberHealth = 1.0
+    var torpedoVisibilityFactor = 1.0
+    var visionXRayTorpedoDist = 0.0
 }
