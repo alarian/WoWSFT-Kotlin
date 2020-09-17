@@ -4,18 +4,16 @@ import WoWSFT.config.WoWSFT
 import WoWSFT.model.Constant.CDN_IMAGE
 import WoWSFT.model.Constant.fireControl
 import WoWSFT.model.Constant.suo
-import com.fasterxml.jackson.annotation.JsonIgnore
+import WoWSFT.utils.CommonUtils.mapper
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonSetter
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.*
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class ShipUpgrade
-{
+class ShipUpgrade {
     var disabledAbilities = mutableListOf<String>()
     var nextShips = mutableListOf<String>()
     var fullName = ""
@@ -28,29 +26,24 @@ class ShipUpgrade
         }
     var ucTypeShort = ""
     var position = 0
+
     @JsonInclude
     var elem = 0
     var prevType = ""
         get() = if (field.isBlank()) ucTypeShort else field
+
     @JsonInclude
     var prevPosition = 0
     var prevElem = 0
     var components = LinkedHashMap<String, MutableList<String>>()
     val image get() = if (ucTypeShort.isNotEmpty()) "$CDN_IMAGE/modules/icon_module${ucType}.png" else ""
 
-    companion object {
-        @JsonIgnore
-        private val mapper = ObjectMapper()
-    }
-
     @JsonSetter
-    fun setComponents(value: Any?)
-    {
-        val temp = mapper.convertValue(value, object : TypeReference<LinkedHashMap<String, MutableList<String>>>() {})
-        temp.forEach { (key: String, list: MutableList<String>) ->
-            val name = if (key.equals(fireControl, ignoreCase = true)) suo else key
-            list.sort()
-            components[name] = list
+    fun setComponents(value: Any?) {
+        mapper.convertValue(value, jacksonTypeRef<LinkedHashMap<String, MutableList<String>>>()).also { temp ->
+            temp.forEach { (key: String, list: MutableList<String>) ->
+                components[if (key.equals(fireControl, ignoreCase = true)) suo else key] = list.sorted().toMutableList()
+            }
         }
     }
 }

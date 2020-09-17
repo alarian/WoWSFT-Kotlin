@@ -2,41 +2,35 @@ package WoWSFT.model
 
 import java.util.*
 
-class BlockIp(private val ip: String)
-{
+class BlockIp(private val ip: String) {
     var created: Date
     var count = 0
     var blockCount = 0
     var blockCreated: Date? = null
 
-    fun doCount()
-    {
+    fun doCount() {
         count++
     }
 
-    fun reset()
-    {
+    fun reset() {
         count = 1
         created = Date()
     }
 
-    fun addBlockCount()
-    {
+    fun addBlockCount() {
         blockCount++
         if (blockCreated == null) {
             blockCreated = Date()
         }
     }
 
-    fun resetBlock()
-    {
+    fun resetBlock() {
         reset()
         blockCount = 0
         blockCreated = null
     }
 
-    init
-    {
+    init {
         created = Date()
         count = 1
     }

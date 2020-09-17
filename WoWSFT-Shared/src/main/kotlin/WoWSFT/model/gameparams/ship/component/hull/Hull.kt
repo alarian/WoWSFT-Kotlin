@@ -4,12 +4,10 @@ import WoWSFT.config.WoWSFT
 import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonSetter
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Hull
-{
+class Hull {
     var backwardPowerCoef = 0.0
     var baseUnderwaterPitchAngle = 0.0
     var buoyancy = 0.0
@@ -46,6 +44,7 @@ class Hull
     var floodTime = 0.0
     var floodSize = 0
     var health = 0.0
+
     @JsonAlias("isBlind")
     var blind = false
     var mass = 0.0
@@ -83,6 +82,7 @@ class Hull
     var visibilityFactor = 0.0
     var visibilityFactorByPlane = 0.0
     var visibilityFactorInSmoke = 0.0
+
     @JsonInclude
     var burnSizeSkill = 4
 }

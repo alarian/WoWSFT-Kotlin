@@ -1,13 +1,11 @@
 package WoWSFT.model.gameparams.ship
 
-class ShipIndex
-{
+class ShipIndex {
     constructor() {}
     constructor(
         ship: Ship,
         artyList: List<String>
-    )
-    {
+    ) {
         identifier = ship.name
         index = ship.index
         prevShipIndex = ship.prevShipIndex

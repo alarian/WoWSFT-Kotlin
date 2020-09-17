@@ -6,104 +6,98 @@ import WoWSFT.model.gameparams.consumable.Consumable
 import WoWSFT.model.gameparams.flag.Flag
 import WoWSFT.model.gameparams.modernization.Modernization
 import WoWSFT.model.gameparams.ship.ShipIndex
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.io.ClassPathResource
-import org.springframework.scheduling.annotation.Async
-import java.io.IOException
+import org.springframework.stereotype.Component
 import java.util.*
-import java.util.concurrent.CompletableFuture
 import java.util.zip.ZipFile
 
-open class JsonParser
-{
-    @Autowired @Qualifier(NOTIFICATION)
-    private lateinit var notification: LinkedHashMap<String, LinkedHashMap<String, String>>
-    @Autowired @Qualifier(GLOBAL)
-    private lateinit var global: HashMap<String, HashMap<String, Any>>
-    @Autowired @Qualifier(TYPE_SHIP)
-    private lateinit var zShip: String
-    @Autowired @Qualifier(TYPE_CONSUMABLE)
-    private lateinit var consumables: LinkedHashMap<String, Consumable>
-    @Autowired @Qualifier(TYPE_UPGRADE)
-    private lateinit var upgrades: LinkedHashMap<Int, LinkedHashMap<String, Modernization>>
-    @Autowired @Qualifier(TYPE_COMMANDER)
-    private lateinit var commanders: LinkedHashMap<String, Commander>
-    @Autowired @Qualifier(TYPE_FLAG)
-    private lateinit var flags: LinkedHashMap<String, Flag>
-    @Autowired @Qualifier(TYPE_SHIP_LIST)
-    private lateinit var shipsList: LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>
-
-    private val mapper = ObjectMapper()
+@Component(JSON_PARSER)
+class JsonParser(
+    @Qualifier(NOTIFICATION) private var notification: LinkedHashMap<String, LinkedHashMap<String, String>>,
+    @Qualifier(GLOBAL) private var global: HashMap<String, HashMap<String, Any>>,
+    @Qualifier(TYPE_SHIP) private var zShip: String,
+    @Qualifier(TYPE_CONSUMABLE) private var consumables: LinkedHashMap<String, Consumable>,
+    @Qualifier(TYPE_UPGRADE) private var upgrades: LinkedHashMap<Int, LinkedHashMap<String, Modernization>>,
+    @Qualifier(TYPE_COMMANDER) private var commanders: LinkedHashMap<String, Commander>,
+    @Qualifier(TYPE_FLAG) private var flags: LinkedHashMap<String, Flag>,
+    @Qualifier(TYPE_SHIP_LIST) private var shipsList: LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>
+) {
+    private val mapper = jacksonObjectMapper()
 
     companion object {
         private val log = LoggerFactory.getLogger(JsonParser::class.java)
     }
 
-    @Async
-    open fun setNotification(): CompletableFuture<String>
-    {
-        log.info("Setting up notification")
+    fun setNotification() {
+        log.info("Setting up Notification")
 
         for (language in globalLanguage) {
-            val notificationFile = ClassPathResource("/json/notification/notification-$language$FILE_JSON")
-            val temp = mapper.readValue(notificationFile.url, object : TypeReference<LinkedHashMap<String, String>>() {})
-            notification[language] = temp
+            ClassPathResource("/json/notification/notification-$language$FILE_JSON").run {
+                notification[language] = mapper.readValue(url, jacksonTypeRef<LinkedHashMap<String, String>>())
+            }
         }
 
         log.info("Notification Done")
-        return CompletableFuture.completedFuture("Done")
     }
 
-    @Async
-    open fun setGlobal(): CompletableFuture<String>
-    {
+    fun setGlobal() {
         log.info("Setting up Global")
 
         for (language in globalLanguage) {
-            val globalFile = ClassPathResource("/json/live/global-$language$FILE_JSON")
-            val temp = mapper.readValue(globalFile.inputStream, object : TypeReference<HashMap<String, Any>>() {})
-            global[language] = temp
+            ClassPathResource("/json/live/global-$language$FILE_JSON").run {
+                global[language] = mapper.readValue(inputStream, jacksonTypeRef<HashMap<String, Any>>())
+            }
         }
 
         log.info("Global Done")
-        return CompletableFuture.completedFuture("Done")
     }
 
-    @Async
-    @Throws(IOException::class)
-    open fun setMisc(): CompletableFuture<String>
-    {
+    fun setMisc() {
         log.info("Setting up Misc")
         val zFile = ZipFile(zShip)
 
-        val tempConsumables = mapper.readValue(zFile.getInputStream(zFile.getEntry("$TYPE_CONSUMABLE$FILE_JSON")),
-            object : TypeReference<LinkedHashMap<String, Consumable>>() {})
-        consumables.putAll(tempConsumables)
+        consumables.putAll(
+            mapper.readValue(
+                zFile.getInputStream(zFile.getEntry("$TYPE_CONSUMABLE$FILE_JSON")),
+                jacksonTypeRef<LinkedHashMap<String, Consumable>>()
+            )
+        )
 
-        val tempUpgrades = mapper.readValue(zFile.getInputStream(zFile.getEntry("$TYPE_UPGRADE$FILE_JSON")),
-            object : TypeReference<LinkedHashMap<Int, LinkedHashMap<String, Modernization>>>() {})
-        upgrades.putAll(tempUpgrades)
+        upgrades.putAll(
+            mapper.readValue(
+                zFile.getInputStream(zFile.getEntry("$TYPE_UPGRADE$FILE_JSON")),
+                jacksonTypeRef<LinkedHashMap<Int, LinkedHashMap<String, Modernization>>>()
+            )
+        )
 
-        val tempCommanders = mapper.readValue(zFile.getInputStream(zFile.getEntry("$TYPE_COMMANDER$FILE_JSON")),
-            object : TypeReference<LinkedHashMap<String, Commander>>() {})
-        commanders.putAll(tempCommanders)
+        commanders.putAll(
+            mapper.readValue(
+                zFile.getInputStream(zFile.getEntry("$TYPE_COMMANDER$FILE_JSON")),
+                jacksonTypeRef<LinkedHashMap<String, Commander>>()
+            )
+        )
 
-        val tempFlags = mapper.readValue(zFile.getInputStream(zFile.getEntry("$TYPE_FLAG$FILE_JSON")),
-            object : TypeReference<LinkedHashMap<String, Flag>>() {})
-        flags.putAll(tempFlags)
+        flags.putAll(
+            mapper.readValue(
+                zFile.getInputStream(zFile.getEntry("$TYPE_FLAG$FILE_JSON")),
+                jacksonTypeRef<LinkedHashMap<String, Flag>>()
+            )
+        )
 
-        val tempShipsList: LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>
-                = mapper.readValue(zFile.getInputStream(zFile.getEntry("$TYPE_SHIP_LIST$FILE_JSON")),
-            object : TypeReference<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>>() {})
-        shipsList.putAll(tempShipsList)
+        shipsList.putAll(
+            mapper.readValue(
+                zFile.getInputStream(zFile.getEntry("$TYPE_SHIP_LIST$FILE_JSON")),
+                jacksonTypeRef<LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, List<ShipIndex>>>>>>()
+            )
+        )
 
         zFile.close()
-        log.info("Misc Done")
 
-        return CompletableFuture.completedFuture("Done")
+        log.info("Misc Done")
     }
 }

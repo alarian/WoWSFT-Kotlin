@@ -6,62 +6,88 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-open class CommonModifier
-{
+open class CommonModifier {
     @JsonProperty("AAExtraBubbles")
     var aaExtraBubbles = 0.0
+
     @JsonProperty("AANearDamage")
     var aaNearDamage = 1.0
+
     @JsonProperty("AAOuterDamage")
     var aaOuterDamage = 1.0
+
     @JsonProperty("ADMaxHP")
     var adMaxHP = 1.0
+
     @JsonProperty("GMCritProb")
     var gmCritProb = 1.0
+
     @JsonProperty("GMIdealRadius")
     var gmIdealRadius = 1.0
+
     @JsonProperty("GMMaxDist")
     var gmMaxDist = 1.0
+
     @JsonProperty("GMMaxHP")
     var gmMaxHP = 1.0
+
     @JsonProperty("GMRepairTime")
     var gmRepairTime = 1.0
+
     @JsonProperty("GMRotationSpeed")
     var gmRotationSpeed = 1.0
+
     @JsonProperty("GMShotDelay")
     var gmShotDelay = 1.0
+
     @JsonProperty("GMSigmaCount")
     var gmSigmaCount = 1.0
+
     @JsonProperty("GSIdealRadius")
     var gsIdealRadius = 1.0
+
     @JsonProperty("GSMaxDist")
     var gsMaxDist = 1.0
+
     @JsonProperty("GSMaxHP")
     var gsMaxHP = 1.0
+
     @JsonProperty("GSShotDelay")
     var gsShotDelay = 1.0
+
     @JsonProperty("GSSigmaCount")
     var gsSigmaCount = 1.0
+
     @JsonProperty("GTCritProb")
     var gtCritProb = 1.0
+
     @JsonProperty("GTMaxHP")
     var gtMaxHP = 1.0
+
     @JsonProperty("GTRepairTime")
     var gtRepairTime = 1.0
+
     @JsonProperty("GTRotationSpeed")
     var gtRotationSpeed = 1.0
+
     @JsonProperty("GTShotDelay")
     var gtShotDelay = 1.0
+
     @JsonProperty("PMCritProb")
     var pmCritProb = 1.0
+
     @JsonProperty("PMDetonationProb")
     var pmDetonationProb = 1.0
+
     @JsonProperty("PMRepairTime")
     var pmRepairTime = 1.0
+
     @JsonProperty("SGCritProb")
     var sgCritProb = 1.0
+
     @JsonProperty("SGRepairTime")
     var sgRepairTime = 1.0
+
     @JsonProperty("SGRudderTime")
     var sgRudderTime = 1.0
     var airDefenseDispWorkTime = 1.0
@@ -97,6 +123,7 @@ open class CommonModifier
     var visionDistCoeff = 1.0
     var visionTorpedoCoeff = 1.0
     var visionXRayShipCoeff = 1.0
+
     //
     var modifier = ""
     var diveBomber = 1.0
@@ -118,9 +145,13 @@ open class CommonModifier
     var switchAmmoReloadCoef = 1.0
     var chanceToSetOnFireBonus = 0.0
     var chanceToSetOnFireBonusBig = 0.0
-        set(value) { field = if (value != 0.0) -value else 0.0 }
+        set(value) {
+            field = if (value != 0.0) -value else 0.0
+        }
     var chanceToSetOnFireBonusSmall = 0.0
-        set(value) { field = if (value != 0.0) -value else 0.0 }
+        set(value) {
+            field = if (value != 0.0) -value else 0.0
+        }
     var thresholdPenetrationCoefficient = 1.0
     var thresholdPenetrationCoefficientBig = 1.0
     var thresholdPenetrationCoefficientSmall = 1.0
@@ -185,9 +216,10 @@ open class CommonModifier
     var floodChanceFactor = 1.0
     var floodChanceFactorPlane = 1.0
     var regenerationHPSpeed = 1.0
-    var speedCoef= 1.0
+    var speedCoef = 1.0
 
     var torpedoSpeedMultiplier = 1.0
+
     @JsonProperty("InnerAADefenseDispExtraBubbles")
     var innerAADefenseDispExtraBubbles = 0.0
     var airDefenseDispReloadMultiplier = 1.0
@@ -202,7 +234,7 @@ open class CommonModifier
     var canSell = false
     var costCR = 0
     var costGold = 0
-    var creditsFactor =  1.0
+    var creditsFactor = 1.0
     var crewExpFactor = 1.0
     var diveBomberAccuracyIncRateCoeff = 1.0
     var diveBomberMaxSpeedMultiplier = 1.0
@@ -239,19 +271,23 @@ open class CommonModifier
 
     @JsonProperty("AAInnerExtraBubbles")
     var aaInnerExtraBubbles = 0
+
     @JsonProperty("AAMaxHP")
     var aaMaxHP = 1.0
+
     @JsonProperty("ConsumableReloadTime")
     var consumableReloadTime = 1.0
+
     @JsonProperty("ConsumablesWorkTime")
     var consumablesWorkTime = 1.0
+
     @JsonProperty("SGRudderPower")
     var sgRudderPower = 1.0
     var artilleryDamageCoef = 1.0
     var burnChanceMultiplier = 1.0
     var diveBomberHealth = 1.0
     var engineForsageCoef = 1.0
-    var fighterAimingTimeZone =  1.0
+    var fighterAimingTimeZone = 1.0
     var fighterAimingTime = 0.0
     var fighterHealth = 1.0
     var healthHullCoeff = 1.0

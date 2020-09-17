@@ -11,6 +11,8 @@ import WoWSFT.service.GPService
 import WoWSFT.service.ParamService
 import WoWSFT.service.ParserService
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseCookie
@@ -34,31 +36,27 @@ class GPController(
     private val gpService: GPService,
     private val paramService: ParamService,
     private val parserService: ParserService
-) : ExceptionController()
-{
+) : ExceptionController() {
     companion object {
-        private val mapper = ObjectMapper()
+        private val mapper = jacksonObjectMapper()
         private const val lang = EN
         private const val WOWSFT_AD = "WoWSFT_Ad"
     }
     private val isRelease get() = "release".equals(customProperties.env, ignoreCase = true)
 
     @ModelAttribute(name = "misc")
-    fun setLanguage(model: Model, request: HttpServletRequest)
-    {
+    fun setLanguage(model: Model, request: HttpServletRequest) {
         model.addAttribute("lang", lang)
         getAdStatus(request).let { model.addAttribute("adStatus", it == null || it.value == "1") }
     }
 
     @GetMapping("")
-    fun getHome(model: Model): String
-    {
-        if (loadFinish[LOAD_FINISH] == 0) {
-            return "loadPage"
+    fun getHome(model: Model): String {
+        return if (loadFinish[LOAD_FINISH] == 0) "loadPage"
+        else {
+            model.addAttribute(NOTIFICATION, notification[lang])
+            "home"
         }
-        model.addAttribute(NOTIFICATION, notification[lang])
-
-        return "home"
     }
 
     @RequestMapping(value = ["/ship", "/compare"], method = [RequestMethod.GET, RequestMethod.POST])
@@ -75,15 +73,14 @@ class GPController(
         @RequestParam(required = false, defaultValue = "0") flags: Int,
         @RequestParam(required = false, defaultValue = "100") ar: Int,
         @RequestParam(required = false, defaultValue = "0") pos: Int
-    ): String
-    {
+    ): String {
         if (request.requestURI.equals("/ship", ignoreCase = true) || request.method.equals("post", ignoreCase = true)) {
             model.addAttribute("single", pos == 0)
             model.addAttribute(IDS, IDS_)
             model.addAttribute(GLOBAL, global[lang])
         }
 
-        if (index.isNotEmpty()) {
+        if (index.isNotBlank()) {
             model.addAttribute("index", index.toUpperCase())
             model.addAttribute("dataIndex", pos)
             model.addAttribute("commanders", commanders)
@@ -94,93 +91,90 @@ class GPController(
             model.addAttribute(TYPE_WARSHIP, ship)
 
             if ("post".equals(request.method, ignoreCase = true)) {
-                return if (request.requestURI.equals("/ship", ignoreCase = true)) {
-                    "Joint/rightInfo :: rightInfo"
-                } else {
-                    "Joint/shipSelect :: warshipStats"
-                }
+                return if (request.requestURI.equals("/ship", ignoreCase = true)) "Joint/rightInfo :: rightInfo"
+                else "Joint/shipSelect :: warshipStats"
             }
         }
 
         return if (request.requestURI.equals("/ship", ignoreCase = true)) {
             model.addAttribute("nations", shipsList)
-
             "FittingTool/ftHome"
-        } else {
-            "Comparison/comparison"
-        }
+        } else "Comparison/comparison"
     }
 
     @Throws(Exception::class)
-    private fun getShip(index: String, modules: String, upgrades: String, consumables: String, skills: Long, commander: String, flags: Int, ar: Int): Ship
-    {
-        var sCommander = commander
-        val ship = mapper.readValue(mapper.writeValueAsString(gpService.getShip(index)), Ship::class.java)
+    private fun getShip(
+        index: String,
+        modules: String,
+        upgrades: String,
+        consumables: String,
+        skills: Long,
+        commander: String,
+        flags: Int,
+        ar: Int
+    ): Ship {
+        return mapper.readValue(mapper.writeValueAsString(gpService.getShip(index)), jacksonTypeRef<Ship>()).also { ship ->
+            parserService.parseModules(ship, modules)
+            gpService.setShipAmmo(ship)
 
-        parserService.parseModules(ship, modules)
-        gpService.setShipAmmo(ship)
+            parserService.parseConsumables(ship, consumables)
+            parserService.parseUpgrades(ship, upgrades)
+            parserService.parseFlags(ship, flags)
+            parserService.parseSkills(ship, skills, ar)
+            paramService.setAA(ship)
 
-        parserService.parseConsumables(ship, consumables)
-        parserService.parseUpgrades(ship, upgrades)
-        parserService.parseFlags(ship, flags)
-        parserService.parseSkills(ship, skills, ar)
-        paramService.setAA(ship)
+            val sCommander = if ("PCW001" != commander && (commanders[commander] == null
+                || !commanders[commander]!!.crewPersonality.ships.nation.contains(ship.typeinfo.nation)))
+                "PCW001"
+            else commander
+            ship.commander = commanders[sCommander]
 
-        if ("PCW001" != sCommander && (commanders[sCommander] == null || !commanders[sCommander]!!.crewPersonality.ships.nation.contains(ship.typeinfo.nation))) {
-            sCommander = "PCW001"
+            paramService.setParameters(ship)
         }
-        ship.commander = commanders[sCommander]
-
-        paramService.setParameters(ship)
-
-        return ship
     }
 
     @GetMapping("/arty")
-    fun getArtyChart(model: Model): String
-    {
+    fun getArtyChart(model: Model): String {
         model.addAttribute(IDS, IDS_)
         model.addAttribute(GLOBAL, global[lang])
         model.addAttribute("nations", shipsList)
-
         return "ArtyChart/acHome"
     }
 
     @ResponseBody
     @PostMapping("/arty")
     @Throws(Exception::class)
-    fun getShellData(@RequestParam index: String, @RequestParam artyId: String): Shell?
-    {
+    fun getShellData(
+        @RequestParam index: String,
+        @RequestParam artyId: String
+    ): Shell? {
         return gpService.getArtyAmmoOnly(index, artyId)
     }
 
     @GetMapping("/research")
-    fun getResearch(model: Model): String
-    {
+    fun getResearch(model: Model): String {
         model.addAttribute(GLOBAL, global[lang])
         model.addAttribute(IDS, IDS_)
         model.addAttribute("nations", shipsList)
-
         return "Research/shipTree"
     }
 
     @ResponseBody
     @PostMapping("/adToggle")
-    fun toggleAdRequest(request: HttpServletRequest,
-                        response: HttpServletResponse, @RequestParam toggle: Boolean): String
-    {
+    fun toggleAdRequest(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        @RequestParam toggle: Boolean
+    ): String {
         toggleAd(response, toggle)
-
         return "SUCCESS"
     }
 
-    private fun getAdStatus(request: HttpServletRequest): Cookie?
-    {
+    private fun getAdStatus(request: HttpServletRequest): Cookie? {
         return if (!request.cookies.isNullOrEmpty()) request.cookies.firstOrNull { c -> c.name == WOWSFT_AD } else null
     }
 
-    private fun toggleAd(response: HttpServletResponse, toggle: Boolean)
-    {
+    private fun toggleAd(response: HttpServletResponse, toggle: Boolean) {
         val toggleValue = if (toggle) "1" else "0"
         val domain = if (isRelease) "wowsft.com" else "localhost"
         val maxAge = 31556952L

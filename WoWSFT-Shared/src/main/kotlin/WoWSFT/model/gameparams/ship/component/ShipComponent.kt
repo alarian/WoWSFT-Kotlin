@@ -15,8 +15,16 @@ import WoWSFT.model.gameparams.ship.component.torpedo.Torpedo
 import java.util.*
 
 @WoWSFT
-class ShipComponent
-{
+class ShipComponent {
+    operator fun get(plane: String): LinkedHashMap<String, Plane> {
+        return when (plane) {
+            "diveBomber" -> diveBomber
+            "fighter" -> fighter
+            "torpedoBomber" -> torpedoBomber
+            else -> LinkedHashMap()
+        }
+    }
+
     var flightControl = LinkedHashMap<String, FlightControl>()
     var airArmament = LinkedHashMap<String, AirArmament>()
     var airDefense = LinkedHashMap<String, AirDefense>()

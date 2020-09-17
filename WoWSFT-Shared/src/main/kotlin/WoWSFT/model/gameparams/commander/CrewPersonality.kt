@@ -6,16 +6,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class CrewPersonality
-{
+class CrewPersonality {
     var dismissable = false
     var hasManyNations = false
     var hasOverlay = false
     var hasRank = false
+
     @JsonAlias("isPerson")
     var person = false
+
     @JsonAlias("isRetrainable")
     var retrainable = false
+
     @JsonAlias("isUnique")
     var unique = false
     var canResetSkillsForFree = false

@@ -1,17 +1,15 @@
 package WoWSFT.model.gameparams.ship.component.airdefense
 
 import WoWSFT.config.WoWSFT
+import WoWSFT.utils.CommonUtils.mapper
 import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.*
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class AirDefense
-{
+class AirDefense {
     val aaJoint = AAJoint()
     var ownerlessTracesScatterCoefficient = 0.0
     var prioritySectorChangeDelay = 0.0
@@ -37,19 +35,21 @@ class AirDefense
     var prioritySectorCoefficientInitial = 0.0
     var prioritySectorCoefficientDuring = 0.0
 
-    companion object {
-        @JsonIgnore
-        private val mapper = ObjectMapper()
-    }
-
     @JsonAnySetter
     fun setAura(name: String, value: Any?) {
         if (value is HashMap<*, *>) {
-            val tempObject = mapper.convertValue(value, object : TypeReference<HashMap<String, Any>>() {})
-            when (tempObject["type"].toString().toLowerCase()) {
-                "far" -> { aaJoint.auraFar.add(mapper.convertValue(value, Aura::class.java)) }
-                "medium" -> { aaJoint.auraMedium.add(mapper.convertValue(value, Aura::class.java)) }
-                "near" -> { aaJoint.auraNear.add(mapper.convertValue(value, Aura::class.java)) }
+            mapper.convertValue(value, jacksonTypeRef<HashMap<String, Any>>()).also { tempObject ->
+                when (tempObject["type"].toString().toLowerCase()) {
+                    "far" -> {
+                        aaJoint.auraFar.add(mapper.convertValue(value, jacksonTypeRef<Aura>()))
+                    }
+                    "medium" -> {
+                        aaJoint.auraMedium.add(mapper.convertValue(value, jacksonTypeRef<Aura>()))
+                    }
+                    "near" -> {
+                        aaJoint.auraNear.add(mapper.convertValue(value, jacksonTypeRef<Aura>()))
+                    }
+                }
             }
         }
     }

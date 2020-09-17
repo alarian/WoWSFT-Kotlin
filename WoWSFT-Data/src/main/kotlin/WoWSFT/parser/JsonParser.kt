@@ -2,36 +2,37 @@ package WoWSFT.parser
 
 import WoWSFT.model.Constant.*
 import WoWSFT.model.gameparams.TypeInfo
-import WoWSFT.model.gameparams.commander.*
-import WoWSFT.model.gameparams.consumable.*
+import WoWSFT.model.gameparams.commander.Commander
+import WoWSFT.model.gameparams.consumable.Consumable
 import WoWSFT.model.gameparams.flag.Flag
-import WoWSFT.model.gameparams.modernization.*
-import WoWSFT.model.gameparams.ship.*
+import WoWSFT.model.gameparams.modernization.Modernization
+import WoWSFT.model.gameparams.ship.Ship
+import WoWSFT.model.gameparams.ship.ShipIndex
 import WoWSFT.model.gameparams.ship.component.airarmament.AirArmament
 import WoWSFT.model.gameparams.ship.component.airdefense.AirDefense
-import WoWSFT.model.gameparams.ship.component.artillery.*
+import WoWSFT.model.gameparams.ship.component.artillery.Artillery
+import WoWSFT.model.gameparams.ship.component.artillery.Shell
 import WoWSFT.model.gameparams.ship.component.atba.ATBA
 import WoWSFT.model.gameparams.ship.component.engine.Engine
 import WoWSFT.model.gameparams.ship.component.firecontrol.FireControl
 import WoWSFT.model.gameparams.ship.component.flightcontrol.FlightControl
 import WoWSFT.model.gameparams.ship.component.hull.Hull
 import WoWSFT.model.gameparams.ship.component.torpedo.Torpedo
-import WoWSFT.model.gameparams.ship.upgrades.*
+import WoWSFT.model.gameparams.ship.upgrades.ShipUpgrade
 import WoWSFT.service.ParamService
 import WoWSFT.utils.CommonUtils
 import WoWSFT.utils.PenetrationUtils
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.core.util.DefaultIndenter
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.module.kotlin.*
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
+import org.springframework.stereotype.Component
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -39,66 +40,69 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
-class JsonParser
-{
-    @Autowired private lateinit var paramService: ParamService
-    @Autowired private lateinit var executor: ThreadPoolTaskExecutor
-
-    private val nameToId = HashMap<String, String>()
-    private val idToName = HashMap<String, String>()
-    private val gameParamsHM = HashMap<String, Any>()
-    private val global = HashMap<String, HashMap<String, Any>>()
-    private val ships = LinkedHashMap<String, Ship>()
-    private val consumables = LinkedHashMap<String, Consumable>()
-    private val commanders = LinkedHashMap<String, Commander>()
-    private val upgrades = LinkedHashMap<Int, LinkedHashMap<String, Modernization>>()
-    private val shipsList = LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, MutableList<ShipIndex>>>>>()
-    private val flags = LinkedHashMap<String, Flag>()
-    private val shells = HashMap<String, Shell>()
-    private val misc = HashMap<String, Any>()
-    private val penetrationUtils = PenetrationUtils()
-
+@Component
+class JsonParser(
+    private val paramService: ParamService,
+    private val executor: ThreadPoolTaskExecutor
+) {
     companion object {
         private val log = LoggerFactory.getLogger(JsonParser::class.java)
-        private val mapper = ObjectMapper().registerKotlinModule()
+        private val mapper = jacksonObjectMapper()
         private val job = SupervisorJob()
+
+        private val nameToId = HashMap<String, String>()
+        private val idToName = HashMap<String, String>()
+        private val gameParamsHM = HashMap<String, Any>()
+        private val global = HashMap<String, HashMap<String, Any>>()
+        private val ships = LinkedHashMap<String, Ship>()
+        private val consumables = LinkedHashMap<String, Consumable>()
+        private val commanders = LinkedHashMap<String, Commander>()
+        private val upgrades = LinkedHashMap<Int, LinkedHashMap<String, Modernization>>()
+        private val shipsList = LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<Int, MutableList<ShipIndex>>>>>()
+        private val flags = LinkedHashMap<String, Flag>()
+        private val shells = HashMap<String, Shell>()
+        private val misc = HashMap<String, Any>()
+        private val penetrationUtils = PenetrationUtils()
     }
 
     init {
-        val indenter: Indenter = DefaultIndenter("    ", DefaultIndenter.SYS_LF)
-        val printer = DefaultPrettyPrinter()
-        printer.indentObjectsWith(indenter)
-        printer.indentArraysWith(indenter)
-        mapper.setDefaultPrettyPrinter(printer)
-        mapper.enable(SerializationFeature.INDENT_OUTPUT)
-        mapper.setAnnotationIntrospector(IgnoreJacksonWriteOnlyAccess())
+        val indent = DefaultIndenter("    ", DefaultIndenter.SYS_LF)
+        val printer = DefaultPrettyPrinter().also {
+            it.indentObjectsWith(indent)
+            it.indentArraysWith(indent)
+        }
+
+        mapper.also {
+            it.setDefaultPrettyPrinter(printer)
+            it.enable(SerializationFeature.INDENT_OUTPUT)
+            it.setAnnotationIntrospector(IgnoreJacksonWriteOnlyAccess())
+        }
 
         repeat(6) { upgrades[it] = LinkedHashMap() }
     }
 
-    @Throws(IOException::class)
-    fun setGlobal()
-    {
+    fun setGlobal() {
         log.info("Setting up Global")
 
         globalLanguage.forEach {
-            val globalFile = ClassPathResource("/json/live/global-$it$FILE_JSON")
-            global[it] = mapper.readValue(globalFile.inputStream, object: TypeReference<HashMap<String, Any>>() {})
+            val globalFile = ClassPathResource("${JSON_DIR}global-$it$FILE_JSON")
+            global[it] = mapper.readValue(globalFile.inputStream, jacksonTypeRef<HashMap<String, Any>>())
         }
     }
 
-    @Throws(IOException::class)
-    fun setGameParams()
-    {
+    fun setGameParams() {
         log.info("Setting up GameParams")
 
-        val zf = ZipFile(ClassPathResource("/json/live/GameParams.zip").file.path)
-        val temp = mapper.readValue(zf.getInputStream(zf.entries().nextElement()), object: TypeReference<LinkedHashMap<String, LinkedHashMap<String, Any>>>() {})
+        val zf = ZipFile(ClassPathResource("${JSON_DIR}GameParams.zip").file.path)
+        val temp = mapper.readValue(zf.getInputStream(zf.entries().nextElement()), jacksonTypeRef<LinkedHashMap<String, LinkedHashMap<String, Any>>>())
 
         temp.forEach { (key, value) ->
-            val typeInfo = mapper.convertValue(value["typeinfo"], TypeInfo::class.java)
-            if (typeInfo.type.equals("Ship", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !excludeShipSpecies.contains(typeInfo.species)) {
-                val ship = mapper.convertValue(value, Ship::class.java)
+            val typeInfo = mapper.convertValue(value[TYPE_INFO]!!, jacksonTypeRef<TypeInfo>())
+            if (typeInfo.type.equals("Ship", ignoreCase = true)
+                && !excludeShipNations.contains(typeInfo.nation)
+                && !excludeShipSpecies.contains(typeInfo.species)
+            ) {
+                val ship = mapper.convertValue(value, jacksonTypeRef<Ship>())
                 if (!excludeShipGroups.contains(ship.group)) {
                     ship.shipUpgradeInfo.components.forEach { (cType, c) ->
                         c.forEach { su ->
@@ -109,16 +113,23 @@ class JsonParser
                     addShips(ship)
                 }
             } else if (typeInfo.type.equals("Modernization", ignoreCase = true)) {
-                val modernization = mapper.convertValue(value, Modernization::class.java)
+                val modernization = mapper.convertValue(value, jacksonTypeRef<Modernization>())
                 if (modernization.slot >= 0) {
-                    paramService.setBonusParams(key, mapper.convertValue(modernization, object: TypeReference<LinkedHashMap<String, Any>>() {}), modernization.bonus, false)
+                    paramService.setBonusParams(
+                        key,
+                        mapper.convertValue(modernization, jacksonTypeRef<LinkedHashMap<String, Any>>()),
+                        modernization.bonus,
+                        false
+                    )
                     upgrades[modernization.slot]!![modernization.name] = modernization
                 }
-            } else if (typeInfo.type.equals("Ability", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !key.contains("Super")) {
-                val consumable = mapper.convertValue(value, Consumable::class.java)
-                consumables[key] = consumable
+            } else if (typeInfo.type.equals("Ability", ignoreCase = true)
+                && !excludeShipNations.contains(typeInfo.nation)
+                && !key.contains("Super")
+            ) {
+                consumables[key] = mapper.convertValue(value, jacksonTypeRef<Consumable>())
             } else if (typeInfo.type.equals("Crew", ignoreCase = true)) {
-                val commander = mapper.convertValue(value, Commander::class.java)
+                val commander = mapper.convertValue(value, jacksonTypeRef<Commander>())
                 if (!"Events".equals(commander.typeinfo.nation, ignoreCase = true)) {
                     if (!commander.crewPersonality.unique && commander.typeinfo.nation == "Common") {
                         commander.identifier = "IDS_CREW_LASTNAME_DEFAULT"
@@ -128,24 +139,25 @@ class JsonParser
                         commanders[commander.index.toUpperCase()] = commander
                     }
                 }
-            } else if (typeInfo.type.equals("Exterior", ignoreCase = true) && typeInfo.species.equals("Flags", ignoreCase = true)) {
-                val flag = mapper.convertValue(value, Flag::class.java)
+            } else if (typeInfo.type.equals("Exterior", ignoreCase = true)
+                && typeInfo.species.equals("Flags", ignoreCase = true)
+            ) {
+                val flag = mapper.convertValue(value, jacksonTypeRef<Flag>())
                 if (flag.group == 0) {
                     flag.identifier = "$IDS_${flag.name.toUpperCase()}"
-                    paramService.setBonusParams(key, mapper.convertValue(flag, object: TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus, specialFlags.any { flag.index == it })
+                    paramService.setBonusParams(
+                        key, mapper.convertValue(flag, jacksonTypeRef<LinkedHashMap<String, Any>>()),
+                        flag.bonus,
+                        specialFlags.any { flag.index == it })
                     flags[flag.name] = flag
                 }
             } else if (miscList.contains(typeInfo.type)) {
                 if ("Artillery" == typeInfo.species) {
-                    val shell = mapper.convertValue(value, Shell::class.java)
-                    if (AP == shell.ammoType) {
-                        shells[key] = shell
-                    }
+                    val shell = mapper.convertValue(value, jacksonTypeRef<Shell>())
+                    if (AP == shell.ammoType) shells[key] = shell
                 }
                 misc[key] = value
-            } else {
-                gameParamsHM[key] = value
-            }
+            } else gameParamsHM[key] = value
         }
 
         generateShipsList()
@@ -156,13 +168,13 @@ class JsonParser
         temp.clear()
     }
 
-    private fun addShips(ship: Ship)
-    {
+    private fun addShips(ship: Ship) {
         sortShipUpgradeInfo(ship)
         setRealShipType(ship)
         setRows(ship)
         ships[ship.index] = ship
         idToName[ship.name] = ship.index
+
         try {
             nameToId[global[EN]!!["$IDS_${ship.index.toUpperCase()}_FULL"].toString()] = ship.index.toUpperCase()
         } catch (npe: NullPointerException) {
@@ -170,27 +182,42 @@ class JsonParser
         }
     }
 
-    private fun sortShipUpgradeInfo(ship: Ship)
-    {
+    private fun sortShipUpgradeInfo(ship: Ship) {
         ship.shipUpgradeInfo.components.forEach { (key, value) ->
             value.forEach { upgrade ->
-                if (upgrade.position == 3 && ship.shipUpgradeInfo.components[key]!!.size < 3) {
-                    upgrade.position = 2
-                }
+                if (upgrade.position == 3 && ship.shipUpgradeInfo.components[key]!!.size < 3) upgrade.position = 2
 
                 upgrade.components.forEach { (cKey, cValue) ->
                     when (cKey.decapitalize()) {
-                        artillery -> cValue.forEach { cVal -> ship.components.artillery[cVal] = mapper.convertValue(ship.tempComponents[cVal], Artillery::class.java) }
-                        airDefense -> cValue.forEach { cVal -> ship.components.airDefense[cVal] = mapper.convertValue(ship.tempComponents[cVal], AirDefense::class.java) }
-                        atba -> cValue.forEach { cVal -> ship.components.atba[cVal] = mapper.convertValue(ship.tempComponents[cVal], ATBA::class.java) }
-                        engine -> cValue.forEach { cVal -> ship.components.engine[cVal] = mapper.convertValue(ship.tempComponents[cVal], Engine::class.java) }
-                        suo -> cValue.forEach { cVal -> ship.components.suo[cVal] = mapper.convertValue(ship.tempComponents[cVal], FireControl::class.java) }
-                        hull -> cValue.forEach { cVal -> ship.components.hull[cVal] = mapper.convertValue(ship.tempComponents[cVal], Hull::class.java) }
-                        torpedoes -> cValue.forEach { cVal -> ship.components.torpedoes[cVal] = mapper.convertValue(ship.tempComponents[cVal], Torpedo::class.java) }
-                        airArmament -> cValue.forEach { cVal -> ship.components.airArmament[cVal] = mapper.convertValue(ship.tempComponents[cVal], AirArmament::class.java) }
-                        flightControl -> cValue.forEach { cVal -> ship.components.flightControl[cVal] = mapper.convertValue(ship.tempComponents[cVal], FlightControl::class.java) }
+                        artillery -> cValue.forEach { cVal ->
+                            ship.components.artillery[cVal] = mapper.convertValue(ship.tempComponents[cVal]!!, jacksonTypeRef<Artillery>())
+                        }
+                        airDefense -> cValue.forEach { cVal ->
+                            ship.components.airDefense[cVal] = mapper.convertValue(ship.tempComponents[cVal]!!, jacksonTypeRef<AirDefense>())
+                        }
+                        atba -> cValue.forEach { cVal ->
+                            ship.components.atba[cVal] = mapper.convertValue(ship.tempComponents[cVal]!!, jacksonTypeRef<ATBA>())
+                        }
+                        engine -> cValue.forEach { cVal ->
+                            ship.components.engine[cVal] = mapper.convertValue(ship.tempComponents[cVal]!!, jacksonTypeRef<Engine>())
+                        }
+                        suo -> cValue.forEach { cVal ->
+                            ship.components.suo[cVal] = mapper.convertValue(ship.tempComponents[cVal]!!, jacksonTypeRef<FireControl>())
+                        }
+                        hull -> cValue.forEach { cVal ->
+                            ship.components.hull[cVal] = mapper.convertValue(ship.tempComponents[cVal]!!, jacksonTypeRef<Hull>())
+                        }
+                        torpedoes -> cValue.forEach { cVal ->
+                            ship.components.torpedoes[cVal] = mapper.convertValue(ship.tempComponents[cVal]!!, jacksonTypeRef<Torpedo>())
+                        }
+                        airArmament -> cValue.forEach { cVal ->
+                            ship.components.airArmament[cVal] = mapper.convertValue(ship.tempComponents[cVal]!!, jacksonTypeRef<AirArmament>())
+                        }
+                        flightControl -> cValue.forEach { cVal ->
+                            ship.components.flightControl[cVal] = mapper.convertValue(ship.tempComponents[cVal]!!, jacksonTypeRef<FlightControl>())
+                        }
                         fighter, diveBomber, torpedoBomber -> cValue.forEach { cVal ->
-                            val tempPlaneType = mapper.convertValue(ship.tempComponents[cVal], object: TypeReference<HashMap<String, String>>() {})
+                            val tempPlaneType = mapper.convertValue(ship.tempComponents[cVal]!!, jacksonTypeRef<HashMap<String, String>>())
                             ship.planes[cVal] = tempPlaneType["planeType"]!!
                         }
                     }
@@ -201,7 +228,7 @@ class JsonParser
 
         ship.shipUpgradeInfo.components.forEach { (_, value) ->
             value.forEach { upgrade ->
-                if (upgrade.prev.isNotEmpty()) {
+                if (upgrade.prev.isNotBlank()) {
                     for ((_, value1) in ship.shipUpgradeInfo.components) {
                         val tSU = value1.stream().filter { v -> v.name.equals(upgrade.prev, ignoreCase = true) }.findFirst().orElse(null)
                         if (tSU != null) {
@@ -221,48 +248,40 @@ class JsonParser
         ship.tempComponents = LinkedHashMap()
     }
 
-    private fun setRealShipType(ship: Ship)
-    {
+    private fun setRealShipType(ship: Ship) {
         when {
             researchShipGroups.contains(ship.group) -> {
                 ship.realShipType = ship.typeinfo.species!!
                 ship.research = true
             }
-            premiumShipGroups.contains(ship.group) -> { ship.realShipType = "Premium" }
-            supertestShipGroups.contains(ship.group) -> { ship.realShipType = "Test_Sample" }
+            premiumShipGroups.contains(ship.group) -> ship.realShipType = "Premium"
+            supertestShipGroups.contains(ship.group) -> ship.realShipType = "Test_Sample"
         }
     }
 
-    private fun setRows(ship: Ship)
-    {
+    private fun setRows(ship: Ship) {
         val colCount = LinkedHashMap<String, Int>()
         var maxRows = 0
         for (i in 1..3) {
             var hasRow = false
             ship.shipUpgradeInfo.components.forEach { (key, compList) ->
-                if (key == flightControl) { return@forEach }
+                if (key == flightControl) return@forEach
 
                 colCount.putIfAbsent(key, 0)
                 val posCount = compList.filter { it.position == i }.size
-                if (posCount > 0) {
-                    hasRow = true
-                }
-                if (colCount[key]!! < posCount) {
-                    colCount[key] = posCount
-                }
+                if (posCount > 0) hasRow = true
+                if (colCount[key]!! < posCount) colCount[key] = posCount
             }
-            if (hasRow) {
-                maxRows++
-            }
+            if (hasRow) maxRows++
         }
+
         ship.shipUpgradeInfo.also {
             it.cols = colCount
             it.maxRows = maxRows
         }
     }
 
-    private fun generateShipsList()
-    {
+    private fun generateShipsList() {
         ships.forEach { (_, ship) ->
             ship.shipUpgradeInfo.components.forEach { (_, components) ->
                 components.forEach { component ->
@@ -274,10 +293,10 @@ class JsonParser
                                 var prev = component.prev
                                 var prevType = component.prevType
                                 var compXP = 0
-                                while (currentPosition > 1 && prev.isNotEmpty() && prevType.isNotEmpty() && gameParamsHM.containsKey(current)) {
-                                    val comp: HashMap<String, Any> = mapper.convertValue(gameParamsHM[current], object: TypeReference<HashMap<String, Any>>() {})
+                                while (currentPosition > 1 && prev.isNotBlank() && prevType.isNotBlank() && gameParamsHM.containsKey(current)) {
+                                    val comp = mapper.convertValue(gameParamsHM[current], jacksonTypeRef<HashMap<String, Any>>())
                                     compXP += comp["costXP"] as Int
-                                    if (prev.isNotEmpty()) {
+                                    if (prev.isNotBlank()) {
                                         val tempSUList: List<ShipUpgrade> = ship.shipUpgradeInfo.components[prevType] ?: listOf()
                                         for (su in tempSUList) {
                                             if (su.name.equals(prev, ignoreCase = true)) {
@@ -288,9 +307,7 @@ class JsonParser
                                                 break
                                             }
                                         }
-                                    } else {
-                                        break
-                                    }
+                                    } else break
                                 }
 
                                 ships[idToName[ns]]?.also {
@@ -312,9 +329,10 @@ class JsonParser
             if (fullName.isNotBlank() && !fullName.contains("ARP") && !ship.typeinfo.nation.isNullOrBlank() && !ship.typeinfo.species.isNullOrBlank()) {
                 shipsList.putIfAbsent(ship.typeinfo.nation!!, LinkedHashMap())
                 shipsList[ship.typeinfo.nation!!]?.putIfAbsent(ship.realShipTypeId.toUpperCase(), LinkedHashMap())
-                shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!!.putIfAbsent(ship.typeinfo.species!!.toUpperCase(), LinkedHashMap())
-                shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species!!.toUpperCase()]!!.putIfAbsent(ship.level, mutableListOf())
-
+                shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!!
+                    .putIfAbsent(ship.typeinfo.species!!.toUpperCase(), LinkedHashMap())
+                shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species!!.toUpperCase()]!!
+                    .putIfAbsent(ship.level, mutableListOf())
                 shipsList[ship.typeinfo.nation!!]!![ship.realShipTypeId.toUpperCase()]!![ship.typeinfo.species!!.toUpperCase()]!![ship.level]
                     ?.add(ShipIndex(ship, ship.shipUpgradeInfo.components[artillery]?.map { it.name } ?: listOf()))
             }
@@ -345,11 +363,8 @@ class JsonParser
                                             if (ships[tShip.index]!!.typeinfo.species.equals(shipType, ignoreCase = true)) {
                                                 ships[tShip.index]?.shipUpgradeInfo?.components?.forEach { (_, list) ->
                                                     list.forEach { u1 ->
-                                                        if (u1.nextShips.contains(ship.identifier)) {
-                                                            if (list.any { u2 -> u2.nextShips.isNotEmpty() }) {
-                                                                tShip.position = ship.position
-                                                            }
-                                                        }
+                                                        if (u1.nextShips.contains(ship.identifier) && list.any { u2 -> u2.nextShips.isNotEmpty() })
+                                                            tShip.position = ship.position
                                                     }
                                                 }
                                             }
@@ -378,8 +393,7 @@ class JsonParser
         shipsList["Russia"] = russia!!
     }
 
-    private fun sortUpgrades()
-    {
+    private fun sortUpgrades() {
         upgrades.forEach { (_, mod) ->
             mod.entries.sortedWith(compareBy({ it.value.costCR }, { it.key })).forEach { u ->
                 mod.remove(u.key)
@@ -388,28 +402,25 @@ class JsonParser
         }
     }
 
-    private fun sortFlags()
-    {
+    private fun sortFlags() {
         flags.values.sortedBy { it.sortOrder }.forEach { flag ->
             flags.remove(flag.name)
             flags[flag.name] = flag
         }
     }
 
-    private fun setCommanderParams()
-    {
+    private fun setCommanderParams() {
         commanders.forEach { (_, commander) ->
             commander.crewSkills.forEach { r ->
                 r.forEach { s ->
-                    s.bonus = CommonUtils.getBonus(mapper.convertValue(s, object: TypeReference<LinkedHashMap<String, Any>>() {}))
+                    s.bonus = CommonUtils.getBonus(mapper.convertValue(s, jacksonTypeRef<LinkedHashMap<String, Any>>()))
                 }
             }
         }
     }
 
     @Throws(IOException::class)
-    fun generateShipData()
-    {
+    fun generateShipData() {
         log.info("Generating ship data")
 
         val directory = getGameParamsDir().replace(FILE_GAMEPARAMS, DIR_SHIPS)
@@ -451,8 +462,7 @@ class JsonParser
     }
 
     @Throws(IOException::class)
-    fun generateShellPenetration()
-    {
+    fun generateShellPenetration() {
         log.info("Generating shell penetration")
 
         val directory = getGameParamsDir().replace(FILE_GAMEPARAMS, DIR_SHELL)
@@ -501,15 +511,13 @@ class JsonParser
     }
 
     @Throws(IOException::class)
-    private fun getGameParamsDir(): String
-    {
+    private fun getGameParamsDir(): String {
         return ClassPathResource("/json/live/GameParams.zip").url.path.replaceFirst(SLASH, "").also {
             if (it.startsWith("var") || it.startsWith("Users")) "${SLASH}${it}"
         }
     }
 
-    private fun getEmptyFolder(directory: String): File
-    {
+    private fun getEmptyFolder(directory: String): File {
         return File(directory).also {
             if (!it.exists() || !it.isDirectory) it.mkdir()
             else it.listFiles { f -> f.delete() }
@@ -517,8 +525,7 @@ class JsonParser
     }
 
     @Throws(IOException::class)
-    private fun createZipFile(folder: File, directory: String)
-    {
+    private fun createZipFile(folder: File, directory: String) {
         val fos = FileOutputStream(directory)
         ZipOutputStream(fos).also {
             folder.listFiles()?.forEach { file ->

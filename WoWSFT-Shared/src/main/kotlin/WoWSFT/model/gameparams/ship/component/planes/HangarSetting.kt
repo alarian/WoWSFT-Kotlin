@@ -1,7 +1,6 @@
 package WoWSFT.model.gameparams.ship.component.planes
 
-class HangarSetting
-{
+class HangarSetting {
     var maxValue = 0
     var restoreAmount = 0
     var startValue = 0

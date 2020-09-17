@@ -7,16 +7,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
 import javax.servlet.http.HttpServletRequest
 
-open class ExceptionController
-{
+open class ExceptionController {
     companion object {
         private val log = LoggerFactory.getLogger(ExceptionController::class.java)
     }
 
     @ResponseBody
     @ExceptionHandler(Exception::class)
-    fun otherErrors(t: Throwable, request: HttpServletRequest): CustomMessage
-    {
+    fun otherErrors(t: Throwable, request: HttpServletRequest): CustomMessage {
         log.info(request.requestURL.toString() + (if (!request.queryString.isNullOrBlank()) "?${request.queryString}" else ""))
         log.error(t.localizedMessage, t)
 

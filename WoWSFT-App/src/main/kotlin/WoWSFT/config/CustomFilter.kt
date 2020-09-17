@@ -1,7 +1,6 @@
 package WoWSFT.config
 
 import WoWSFT.model.BlockIp
-import WoWSFT.model.Constant.CDN
 import WoWSFT.model.Constant.LOAD_FINISH
 import WoWSFT.model.Constant.SLASH
 import org.slf4j.LoggerFactory
@@ -24,8 +23,7 @@ import kotlin.collections.HashSet
 class CustomFilter(
     @Qualifier(LOAD_FINISH) private val loadFinish: HashMap<String, Int>,
     private val customProperties: CustomProperties
-) : Filter
-{
+) : Filter {
     companion object {
         private val log = LoggerFactory.getLogger(CustomFilter::class.java)
 
@@ -48,8 +46,7 @@ class CustomFilter(
     }
 
     @Throws(IOException::class, ServletException::class)
-    override fun doFilter(req: ServletRequest, res: ServletResponse, chain: FilterChain)
-    {
+    override fun doFilter(req: ServletRequest, res: ServletResponse, chain: FilterChain) {
         val request = req as HttpServletRequest
         val response = res as HttpServletResponse
 
@@ -66,7 +63,8 @@ class CustomFilter(
 
         if (!(HttpMethod.GET.name.equals(request.method, ignoreCase = true)
             || HttpMethod.POST.name.equals(request.method, ignoreCase = true)
-            || HttpMethod.HEAD.name.equals(request.method, ignoreCase = true))) {
+            || HttpMethod.HEAD.name.equals(request.method, ignoreCase = true))
+        ) {
             response.status = HttpServletResponse.SC_NOT_FOUND
             return
         }
@@ -82,13 +80,11 @@ class CustomFilter(
 
         val ipAddress = getClientIPAddress(request)
         if (isRelease && isNotIgnore(request.requestURI) && loadFinish[LOAD_FINISH] != 0) {
-            if (!ipMap.containsKey(ipAddress)) {
-                ipMap[ipAddress!!] = BlockIp(ipAddress)
-            } else {
+            if (!ipMap.containsKey(ipAddress)) ipMap[ipAddress!!] = BlockIp(ipAddress)
+            else {
                 if (ipMap[ipAddress]!!.blockCount < 3) {
-                    if (ipMap[ipAddress]!!.count < 10) {
-                        ipMap[ipAddress]!!.doCount()
-                    } else {
+                    if (ipMap[ipAddress]!!.count < 10) ipMap[ipAddress]!!.doCount()
+                    else {
                         if (System.currentTimeMillis() - ipMap[ipAddress]!!.created.time < 15 * 1000) {
                             if (!blockIP.contains(ipAddress)) {
                                 ipMap[ipAddress]?.also {
@@ -127,22 +123,15 @@ class CustomFilter(
     }
 
     private fun isNotIgnore(address: String): Boolean {
-        return ignoreUri.stream()
-            .noneMatch { ig: String? ->
-                address.toLowerCase().contains(ig!!)
-            }
+        return ignoreUri.none { address.toLowerCase().contains(it) }
     }
 
     private fun getClientIPAddress(request: HttpServletRequest): String? {
         var ipAddress = request.getHeader("X-FORWARDED-FOR")
-        if (ipAddress == null) {
-            ipAddress = request.remoteAddr
-        }
-        return if (ipAddress.equals("0:0:0:0:0:0:0:1", ignoreCase = true)) {
-            "localhost"
-        } else ipAddress
+        if (ipAddress == null) ipAddress = request.remoteAddr
+
+        return if (ipAddress.equals("0:0:0:0:0:0:0:1", ignoreCase = true)) "localhost" else ipAddress
     }
 
     private val isRelease get() = "release".equals(customProperties.env, ignoreCase = true)
-
 }

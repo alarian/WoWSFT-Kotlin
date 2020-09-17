@@ -6,8 +6,7 @@ import WoWSFT.model.gameparams.CommonModifier
 import WoWSFT.model.gameparams.TypeInfo
 
 @WoWSFT
-class Flag : CommonModifier()
-{
+class Flag : CommonModifier() {
     var canBuy = false
     var canBuyCustom: Any? = null
     var flags = listOf<String>()

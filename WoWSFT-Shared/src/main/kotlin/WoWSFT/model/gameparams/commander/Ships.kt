@@ -3,8 +3,7 @@ package WoWSFT.model.gameparams.commander
 import WoWSFT.config.WoWSFT
 
 @WoWSFT
-class Ships
-{
+class Ships {
     var nation = mutableListOf<String>()
     var peculiarity = mutableListOf<String>()
     var ships = mutableListOf<String>()

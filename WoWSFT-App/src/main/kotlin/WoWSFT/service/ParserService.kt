@@ -1,7 +1,7 @@
 package WoWSFT.service
 
-import WoWSFT.model.Constant.flightControl
 import WoWSFT.model.Constant.TYPE_FLAG
+import WoWSFT.model.Constant.flightControl
 import WoWSFT.model.Constant.hull
 import WoWSFT.model.gameparams.flag.Flag
 import WoWSFT.model.gameparams.ship.Ship
@@ -14,28 +14,16 @@ import kotlin.math.abs
 @Service
 class ParserService(
     @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>
-)
-{
-    fun parseModules(ship: Ship, bits: String)
-    {
-        var tempBits = bits
+) {
+    fun parseModules(ship: Ship, bits: String) {
         val baseModules = LinkedHashMap<String, String>()
         val basePositions = LinkedHashMap<String, Int>()
         val list = mutableListOf<Int>()
         val shipUpgrades = LinkedHashMap<String, ShipUpgrade>()
+        val tempBits = if (ship.shipUpgradeInfo.components[flightControl]!!.size > 0 && bits.isNotBlank()) "1$bits" else bits
 
-        if (ship.shipUpgradeInfo.components[flightControl]!!.size > 0 && tempBits.isNotBlank()) {
-            tempBits = "1$tempBits"
-        }
-
-        if (tempBits.isNotEmpty()) {
-            for (i in tempBits.indices) {
-                if (Character.isDigit(tempBits[i])) {
-                    list.add(Character.getNumericValue(tempBits[i]))
-                } else {
-                    list.add(1)
-                }
-            }
+        if (tempBits.isNotBlank()) {
+            tempBits.indices.forEach { list.add(if (Character.isDigit(tempBits[it])) Character.getNumericValue(tempBits[it]) else 1) }
         }
 
         var pos = 0
@@ -46,9 +34,7 @@ class ParserService(
 
                 basePositions[type] = 1
                 value[0].components.forEach { (x, y) ->
-                    if (y.isNotEmpty() && baseModules[x].isNullOrBlank()) {
-                        baseModules[x] = y[0]
-                    }
+                    if (y.isNotEmpty() && baseModules[x].isNullOrBlank()) baseModules[x] = y[0]
                 }
 
                 if (list.isNotEmpty() && value.size >= list[position]) {
@@ -61,27 +47,13 @@ class ParserService(
         shipUpgrades.forEach { (type, upgrade) ->
             if (!type.equals(hull, ignoreCase = true)) {
                 if (shipUpgrades[hull]?.components?.get(type).isNullOrEmpty()) {
-                    if (shipUpgrades[upgrade.prevType]!!.position >= upgrade.prevPosition) {
-                        ship.modules[type] = upgrade.components[type]!![0]
-                    }
-                } else {
-                    shipUpgrades[hull]!!.components[type]?.forEach { x ->
-                        if (upgrade.components[type]!!.contains(x)) {
-                            ship.modules[type] = x
-                        }
-                    }
-                }
-            } else {
-                ship.modules[type] = shipUpgrades[hull]!!.components[type]!![0]
-            }
+                    if (shipUpgrades[upgrade.prevType]!!.position >= upgrade.prevPosition) ship.modules[type] = upgrade.components[type]!![0]
+                } else shipUpgrades[hull]!!.components[type]?.forEach { x -> if (upgrade.components[type]!!.contains(x)) ship.modules[type] = x }
+            } else ship.modules[type] = shipUpgrades[hull]!!.components[type]!![0]
         }
 
-        if (tempBits.isNotEmpty() && ship.modules.size == tempBits.length) {
-            shipUpgrades[hull]!!.components.forEach { (x, y) ->
-                if (!ship.modules.containsKey(x) && y.isNotEmpty()) {
-                    ship.modules[x] = y[0]
-                }
-            }
+        if (tempBits.isNotBlank() && ship.modules.size == tempBits.length) {
+            shipUpgrades[hull]!!.components.forEach { (x, y) -> if (!ship.modules.containsKey(x) && y.isNotEmpty()) ship.modules[x] = y[0] }
         } else {
             ship.modules.clear()
             ship.modules.putAll(baseModules)
@@ -90,10 +62,9 @@ class ParserService(
         }
     }
 
-    fun parseUpgrades(ship: Ship, bits: String)
-    {
+    fun parseUpgrades(ship: Ship, bits: String) {
         val list = mutableListOf<Int>()
-        if (bits.isNotEmpty()) {
+        if (bits.isNotBlank()) {
             for (i in ship.upgrades.indices) {
                 if (i < bits.length && Character.isDigit(bits[i]) && Character.getNumericValue(bits[i]) <= ship.upgrades[i].size) {
                     list.add(Character.getNumericValue(bits[i]))
@@ -105,10 +76,9 @@ class ParserService(
         }
     }
 
-    fun parseConsumables(ship: Ship, bits: String)
-    {
+    fun parseConsumables(ship: Ship, bits: String) {
         val list = mutableListOf<Int>()
-        if (bits.isNotEmpty()) {
+        if (bits.isNotBlank()) {
             for (i in ship.consumables.indices) {
                 if (i < bits.length && Character.isDigit(bits[i]) && Character.getNumericValue(bits[i]) <= ship.consumables[i].size) {
                     list.add(Character.getNumericValue(bits[i]))
@@ -120,8 +90,7 @@ class ParserService(
         }
     }
 
-    fun parseFlags(ship: Ship, flags: Int)
-    {
+    fun parseFlags(ship: Ship, flags: Int) {
         val list = mutableListOf<Int>()
         val bits = Integer.toBinaryString(flags)
 
@@ -141,8 +110,7 @@ class ParserService(
         ship.selectFlags = list
     }
 
-    fun parseSkills(ship: Ship, skill: Long, ar: Int)
-    {
+    fun parseSkills(ship: Ship, skill: Long, ar: Int) {
         val list = mutableListOf<Int>()
         val bits = java.lang.Long.toBinaryString(skill)
         var pts = 0

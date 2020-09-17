@@ -4,8 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
-class CustomScheduler
-{
+class CustomScheduler {
     companion object {
         private val log = LoggerFactory.getLogger(CustomScheduler::class.java)
     }

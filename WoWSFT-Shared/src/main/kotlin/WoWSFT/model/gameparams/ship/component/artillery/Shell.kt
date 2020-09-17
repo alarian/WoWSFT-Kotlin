@@ -5,13 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.util.*
-import kotlin.math.ceil
 import kotlin.math.floor
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Shell
-{
+class Shell {
     var alphaDamage = 0.0
     var alphaPiercingCS = 0.0
     var alphaPiercingHE = 0.0
@@ -53,6 +51,7 @@ class Shell
     var penetration = LinkedHashMap<String, Double>()
     var flightTime = LinkedHashMap<String, Double>()
     var impact = LinkedHashMap<String, Double>()
+
     @JsonIgnore
     var launchAngle = LinkedHashMap<String, Double>()
     var distanceList = mutableListOf<String>()
@@ -83,12 +82,16 @@ class Shell
     var vertMinusAtTwenty = 0.0
     var vertMinusAtMax = 0.0
     var penetrationIFHE = 0
+
     @JsonIgnore
     var distFive = 5000.0
+
     @JsonIgnore
     var distTen = 10000.0
+
     @JsonIgnore
     var distFifteen = 15000.0
+
     @JsonIgnore
     var distTwenty = 20000.0
 

@@ -9,14 +9,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 
-class CustomObjectMapper(jsonFactory: JsonFactory) : ObjectMapper(jsonFactory)
-{
-    private var jf: JsonFactory = jsonFactory
-
+class CustomObjectMapper(jsonFactory: JsonFactory) : ObjectMapper(jsonFactory) {
     init {
         checkNotNull(factory) { "JsonFactory should not be null." }
-        jf = factory
-
         jsonFactory.codec = this
         setSerializationInclusion(JsonInclude.Include.NON_NULL)
         configure(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature(), false)

@@ -12,17 +12,21 @@ import WoWSFT.model.gameparams.ship.component.airdefense.Aura
 import WoWSFT.model.gameparams.ship.component.artillery.Turret
 import WoWSFT.model.gameparams.ship.component.torpedo.Launcher
 import WoWSFT.model.gameparams.ship.upgrades.ShipUpgradeInfo
-import com.fasterxml.jackson.annotation.*
+import com.fasterxml.jackson.annotation.JsonAlias
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.util.*
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Ship
-{
+class Ship {
     var tempComponents = LinkedHashMap<String, Any?>()
     var components = ShipComponent()
+
     @JsonAlias("ShipAbilities")
     var shipAbilities = LinkedHashMap<String, AbilitySlot>()
+
     @JsonAlias("ShipUpgradeInfo")
     var shipUpgradeInfo = ShipUpgradeInfo()
     var apDamageLimitCoeff = 0.0
@@ -32,6 +36,7 @@ class Ship
     var group: String? = null
     var id: Long = 0
     var index = ""
+
     @JsonAlias("isPaperShip")
     var paperShip = false
     var level = 0
@@ -61,14 +66,19 @@ class Ship
     var consumables = mutableListOf<MutableList<Consumable>>()
     var upgrades = mutableListOf<MutableList<Modernization>>()
     var upgradesRow = 0
+
     @JsonIgnore
     var selectConsumables = mutableListOf<Int>()
+
     @JsonIgnore
     var selectUpgrades = mutableListOf<Int>()
+
     @JsonIgnore
     var selectSkills = mutableListOf<Int>()
+
     @JsonIgnore
     var selectSkillPts = 0
+
     @JsonIgnore
     var selectFlags = mutableListOf<Int>()
     var modules = LinkedHashMap<String, String>()
@@ -84,8 +94,7 @@ class Ship
     var arUse = false
 
     @JsonAnySetter
-    fun setUpTempComponents(name: String, value: Any?)
-    {
+    fun setUpTempComponents(name: String, value: Any?) {
         tempComponents[name] = value
     }
 }

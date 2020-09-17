@@ -5,11 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class JavaMemoryController(private val javaMemoryService: JavaMemoryService)
-{
+class JavaMemoryController(private val javaMemoryService: JavaMemoryService) {
     @GetMapping("/javaMemory")
-    fun javaMemory(): String
-    {
-        return javaMemoryService.showMemory()
-    }
+    fun javaMemory(): String = javaMemoryService.showMemory()
 }

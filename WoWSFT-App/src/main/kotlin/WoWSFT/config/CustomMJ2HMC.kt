@@ -12,29 +12,22 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import java.io.IOException
 import java.lang.reflect.Type
 
-class CustomMJ2HMC : MappingJackson2HttpMessageConverter(), InitializingBean
-{
+class CustomMJ2HMC : MappingJackson2HttpMessageConverter(), InitializingBean {
     private lateinit var mapper: ObjectMapper
 
-    override fun afterPropertiesSet()
-    {
+    override fun afterPropertiesSet() {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
     }
 
-    override fun setObjectMapper(objectMapper: ObjectMapper)
-    {
+    override fun setObjectMapper(objectMapper: ObjectMapper) {
         super.setObjectMapper(objectMapper)
         this.mapper = objectMapper
     }
 
-    override fun getObjectMapper(): ObjectMapper
-    {
-        return mapper
-    }
+    override fun getObjectMapper(): ObjectMapper = mapper
 
     @Throws(IOException::class)
-    override fun writeInternal(obj: Any, type: Type?, outputMessage: HttpOutputMessage)
-    {
+    override fun writeInternal(obj: Any, type: Type?, outputMessage: HttpOutputMessage) {
         outputMessage.headers["Content-Type"] = "application/json"
 
         val returnMessage = convert(obj)
@@ -45,18 +38,12 @@ class CustomMJ2HMC : MappingJackson2HttpMessageConverter(), InitializingBean
         objectWriter.writeValue(jsonGenerator, returnMessage)
     }
 
-    private fun convert(o: Any): Any
-    {
-        return if (o is CustomMessage) {
-            o
-        } else if (o is LinkedHashMap<*, *> && o.containsKey("message") || o is Throwable) {
-            CustomMessage("500", GENERAL_INTERNAL_ERROR)
-        } else {
-            val lhm = LinkedHashMap<String, Any>()
-            lhm["status"] = "200"
-            lhm["result"] = o
-
-            lhm
+    private fun convert(o: Any): Any {
+        return if (o is CustomMessage) o
+        else if (o is LinkedHashMap<*, *> && o.containsKey("message") || o is Throwable) CustomMessage("500", GENERAL_INTERNAL_ERROR)
+        else LinkedHashMap<String, Any>().also {
+            it["status"] = "200"
+            it["result"] = o
         }
     }
 }

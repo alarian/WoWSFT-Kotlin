@@ -7,8 +7,7 @@ import WoWSFT.model.gameparams.TypeInfo
 import com.fasterxml.jackson.annotation.JsonInclude
 
 @WoWSFT
-class Modernization : CommonModifier()
-{
+class Modernization : CommonModifier() {
     var excludes = mutableListOf<String>()
     var group = mutableListOf<String>()
     var id: Long = 0
@@ -18,6 +17,7 @@ class Modernization : CommonModifier()
     var shiplevel = mutableListOf<Int>()
     var ships = mutableListOf<String>()
     var shiptype = mutableListOf<String>()
+
     @JsonInclude
     var slot = 0
     var type = 0

@@ -7,11 +7,11 @@ import com.fasterxml.jackson.annotation.JsonInclude
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Launcher
-{
+class Launcher {
     var ammoList = listOf<String>()
     var barrelDiameter = 0.0
     var canRotate = false
+
     @JsonInclude
     var deadZone = listOf<List<Double>>()
     var pitchDeadZones = listOf<List<Double>>()

@@ -15,15 +15,13 @@ import java.io.IOException
 class DataGenerator(
     @Qualifier(JSON_PARSER) private val jsonParser: JsonParser,
     private var context: ApplicationContext
-): CommandLineRunner, ApplicationContextAware
-{
+) : CommandLineRunner, ApplicationContextAware {
     companion object {
         private val log = LoggerFactory.getLogger(DataGenerator::class.java)
     }
 
     @Throws(IOException::class)
-    override fun run(vararg strings: String)
-    {
+    override fun run(vararg strings: String) {
         log.info("Start")
 
         jsonParser.setGlobal()
@@ -37,9 +35,7 @@ class DataGenerator(
     }
 
     @Throws(BeansException::class)
-    override fun setApplicationContext(context: ApplicationContext)
-    {
+    override fun setApplicationContext(context: ApplicationContext) {
         this.context = context
     }
-
 }

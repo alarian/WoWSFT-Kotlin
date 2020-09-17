@@ -12,6 +12,7 @@ import WoWSFT.utils.CommonUtils.getBonus
 import WoWSFT.utils.CommonUtils.getDecimalRounded
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.util.*
@@ -19,14 +20,12 @@ import java.util.*
 @Service
 class ParamService(
     @Qualifier(TYPE_FLAG) private val flagsLHM: LinkedHashMap<String, Flag>
-)
-{
+) {
     companion object {
-        private val mapper = ObjectMapper()
+        private val mapper = jacksonObjectMapper()
     }
 
-    fun setAA(ship: Ship)
-    {
+    fun setAA(ship: Ship) {
         ship.components.airDefense.forEach { (c, v) ->
             if (c.equals(ship.modules[airDefense], ignoreCase = true)) {
                 processAura(ship, v.aaJoint)
@@ -52,15 +51,13 @@ class ParamService(
         ship.auraNear = sortAura(ship.auraNear)
     }
 
-    private fun processAura(ship: Ship, aaJoint: AAJoint)
-    {
+    private fun processAura(ship: Ship, aaJoint: AAJoint) {
         addAura(ship.auraFar, aaJoint.auraFar, false)
         addAura(ship.auraMedium, aaJoint.auraMedium, false)
         addAura(ship.auraNear, aaJoint.auraNear, false)
     }
 
-    private fun addAura(aura: MutableList<Aura>, temp: MutableList<Aura>, hasBubble: Boolean)
-    {
+    private fun addAura(aura: MutableList<Aura>, temp: MutableList<Aura>, hasBubble: Boolean) {
         for (x in temp) {
             if (!hasBubble || x.innerBubbleCount > 0 || x.outerBubbleCount > 0) {
                 aura.add(x)
@@ -68,8 +65,7 @@ class ParamService(
         }
     }
 
-    private fun sortAura(aura: MutableList<Aura>): MutableList<Aura>
-    {
+    private fun sortAura(aura: MutableList<Aura>): MutableList<Aura> {
         if (aura.size > 1) {
             for (i in 1 until aura.size) {
                 aura[0].innerBubbleCount = aura[0].innerBubbleCount + aura[i].innerBubbleCount
@@ -81,8 +77,7 @@ class ParamService(
         return aura
     }
 
-    fun setParameters(ship: Ship)
-    {
+    fun setParameters(ship: Ship) {
         for (i in ship.selectUpgrades.indices) {
             if (ship.selectUpgrades[i] > 0) {
                 val modifier = mapper.convertValue(ship.upgrades[i][ship.selectUpgrades[i] - 1], CommonModifier::class.java)
@@ -138,15 +133,15 @@ class ParamService(
         }
     }
 
-    private fun setUpgrades(ship: Ship, modifier: CommonModifier)
-    {
+    private fun setUpgrades(ship: Ship, modifier: CommonModifier) {
         ship.components.artillery.forEach { (c, v) ->
             if (c.equals(ship.modules[artillery], ignoreCase = true)) {
 //                v.GMIdealRadius = v.GMIdealRadius * modifier.gmidealRadius
                 v.maxDist = v.maxDist * modifier.gmMaxDist * if (v.barrelDiameter > smallGun) oneCoeff else modifier.smallGunRangeCoefficient
 
                 v.turrets.forEach { t ->
-                    t.rotationSpeed[0] = t.rotationSpeed[0] * modifier.gmRotationSpeed + if (t.barrelDiameter > smallGun) modifier.bigGunBonus else modifier.smallGunBonus
+                    t.rotationSpeed[0] =
+                        t.rotationSpeed[0] * modifier.gmRotationSpeed + if (t.barrelDiameter > smallGun) modifier.bigGunBonus else modifier.smallGunBonus
                     t.shotDelay = t.shotDelay * modifier.gmShotDelay *
                             (if (t.barrelDiameter > smallGun) oneCoeff else modifier.smallGunReloadCoefficient) *
                             (oneCoeff - ship.adrenaline / modifier.hpStep * modifier.timeStep)
@@ -169,7 +164,8 @@ class ParamService(
             if (c.equals(ship.modules[torpedoes], ignoreCase = true)) {
                 v.launchers.forEach { l: Launcher ->
                     l.rotationSpeed[0] = l.rotationSpeed[0] * modifier.gtRotationSpeed
-                    l.shotDelay = l.shotDelay * modifier.gtShotDelay * modifier.launcherCoefficient * (oneCoeff - ship.adrenaline / modifier.hpStep * modifier.timeStep)
+                    l.shotDelay =
+                        l.shotDelay * modifier.gtShotDelay * modifier.launcherCoefficient * (oneCoeff - ship.adrenaline / modifier.hpStep * modifier.timeStep)
                 }
 
                 v.ammo.maxDist = v.ammo.maxDist * modifier.torpedoRangeCoefficient
@@ -235,7 +231,8 @@ class ParamService(
                     sec.idealRadiusModifier = sec.idealRadiusModifier * modifier.gsIdealRadius *
                             if (ship.level >= 7) modifier.atbaIdealRadiusHi else modifier.atbaIdealRadiusLo
                     if (HE.equals(sec.ammoType, ignoreCase = true)) {
-                        sec.burnProb = sec.burnProb + modifier.probabilityBonus + (sec.burnProbReal * modifier.chanceToSetOnFireBonusSmall) + (modifier.burnChanceFactorSmall - 1.0)
+                        sec.burnProb =
+                            sec.burnProb + modifier.probabilityBonus + (sec.burnProbReal * modifier.chanceToSetOnFireBonusSmall) + (modifier.burnChanceFactorSmall - 1.0)
                         sec.alphaPiercingHE = sec.alphaPiercingHE * modifier.thresholdPenetrationCoefficientSmall
                     }
                 }
@@ -332,8 +329,7 @@ class ParamService(
         }
     }
 
-    private fun setAura(aura: Aura?, modifier: CommonModifier)
-    {
+    private fun setAura(aura: Aura?, modifier: CommonModifier) {
         if (aura != null) {
             if (aura.innerBubbleCount > 0) {
                 aura.innerBubbleCount = aura.innerBubbleCount + modifier.aaExtraBubbles + modifier.aaInnerExtraBubbles
@@ -343,8 +339,7 @@ class ParamService(
         }
     }
 
-    private fun setPlanes(ship: Ship, plane: Plane, modifier: CommonModifier)
-    {
+    private fun setPlanes(ship: Ship, plane: Plane, modifier: CommonModifier) {
         if (plane.hangarSettings != null) {
             plane.hangarSettings!!.timeToRestore = plane.hangarSettings!!.timeToRestore * modifier.planeSpawnTimeCoefficient * modifier.planeSpawnTime
             plane.hangarSettings!!.maxValue = plane.hangarSettings!!.maxValue + modifier.planeExtraHangarSize.toInt()

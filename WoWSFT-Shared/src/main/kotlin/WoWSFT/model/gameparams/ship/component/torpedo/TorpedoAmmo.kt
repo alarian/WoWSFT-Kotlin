@@ -7,8 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class TorpedoAmmo
-{
+class TorpedoAmmo {
     var additionalShips = listOf<Any>()
     var alertDist = 0.0
     var alphaDamage = 0.0
@@ -26,6 +25,7 @@ class TorpedoAmmo
     var id = 0L
     var ignoreClasses = listOf<String>()
     var index = ""
+
     @JsonAlias("isDeepWater")
     var deepWater = false
     var maxDist = 0.0

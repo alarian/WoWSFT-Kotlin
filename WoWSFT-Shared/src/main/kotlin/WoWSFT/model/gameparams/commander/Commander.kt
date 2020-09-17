@@ -2,14 +2,15 @@ package WoWSFT.model.gameparams.commander
 
 import WoWSFT.config.WoWSFT
 import WoWSFT.model.gameparams.TypeInfo
-import com.fasterxml.jackson.annotation.*
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
+import WoWSFT.utils.CommonUtils.mapper
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Commander
-{
+class Commander {
     @JsonProperty("CrewPersonality")
     var crewPersonality = CrewPersonality()
     var id = 0L
@@ -17,21 +18,18 @@ class Commander
     var index = ""
     var name = ""
     var typeinfo = TypeInfo()
+
     @JsonProperty("CrewSkills")
     var crewSkills = MutableList(4) { MutableList(8) { Skill() } }
-
-    companion object {
-        @JsonIgnore
-        private val mapper = ObjectMapper()
-    }
 
     @JsonAnySetter
     fun setSkills(name: String, value: Any?) {
         if (name.equals("Skills", ignoreCase = true)) {
-            val temp = mapper.convertValue(value, object : TypeReference<LinkedHashMap<String, Skill>>() {})
-            temp.forEach { (k: String, v: Skill) ->
-                v.modifier = k
-                crewSkills[v.tier - 1][v.column] = v
+            mapper.convertValue(value, jacksonTypeRef<LinkedHashMap<String, Skill>>()).also { temp ->
+                temp.forEach { (k: String, v: Skill) ->
+                    v.modifier = k
+                    crewSkills[v.tier - 1][v.column] = v
+                }
             }
         }
     }

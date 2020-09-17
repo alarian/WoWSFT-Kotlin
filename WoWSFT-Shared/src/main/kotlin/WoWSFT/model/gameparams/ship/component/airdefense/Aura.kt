@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Aura
-{
+class Aura {
     var areaDamage = 0.0
     var areaDamagePeriod = 0.0
     var bubbleDamage = 0.0
@@ -22,6 +21,7 @@ class Aura
     var innerBubbleCount = 0.0
     var innerBubbleSpawnTimeRange = listOf<Double>()
     var innerBubbleZone = 0.0
+
     @JsonAlias("isJoint")
     var joint = false
     var maxBubbleActivationDelay = 0.0

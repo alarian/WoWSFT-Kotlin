@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Hydrophone
-{
+class Hydrophone {
     var acousticWaveLifetime = 0.0
     var acousticWaveSpeed = 0
     var updateFrequency = 0.0

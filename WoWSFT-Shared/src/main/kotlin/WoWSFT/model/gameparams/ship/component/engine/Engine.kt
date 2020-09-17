@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Engine
-{
+class Engine {
     var backwardEngineForsag = 0.0
     var backwardEngineForsagMaxSpeed = 0.0
     var backwardEngineUpTime = 0.0

@@ -4,17 +4,16 @@ import WoWSFT.config.WoWSFT
 import WoWSFT.model.gameparams.TypeInfo
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
-import kotlin.math.ceil
 import kotlin.math.floor
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Secondary
-{
+class Secondary {
     var ammoList = listOf<String>()
     var antiAirAuraDistance = 0.0
     var antiAirAuraStrength = 0.0
     var barrelDiameter = 0.0
+
     @JsonInclude
     var deadZone = listOf<List<Double>>()
     var pitchDeadZones = listOf<List<Double>>()
@@ -37,6 +36,7 @@ class Secondary
     var smokePenalty = 0.0
     var typeinfo = TypeInfo()
     var vertSector = listOf<Double>()
+
     @JsonInclude
     var GSIdealRadius = 1.0
     var count = 0

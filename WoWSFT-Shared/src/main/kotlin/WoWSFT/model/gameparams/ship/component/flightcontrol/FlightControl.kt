@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class FlightControl
-{
+class FlightControl {
     var consumablePlanesReserve = LinkedHashMap<String, Int>()
     var consumableSquadrons = listOf<Any>()
     var hasConsumablePlanes = false
+
     @JsonProperty("isGroundAttackEnabled")
     var groundAttackEnabled = false
     var planesReserveAssignment = LinkedHashMap<String, Int>()

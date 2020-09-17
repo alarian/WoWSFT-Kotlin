@@ -8,15 +8,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 
 @WoWSFT
-class Skill : CommonModifier()
-{
+class Skill : CommonModifier() {
     var tier = 0
+
     @JsonInclude
     var column = 0
+
     @JsonIgnore
     var skillType = 0
+
     @JsonIgnore
     var turnOffOnRetraining = false
+
     @JsonAlias("isEpic")
     var epic = false
     var bonus = LinkedHashMap<String, String>()

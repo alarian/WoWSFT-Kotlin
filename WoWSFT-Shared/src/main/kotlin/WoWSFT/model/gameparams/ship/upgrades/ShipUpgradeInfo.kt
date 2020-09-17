@@ -2,14 +2,13 @@ package WoWSFT.model.gameparams.ship.upgrades
 
 import WoWSFT.config.WoWSFT
 import WoWSFT.model.Constant.componentsList
+import WoWSFT.utils.CommonUtils.mapper
 import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.*
 
 @WoWSFT
-class ShipUpgradeInfo
-{
+class ShipUpgradeInfo {
     var components = LinkedHashMap<String, MutableList<ShipUpgrade>>()
     var cols = LinkedHashMap<String, Int>()
     var maxRows = 0
@@ -25,17 +24,12 @@ class ShipUpgradeInfo
         componentsList.forEach { components[it] = mutableListOf() }
     }
 
-    companion object {
-        @JsonIgnore
-        private val mapper = ObjectMapper()
-    }
-
     @JsonAnySetter
-    fun setShipUpgrades(name: String, value: Any?)
-    {
-        val upgrade = mapper.convertValue(value, ShipUpgrade::class.java)
-        upgrade.name = name
-        upgrade.position = if (upgrade.prev.isBlank()) 1 else 2
-        components[upgrade.ucTypeShort]?.add(upgrade)
+    fun setShipUpgrades(name: String, value: Any?) {
+        mapper.convertValue(value, jacksonTypeRef<ShipUpgrade>()).also { upgrade ->
+            upgrade.name = name
+            upgrade.position = if (upgrade.prev.isBlank()) 1 else 2
+            components[upgrade.ucTypeShort]?.add(upgrade)
+        }
     }
 }

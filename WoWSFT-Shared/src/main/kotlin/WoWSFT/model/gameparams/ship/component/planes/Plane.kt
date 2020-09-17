@@ -1,17 +1,21 @@
 package WoWSFT.model.gameparams.ship.component.planes
 
+import WoWSFT.model.Constant.diveBomber
+import WoWSFT.model.Constant.fighter
+import WoWSFT.model.Constant.torpedoBomber
 import WoWSFT.model.gameparams.TypeInfo
 import WoWSFT.model.gameparams.consumable.Consumable
 import WoWSFT.model.gameparams.ship.abilities.AbilitySlot
 import WoWSFT.model.gameparams.ship.component.artillery.Shell
 import WoWSFT.model.gameparams.ship.component.torpedo.TorpedoAmmo
+import WoWSFT.utils.CommonUtils
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.util.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Plane
-{
+class Plane {
     @JsonProperty("PlaneAbilities")
     var planeAbilities = LinkedHashMap<String, AbilitySlot>()
     var attackCount = 0
@@ -41,30 +45,45 @@ class Plane
     var torpedo = TorpedoAmmo()
     var consumables = mutableListOf<Consumable>()
 
-    val planeType: String get() {
-        return when (typeinfo.species) {
-            "Fighter" -> "Fighter"
-            "Dive" -> "DiveBomber"
-            "Bomber" -> "TorpedoBomber"
-            else -> ""
+    operator fun set(plane: String, value: Any?) {
+        if (value != null) {
+            if (plane == diveBomber) {
+                bomb = CommonUtils.mapper.convertValue(value, jacksonTypeRef<Shell>())
+            } else if (plane == fighter) {
+                rocket = CommonUtils.mapper.convertValue(value, jacksonTypeRef<Shell>())
+            } else if (plane == torpedoBomber) {
+                torpedo = CommonUtils.mapper.convertValue(value, jacksonTypeRef<TorpedoAmmo>())
+            }
         }
     }
 
-    val planeTypeShort: String get() {
-        return when (typeinfo.species) {
-            "Fighter" -> "f"
-            "Dive" -> "d"
-            "Bomber" -> "t"
-            else -> ""
+    val planeType: String
+        get() {
+            return when (typeinfo.species) {
+                "Fighter" -> "Fighter"
+                "Dive" -> "DiveBomber"
+                "Bomber" -> "TorpedoBomber"
+                else -> ""
+            }
         }
-    }
 
-    val ammoType: String get() {
-        return when (typeinfo.species) {
-            "Fighter" -> "rocket"
-            "Dive" -> "bomb"
-            "Bomber" -> "torpedo"
-            else -> ""
+    val planeTypeShort: String
+        get() {
+            return when (typeinfo.species) {
+                "Fighter" -> "f"
+                "Dive" -> "d"
+                "Bomber" -> "t"
+                else -> ""
+            }
         }
-    }
+
+    val ammoType: String
+        get() {
+            return when (typeinfo.species) {
+                "Fighter" -> "rocket"
+                "Dive" -> "bomb"
+                "Bomber" -> "torpedo"
+                else -> ""
+            }
+        }
 }

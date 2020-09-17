@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.*
 
 @WoWSFT
-class ConsumableSub
-{
+class ConsumableSub {
     var activationDelay = 0.0
     var affectedClasses = listOf<String>()
     var areaDamageMultiplier = 0.0
@@ -54,18 +53,41 @@ class ConsumableSub
     var ammo = ""
 
     // Effects. Ignore.
-    @JsonIgnore var livePointEffect = ""
-    @JsonIgnore var radarEffect = ""
-    @JsonIgnore var radarEffectForPlayer = ""
-    @JsonIgnore var spawnEffect = ""
-    @JsonIgnore var spawnPointEffect = ""
-    @JsonIgnore var waveEffect = ""
-    @JsonIgnore var descIDs = ""
-    @JsonIgnore var iconIDs = ""
-    @JsonIgnore var titleIDs = ""
-    @JsonIgnore var targetEffect = ""
-    @JsonIgnore var waterEffect = ""
-    @JsonIgnore var SpecialSoundID = ""
+    @JsonIgnore
+    var livePointEffect = ""
+
+    @JsonIgnore
+    var radarEffect = ""
+
+    @JsonIgnore
+    var radarEffectForPlayer = ""
+
+    @JsonIgnore
+    var spawnEffect = ""
+
+    @JsonIgnore
+    var spawnPointEffect = ""
+
+    @JsonIgnore
+    var waveEffect = ""
+
+    @JsonIgnore
+    var descIDs = ""
+
+    @JsonIgnore
+    var iconIDs = ""
+
+    @JsonIgnore
+    var titleIDs = ""
+
+    @JsonIgnore
+    var targetEffect = ""
+
+    @JsonIgnore
+    var waterEffect = ""
+
+    @JsonIgnore
+    var SpecialSoundID = ""
 
     var bonus = LinkedHashMap<String, String>()
 }

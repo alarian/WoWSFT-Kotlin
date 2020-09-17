@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @WoWSFT
 @JsonIgnoreProperties(ignoreUnknown = true)
-class BattleLevels
-{
+class BattleLevels {
     @JsonProperty("COOPERATIVE")
     var cooperative = listOf<Int>()
+
     @JsonProperty("PVP")
     var pvp = listOf<Int>()
 }
