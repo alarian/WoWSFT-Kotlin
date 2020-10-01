@@ -11,8 +11,6 @@ import WoWSFT.service.GPService
 import WoWSFT.service.ParamService
 import WoWSFT.service.ParserService
 import com.fasterxml.jackson.databind.ObjectMapper
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseCookie
@@ -49,7 +47,7 @@ class GPController(
     fun setLanguage(model: Model, request: HttpServletRequest)
     {
         model.addAttribute("lang", lang)
-        getAdStatus(request).run { model.addAttribute("adStatus", this == null || this.value == "1") }
+        getAdStatus(request).let { model.addAttribute("adStatus", it == null || it.value == "1") }
     }
 
     @GetMapping("")
@@ -122,23 +120,20 @@ class GPController(
         parserService.parseModules(ship, modules)
         gpService.setShipAmmo(ship)
 
-        runBlocking {
-            launch { parserService.parseConsumables(ship, consumables) }
-            launch { parserService.parseUpgrades(ship, upgrades) }
-            launch { parserService.parseFlags(ship, flags) }
-            launch { parserService.parseSkills(ship, skills, ar) }
-        }.run {
-            paramService.setAA(ship)
+        parserService.parseConsumables(ship, consumables)
+        parserService.parseUpgrades(ship, upgrades)
+        parserService.parseFlags(ship, flags)
+        parserService.parseSkills(ship, skills, ar)
+        paramService.setAA(ship)
 
-            if ("PCW001" != sCommander && (commanders[sCommander] == null || !commanders[sCommander]!!.crewPersonality.ships.nation.contains(ship.typeinfo.nation))) {
-                sCommander = "PCW001"
-            }
-            ship.commander = commanders[sCommander]
-
-            paramService.setParameters(ship)
-
-            return ship
+        if ("PCW001" != sCommander && (commanders[sCommander] == null || !commanders[sCommander]!!.crewPersonality.ships.nation.contains(ship.typeinfo.nation))) {
+            sCommander = "PCW001"
         }
+        ship.commander = commanders[sCommander]
+
+        paramService.setParameters(ship)
+
+        return ship
     }
 
     @GetMapping("/arty")

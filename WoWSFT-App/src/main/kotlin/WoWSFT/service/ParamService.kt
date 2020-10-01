@@ -54,7 +54,7 @@ class ParamService(
 
     private fun processAura(ship: Ship, aaJoint: AAJoint)
     {
-        addAura(ship.auraFar, aaJoint.auraFar, true)
+        addAura(ship.auraFar, aaJoint.auraFar, false)
         addAura(ship.auraMedium, aaJoint.auraMedium, false)
         addAura(ship.auraNear, aaJoint.auraNear, false)
     }

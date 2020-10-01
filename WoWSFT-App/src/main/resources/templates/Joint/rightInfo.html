@@ -492,7 +492,7 @@
                         </th:block>
                         <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
                             <td><u th:text="${'Aura'}"></u></td>
-                            <td th:text="${#numbers.formatDecimal(auraFar.areaDamage / auraFar.areaDamageFrequency, 1, 1)} + ' dps'"></td>
+                            <td th:text="${#numbers.formatDecimal(auraFar.areaDamage / auraFar.areaDamagePeriod, 1, 1)} + ' dps'"></td>
                         </tr>
                         <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
                             <td th:text="'- ' + ${'Damage'}"></td>
@@ -500,7 +500,7 @@
                         </tr>
                         <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
                             <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_FIRERATE')}"></td>
-                            <td th:text="${#numbers.formatDecimal(auraFar.areaDamageFrequency, 1, 2)} + ' s'"></td>
+                            <td th:text="${#numbers.formatDecimal(auraFar.areaDamagePeriod, 1, 2)} + ' s'"></td>
                         </tr>
                         <tr class="toggle" th:classappend="${'far' + auraFarStat.index + ' hide'}">
                             <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_HIT_CHANCE')}"></td>
@@ -514,7 +514,7 @@
                         </tr>
                         <tr class="toggle" th:classappend="${'medium' + auraMediumStat.index + ' hide'}">
                             <td><u th:text="${'Aura'}"></u></td>
-                            <td th:text="${#numbers.formatDecimal(auraMedium.areaDamage / auraMedium.areaDamageFrequency, 1, 1)} + ' dps'"></td>
+                            <td th:text="${#numbers.formatDecimal(auraMedium.areaDamage / auraMedium.areaDamagePeriod, 1, 1)} + ' dps'"></td>
                         </tr>
                         <tr class="toggle" th:classappend="${'medium' + auraMediumStat.index + ' hide'}">
                             <td th:text="'- ' + ${'Damage'}"></td>
@@ -522,7 +522,7 @@
                         </tr>
                         <tr class="toggle" th:classappend="${'medium' + auraMediumStat.index + ' hide'}">
                             <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_FIRERATE')}"></td>
-                            <td th:text="${#numbers.formatDecimal(auraMedium.areaDamageFrequency, 1, 2)} + ' s'"></td>
+                            <td th:text="${#numbers.formatDecimal(auraMedium.areaDamagePeriod, 1, 2)} + ' s'"></td>
                         </tr>
                         <tr class="toggle" th:classappend="${'medium' + auraMediumStat.index + ' hide'}">
                             <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_HIT_CHANCE')}"></td>
@@ -536,7 +536,7 @@
                         </tr>
                         <tr class="toggle" th:classappend="${'near' + auraNearStat.index + ' hide'}">
                             <td><u th:text="${'Aura'}"></u></td>
-                            <td th:text="${#numbers.formatDecimal(auraNear.areaDamage / auraNear.areaDamageFrequency, 1, 1)} + ' dps'"></td>
+                            <td th:text="${#numbers.formatDecimal(auraNear.areaDamage / auraNear.areaDamagePeriod, 1, 1)} + ' dps'"></td>
                         </tr>
                         <tr class="toggle" th:classappend="${'near' + auraNearStat.index + ' hide'}">
                             <td th:text="'- ' + ${'Damage'}"></td>
@@ -544,7 +544,7 @@
                         </tr>
                         <tr class="toggle" th:classappend="${'near' + auraNearStat.index + ' hide'}">
                             <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_FIRERATE')}"></td>
-                            <td th:text="${#numbers.formatDecimal(auraNear.areaDamageFrequency, 1, 2)} + ' s'"></td>
+                            <td th:text="${#numbers.formatDecimal(auraNear.areaDamagePeriod, 1, 2)} + ' s'"></td>
                         </tr>
                         <tr class="toggle" th:classappend="${'near' + auraNearStat.index + ' hide'}">
                             <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_AA_HIT_CHANCE')}"></td>

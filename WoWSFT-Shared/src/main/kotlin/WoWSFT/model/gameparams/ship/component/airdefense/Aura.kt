@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 class Aura
 {
     var areaDamage = 0.0
-    var areaDamageFrequency = 0.0
+    var areaDamagePeriod = 0.0
     var bubbleDamage = 0.0
     var bubbleDuration = 0.0
     var bubbleRadius = 0.0
