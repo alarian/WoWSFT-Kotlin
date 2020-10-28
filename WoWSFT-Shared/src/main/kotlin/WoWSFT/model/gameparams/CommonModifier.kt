@@ -275,4 +275,54 @@ open class CommonModifier
     var torpedoBomberHealth = 1.0
     var torpedoVisibilityFactor = 1.0
     var visionXRayTorpedoDist = 0.0
+
+    @JsonProperty("ConsumableReloadTimeSlot0")
+    var consumableReloadTimeSlot0 = 1.0
+    @JsonProperty("ConsumableReloadTimeSlot1")
+    var consumableReloadTimeSlot1 = 1.0
+    @JsonProperty("ConsumableReloadTimeSlot2")
+    var consumableReloadTimeSlot2 = 1.0
+    @JsonProperty("ConsumableReloadTimeSlot3")
+    var consumableReloadTimeSlot3 = 1.0
+    @JsonProperty("ConsumableReloadTimeSlot4")
+    var consumableReloadTimeSlot4 = 1.0
+    @JsonProperty("ConsumablesWorkTimeSlot0")
+    var consumablesWorkTimeSlot0 = 1.0
+    @JsonProperty("ConsumablesWorkTimeSlot1")
+    var consumablesWorkTimeSlot1 = 1.0
+    @JsonProperty("ConsumablesWorkTimeSlot2")
+    var consumablesWorkTimeSlot2 = 1.0
+    @JsonProperty("ConsumablesWorkTimeSlot3")
+    var consumablesWorkTimeSlot3 = 1.0
+    @JsonProperty("ConsumablesWorkTimeSlot4")
+    var consumablesWorkTimeSlot4 = 1.0
+    @JsonProperty("GLAlphaFactor")
+    var glAlphaFactor = 1.0
+    @JsonProperty("GLMaxDist")
+    var glMaxDist = 1.0
+    @JsonProperty("GLRotationSpeed")
+    var glRotationSpeed = 1.0
+    @JsonProperty("GLShotDelay")
+    var glShotDelay = 1.0
+    @JsonProperty("GMAlphaFactor")
+    var gmAlphaFactor = 1.0
+    @JsonProperty("GSAlphaFactor")
+    var gsAlphaFactor = 1.0
+    @JsonProperty("GWAlphaFactor")
+    var gwAlphaFactor = 1.0
+    @JsonProperty("GWMaxDist")
+    var gwMaxDist = 1.0
+    @JsonProperty("GWRotationSpeed")
+    var gwRotationSpeed = 1.0
+    @JsonProperty("GWShotDelay")
+    var gwShotDelay = 1.0
+    var buffsShiftMaxLevel = 0
+    var buffsShiftSpeed = 1.0
+    var buffsStartPool = 0
+    var damageAbsorbChance = 0.0
+    var damageHealCoef = 0.0
+    var damageResistCoef = 1.0
+    var extraDamageChance = 0.0
+    var extraDamageFactor = 1.0
+    var waveSpeedMultiplier = 1.0
 }
