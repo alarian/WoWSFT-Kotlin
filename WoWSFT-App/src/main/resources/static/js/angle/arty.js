@@ -1,5 +1,30 @@
 function drawArtillery(currentIndex, turrets)
 {
+    function angle(angle) {
+        if (angle + 90 >= 360) {
+            return angle + 90 - 360;
+        }
+        return angle + 90;
+    }
+
+    function offsetX(centerX, horizPosition) {
+        if (1 > horizPosition) {
+            return centerX - 50;
+        } else if (horizPosition === 1) {
+            return centerX - 25;
+        }
+        return centerX;
+    }
+
+    function offsetY(centerY, horizPosition) {
+        if (horizPosition > 1) {
+            return centerY + 5;
+        } else if (1 > horizPosition) {
+            return centerY - 5;
+        }
+        return centerY;
+    }
+
     if (turrets !== undefined && turrets != null) {
         var artilleryCanvas = currentIndex.find('[data-type=artilleryCanvas]');
         var ctx = artilleryCanvas[0].getContext('2d');
@@ -147,6 +172,9 @@ function drawArtillery(currentIndex, turrets)
                 ctx.arc(centerX, centerY, size / 5, (minAngle) / 180 * Math.PI, (maxAngle) / 180 * Math.PI);
                 ctx.closePath();
                 ctx.fill();
+
+                ctx.globalAlpha = 1.0;
+                ctx.fillText(angle(minAngle) + ' to ' + angle(maxAngle), offsetX(centerX, horizPosition), offsetY(centerY, horizPosition))
             } else if ((deadZone.length === 1 || deadZone.length === 2) && !isMerge) {
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
@@ -175,6 +203,9 @@ function drawArtillery(currentIndex, turrets)
                 ctx.arc(centerX, centerY, size / 5, (deadZone2) / 180 * Math.PI, (maxAngle) / 180 * Math.PI);
                 ctx.closePath();
                 ctx.fill();
+
+                ctx.globalAlpha = 1.0;
+                ctx.fillText(angle(minAngle) + ' to ' + angle(maxAngle), offsetX(centerX, horizPosition), offsetY(centerY, horizPosition))
             }
         }
     }
