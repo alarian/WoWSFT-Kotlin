@@ -40,6 +40,8 @@ class Plane
     var bomb = Shell()
     var torpedo = TorpedoAmmo()
     var consumables = mutableListOf<Consumable>()
+    var projectilesPerAttack = 0
+    var attackCooldown = 0
 
     val planeType: String get() {
         return when (typeinfo.species) {

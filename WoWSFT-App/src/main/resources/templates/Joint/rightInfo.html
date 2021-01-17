@@ -325,7 +325,11 @@
                             </tr>
                             <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
                                 <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_AMMO_COUNT_' + plane.planeType.replace('Bomber', '').toUpperCase())}"></td>
-                                <td th:text="${#numbers.formatInteger(plane.attackCount, 1, 'COMMA')}"></td>
+                                <td th:text="${#numbers.formatInteger(plane.attackCount * plane.projectilesPerAttack, 1, 'COMMA')}"></td>
+                            </tr>
+                            <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
+                                <td th:text="${global.get('IDS_SHIP_PARAM_SQUADRON_TIME_ATTACK_RELOAD')}"></td>
+                                <td th:text="${#numbers.formatInteger(plane.attackCooldown, 1, 'COMMA')} + ' s'"></td>
                             </tr>
                             <th:block th:if="${plane.ammoType != 'torpedo'}"
                                       th:with="ammoObj=${plane.ammoType == 'rocket' ? plane.rocket : plane.bomb}">
