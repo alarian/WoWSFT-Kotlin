@@ -139,6 +139,15 @@ class GPService(
                 }
             }
 
+            if (ship.modules[skipBomber] != null && ship.planes[ship.modules[skipBomber]!!] != null) {
+                val sbPlane = commonUtils.zFetch(zFile, ship.planes[ship.modules[skipBomber]!!]!!, Plane::class.java) as Plane?
+                if (sbPlane != null) {
+                    sbPlane.skip = commonUtils.zFetch(zFile, sbPlane.bombName, Shell::class.java) as Shell
+                    setPlaneConsumables(sbPlane)
+                    ship.components.skipBomber[ship.modules[skipBomber]!!] = sbPlane
+                }
+            }
+
             if (ship.modules[torpedoBomber] != null && ship.planes[ship.modules[torpedoBomber]!!] != null) {
                 val tbPlane = commonUtils.zFetch(zFile, ship.planes[ship.modules[torpedoBomber]!!]!!, Plane::class.java) as Plane?
                 if (tbPlane != null) {

@@ -189,7 +189,7 @@ class JsonParser
                         torpedoes -> cValue.forEach { cVal -> ship.components.torpedoes[cVal] = mapper.convertValue(ship.tempComponents[cVal], Torpedo::class.java) }
                         airArmament -> cValue.forEach { cVal -> ship.components.airArmament[cVal] = mapper.convertValue(ship.tempComponents[cVal], AirArmament::class.java) }
                         flightControl -> cValue.forEach { cVal -> ship.components.flightControl[cVal] = mapper.convertValue(ship.tempComponents[cVal], FlightControl::class.java) }
-                        fighter, diveBomber, torpedoBomber -> cValue.forEach { cVal ->
+                        fighter, diveBomber, torpedoBomber, skipBomber -> cValue.forEach { cVal ->
                             val tempPlaneType = mapper.convertValue(ship.tempComponents[cVal], object: TypeReference<HashMap<String, String>>() {})
                             ship.planes[cVal] = tempPlaneType["planeType"]!!
                         }

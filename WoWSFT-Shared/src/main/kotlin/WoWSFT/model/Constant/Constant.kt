@@ -51,6 +51,7 @@ import java.math.BigDecimal
     const val fighter = "fighter"
     const val torpedoBomber = "torpedoBomber"
     const val diveBomber = "diveBomber"
+    const val skipBomber = "skipBomber"
     const val engine = "engine"
 
     const val airArmament = "airArmament"
@@ -61,7 +62,7 @@ import java.math.BigDecimal
     const val hydrophone = "hydrophone"
 
     val miscList = listOf(TYPE_PROJECTILE, TYPE_AIRCRAFT)
-    val componentsList = listOf(flightControl, artillery, hull, torpedoes, suo, fighter, torpedoBomber, diveBomber, engine)
+    val componentsList = listOf(flightControl, artillery, hull, torpedoes, suo, fighter, torpedoBomber, diveBomber, skipBomber, engine)
 
     val globalLanguage = hashSetOf(EN)
     val excludeShipGroups = hashSetOf("unavailable", "disabled", "preserved", "clan")

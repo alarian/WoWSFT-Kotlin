@@ -38,6 +38,7 @@ class Plane
     var typeinfo = TypeInfo()
     var rocket = Shell()
     var bomb = Shell()
+    var skip = Shell()
     var torpedo = TorpedoAmmo()
     var consumables = mutableListOf<Consumable>()
     var projectilesPerAttack = 0
@@ -48,6 +49,7 @@ class Plane
             "Fighter" -> "Fighter"
             "Dive" -> "DiveBomber"
             "Bomber" -> "TorpedoBomber"
+            "Skip" -> "Skip"
             else -> ""
         }
     }
@@ -57,6 +59,7 @@ class Plane
             "Fighter" -> "f"
             "Dive" -> "d"
             "Bomber" -> "t"
+            "Skip" -> "s"
             else -> ""
         }
     }
@@ -66,6 +69,7 @@ class Plane
             "Fighter" -> "rocket"
             "Dive" -> "bomb"
             "Bomber" -> "torpedo"
+            "Skip" -> "skipBomb"
             else -> ""
         }
     }

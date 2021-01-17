@@ -15,6 +15,7 @@
             diveBomber=${warship.modules.containsKey('diveBomber') ? warship.components.diveBomber.get(warship.modules.get('diveBomber')) : null},
             fighter=${warship.modules.containsKey('fighter') ? warship.components.fighter.get(warship.modules.get('fighter')) : null},
             torpedoBomber=${warship.modules.containsKey('torpedoBomber') ? warship.components.torpedoBomber.get(warship.modules.get('torpedoBomber')) : null},
+            skipBomber=${warship.modules.containsKey('skipBomber') ? warship.components.skipBomber.get(warship.modules.get('skipBomber')) : null},
             auraFars=${warship.auraFar}, auraFarsBubble=${warship.auraFarBubble}, auraMediums=${warship.auraMedium}, auraNears=${warship.auraNear},
             consumables=${warship.consumables}">
     <div class="info_box_inner replace">
@@ -274,7 +275,7 @@
                         <td th:text="${'Max number of planes on Deck'}"></td>
                         <td th:text="${#numbers.formatInteger(airArmament.deckPlaceCount, 1, 'COMMA')}"></td>
                     </tr>
-                    <th:block th:each="plane : ${ {fighter, diveBomber, torpedoBomber} }" th:if="${plane != null}">
+                    <th:block th:each="plane : ${ {fighter, diveBomber, torpedoBomber, skipBomber} }" th:if="${plane != null}">
                         <tr class="switch subsystem" th:attr="data-type=${plane.planeType}">
                             <td><u th:text="${plane.numPlanesInSquadron + ' X ' + global.get(IDS + plane.name.toUpperCase())}"></u></td>
                             <td th:text="${global.get('IDS_SHIP_PARAM_' + plane.planeType.replace('Dive', '').replace('Torpedo', 'T').toUpperCase() + '_SQUADRONS')}"></td>
@@ -332,7 +333,7 @@
                                 <td th:text="${#numbers.formatInteger(plane.attackCooldown, 1, 'COMMA')} + ' s'"></td>
                             </tr>
                             <th:block th:if="${plane.ammoType != 'torpedo'}"
-                                      th:with="ammoObj=${plane.ammoType == 'rocket' ? plane.rocket : plane.bomb}">
+                                      th:with="ammoObj=${plane.ammoType == 'rocket' ? plane.rocket : (plane.ammoType == 'bomb' ? plane.bomb : plane.skip)}">
                                 <tr class="toggle" th:classappend="${plane.ammoType} + ' hide'">
                                     <td th:text="${'Maximum Damage'}"></td>
                                     <td th:text="${#numbers.formatInteger(ammoObj.alphaDamage, 1, 'COMMA')}"></td>

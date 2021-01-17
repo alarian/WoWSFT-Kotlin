@@ -28,6 +28,7 @@ class ShipComponent
     var fighter = LinkedHashMap<String, Plane>()
     var torpedoBomber = LinkedHashMap<String, Plane>()
     var diveBomber = LinkedHashMap<String, Plane>()
+    var skipBomber = LinkedHashMap<String, Plane>()
     var engine = LinkedHashMap<String, Engine>()
     var hydrophone = LinkedHashMap<String, Hydrophone>()
 }

@@ -129,6 +129,14 @@ class ParamService(
             }
         }
 
+        ship.components.skipBomber.forEach { (_, p) ->
+            p.consumables.forEach { c ->
+                c.subConsumables.forEach { (_, sVal) ->
+                    sVal.bonus = getBonus(mapper.convertValue(sVal, object : TypeReference<LinkedHashMap<String, Any>>() {}))
+                }
+            }
+        }
+
         ship.components.torpedoBomber.forEach { (_, p) ->
             p.consumables.forEach { c ->
                 c.subConsumables.forEach { (_, sVal) ->
@@ -203,6 +211,16 @@ class ParamService(
                 v.speedMoveWithBomb = v.speedMoveWithBomb * modifier.diveBomberSpeedMultiplier
                 v.speedMax = v.speedMax * modifier.diveBomberMaxSpeedMultiplier
                 v.speedMin = v.speedMin * modifier.diveBomberMinSpeedMultiplier
+            }
+        }
+
+        ship.components.skipBomber.forEach { (c, v) ->
+            if (c.equals(ship.modules[skipBomber], ignoreCase = true)) {
+                setPlanes(ship, v, modifier)
+                if (HE.equals(v.bomb.ammoType, ignoreCase = true)) {
+                    v.bomb.burnProb = v.bomb.burnProb + modifier.bombProbabilityBonus + (modifier.burnChanceFactorBig - 1.0)
+                    v.bomb.alphaDamage = v.bomb.alphaDamage * modifier.bombAlphaDamageMultiplier
+                }
             }
         }
 
