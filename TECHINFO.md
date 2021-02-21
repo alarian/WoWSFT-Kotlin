@@ -14,7 +14,7 @@
 ##### Route 53
 * DNS. Verifies and connects resource endpoint inside AWS with purchased domain.
 
-## Codes
+## Language/Framework
 #### [Kotlin](https://kotlinlang.org/)
 
 #### [Spring Boot](https://spring.io/projects/spring-boot)
