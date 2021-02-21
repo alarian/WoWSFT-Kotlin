@@ -1,5 +1,5 @@
 # World of Warships Fitting Tool (WoWSFT)
-[![License](https://img.shields.io/github/license/EdibleBug/WoWS-Fitting-Tool)](./LICENSE)
+[![License](https://img.shields.io/github/license/EdibleBug/WoWSFT-Kotlin)](./LICENSE)
 [![WoWSFT](https://img.shields.io/website?url=https%3A%2F%2Fwowsft.com)](https://wowsft.com)
 [![Patreon](./images/become_patreon.png)](https://www.patreon.com/wowsft)
 
