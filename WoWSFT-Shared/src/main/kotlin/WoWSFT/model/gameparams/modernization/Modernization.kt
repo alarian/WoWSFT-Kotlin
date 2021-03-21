@@ -4,6 +4,7 @@ import WoWSFT.config.WoWSFT
 import WoWSFT.model.Constant.CDN_IMAGE
 import WoWSFT.model.gameparams.CommonModifier
 import WoWSFT.model.gameparams.TypeInfo
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 
@@ -29,4 +30,8 @@ class Modernization
     var bonus = LinkedHashMap<String, String>()
     var description = ""
     var modifiers = CommonModifier()
+    var costCR = 0
+    var costGold = 0
+
+    @JsonIgnore var tags = mutableListOf<String>()
 }

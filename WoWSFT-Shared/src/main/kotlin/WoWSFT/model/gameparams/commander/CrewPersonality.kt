@@ -2,6 +2,7 @@ package WoWSFT.model.gameparams.commander
 
 import WoWSFT.config.WoWSFT
 import com.fasterxml.jackson.annotation.JsonAlias
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
@@ -26,4 +27,8 @@ class CrewPersonality
     var costELXP = 0
     var costGold = 0
     var costXP = 0
+
+    var subnation = ""
+    @JsonIgnore var tags = mutableListOf<String>()
+    @JsonIgnore var costGOLD = 0
 }

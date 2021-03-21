@@ -4,6 +4,7 @@ import WoWSFT.config.WoWSFT
 import WoWSFT.model.Constant.CDN_IMAGE
 import WoWSFT.model.gameparams.CommonModifier
 import WoWSFT.model.gameparams.TypeInfo
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @WoWSFT
@@ -30,4 +31,6 @@ class Flag
     var bonus = LinkedHashMap<String, String>()
     var description = ""
     val image get() = "$CDN_IMAGE/signal_flags/$name.png"
+
+    @JsonIgnore var tags = mutableListOf<String>()
 }
