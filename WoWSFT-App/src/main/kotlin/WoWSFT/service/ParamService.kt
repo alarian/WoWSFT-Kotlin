@@ -272,7 +272,7 @@ class ParamService(
                             (if (ship.level >= 7) modifier.atbaIdealRadiusHi else modifier.atbaIdealRadiusLo) * modifier.gsPriorityTargetIdealRadius
                     if (HE.equals(sec.ammoType, ignoreCase = true)) {
                         sec.burnProb = sec.burnProb + modifier.probabilityBonus + (sec.burnProbReal * modifier.chanceToSetOnFireBonusSmall) + (modifier.burnChanceFactorSmall - 1.0)
-                        sec.alphaPiercingHE = sec.alphaPiercingHE * modifier.thresholdPenetrationCoefficientSmall
+                        sec.alphaPiercingHE = sec.alphaPiercingHE * modifier.thresholdPenetrationCoefficientSmall * modifier.penetrationCoeffHE
                     }
                 }
             }
