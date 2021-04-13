@@ -93,58 +93,60 @@ class JsonParser
         log.info("Setting up GameParams")
 
         val zf = ZipFile(ClassPathResource("/json/live/GameParams.zip").file.path)
-        val temp = mapper.readValue(zf.getInputStream(zf.entries().nextElement()), object: TypeReference<LinkedHashMap<String, LinkedHashMap<String, Any>>>() {})
+        val temp = mapper.readValue(zf.getInputStream(zf.entries().nextElement()), jacksonTypeRef<MutableList<LinkedHashMap<String, LinkedHashMap<String, Any>>>>())
 
-        temp.forEach { (key, value) ->
-            val typeInfo = mapper.convertValue(value["typeinfo"], TypeInfo::class.java)
-            if (typeInfo.type.equals("Ship", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !excludeShipSpecies.contains(typeInfo.species)) {
-                val ship = mapper.convertValue(value, Ship::class.java)
-                if (!excludeShipGroups.contains(ship.group)) {
-                    ship.shipUpgradeInfo.components.forEach { (cType, c) ->
-                        c.forEach { su ->
-                            excludeCompStats.forEach { su.components.remove(it) }
-                            su.elem = componentsList.indexOf(cType)
+        temp.forEach { t ->
+            t.forEach { (key, value) ->
+                val typeInfo = mapper.convertValue(value["typeinfo"], TypeInfo::class.java)
+                if (typeInfo.type.equals("Ship", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !excludeShipSpecies.contains(typeInfo.species)) {
+                    val ship = mapper.convertValue(value, Ship::class.java)
+                    if (!excludeShipGroups.contains(ship.group)) {
+                        ship.shipUpgradeInfo.components.forEach { (cType, c) ->
+                            c.forEach { su ->
+                                excludeCompStats.forEach { su.components.remove(it) }
+                                su.elem = componentsList.indexOf(cType)
+                            }
+                        }
+                        addShips(ship)
+                    }
+                } else if (typeInfo.type.equals("Modernization", ignoreCase = true)) {
+                    val modernization = mapper.convertValue(value, Modernization::class.java)
+                    if (modernization.slot >= 0) {
+                        paramService.setBonusParams(key, mapper.convertValue(modernization, jacksonTypeRef<LinkedHashMap<String, Any>>()), modernization.bonus, false)
+                        upgrades[modernization.slot]!![modernization.name] = modernization
+                    }
+                } else if (typeInfo.type.equals("Ability", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !key.contains("Super")) {
+                    val consumable = mapper.convertValue(value, Consumable::class.java)
+                    consumables[key] = consumable
+                } else if (typeInfo.type.equals("Crew", ignoreCase = true)) {
+                    val commander = mapper.convertValue(value, Commander::class.java)
+                    if (!"Events".equals(commander.typeinfo.nation, ignoreCase = true)) {
+                        if (!commander.crewPersonality.unique && commander.typeinfo.nation == "Common") {
+                            commander.identifier = "IDS_CREW_LASTNAME_DEFAULT"
+                            commanders[commander.index.toUpperCase()] = commander
+                        } else if (commander.crewPersonality.unique) {
+                            commander.identifier = "$IDS_${commander.crewPersonality.personName.toUpperCase()}"
+                            commanders[commander.index.toUpperCase()] = commander
                         }
                     }
-                    addShips(ship)
-                }
-            } else if (typeInfo.type.equals("Modernization", ignoreCase = true)) {
-                val modernization = mapper.convertValue(value, Modernization::class.java)
-                if (modernization.slot >= 0) {
-                    paramService.setBonusParams(key, mapper.convertValue(modernization, jacksonTypeRef<LinkedHashMap<String, Any>>()), modernization.bonus, false)
-                    upgrades[modernization.slot]!![modernization.name] = modernization
-                }
-            } else if (typeInfo.type.equals("Ability", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !key.contains("Super")) {
-                val consumable = mapper.convertValue(value, Consumable::class.java)
-                consumables[key] = consumable
-            } else if (typeInfo.type.equals("Crew", ignoreCase = true)) {
-                val commander = mapper.convertValue(value, Commander::class.java)
-                if (!"Events".equals(commander.typeinfo.nation, ignoreCase = true)) {
-                    if (!commander.crewPersonality.unique && commander.typeinfo.nation == "Common") {
-                        commander.identifier = "IDS_CREW_LASTNAME_DEFAULT"
-                        commanders[commander.index.toUpperCase()] = commander
-                    } else if (commander.crewPersonality.unique) {
-                        commander.identifier = "$IDS_${commander.crewPersonality.personName.toUpperCase()}"
-                        commanders[commander.index.toUpperCase()] = commander
+                } else if (typeInfo.type.equals("Exterior", ignoreCase = true) && typeInfo.species.equals("Flags", ignoreCase = true)) {
+                    val flag = mapper.convertValue(value, Flag::class.java)
+                    if (flag.group == 0) {
+                        flag.identifier = "$IDS_${flag.name.toUpperCase()}"
+                        paramService.setBonusParams(key, mapper.convertValue(flag, object: TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus, specialFlags.any { flag.index == it })
+                        flags[flag.name] = flag
                     }
-                }
-            } else if (typeInfo.type.equals("Exterior", ignoreCase = true) && typeInfo.species.equals("Flags", ignoreCase = true)) {
-                val flag = mapper.convertValue(value, Flag::class.java)
-                if (flag.group == 0) {
-                    flag.identifier = "$IDS_${flag.name.toUpperCase()}"
-                    paramService.setBonusParams(key, mapper.convertValue(flag, object: TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus, specialFlags.any { flag.index == it })
-                    flags[flag.name] = flag
-                }
-            } else if (miscList.contains(typeInfo.type)) {
-                if ("Artillery" == typeInfo.species) {
-                    val shell = mapper.convertValue(value, Shell::class.java)
-                    if (AP == shell.ammoType) {
-                        shells[key] = shell
+                } else if (miscList.contains(typeInfo.type)) {
+                    if ("Artillery" == typeInfo.species) {
+                        val shell = mapper.convertValue(value, Shell::class.java)
+                        if (AP == shell.ammoType) {
+                            shells[key] = shell
+                        }
                     }
+                    misc[key] = value
+                } else {
+                    gameParamsHM[key] = value
                 }
-                misc[key] = value
-            } else {
-                gameParamsHM[key] = value
             }
         }
 
