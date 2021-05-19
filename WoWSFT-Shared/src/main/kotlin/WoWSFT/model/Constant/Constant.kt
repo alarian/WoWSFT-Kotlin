@@ -73,7 +73,7 @@ import java.math.BigDecimal
     val excludeShipNations = hashSetOf("Events", "disabled", "preserved", "clan")
     val excludeShipSpecies = hashSetOf("Auxiliary", "Submarine")
     val excludeCompStats = hashSetOf("directors", "finders", "radars")
-    val excludeModernization = hashSetOf("extra", "aimingtime")
+    val excludeModernization = hashSetOf("extra", "aimingtime", "health")
     val specialFlags = hashSetOf("PCEF028", "PCEF029")
 
     val coeff = hashSetOf("coef", "maxdist", "idealradius")

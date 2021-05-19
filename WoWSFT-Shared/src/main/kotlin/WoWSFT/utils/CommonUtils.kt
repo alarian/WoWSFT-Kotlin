@@ -62,27 +62,31 @@ object CommonUtils
                 val cValConvert = mapper.convertValue(cVal, jacksonTypeRef<CommonModifierShip>())
                 if (cValConvert.aircraftCarrier != 1.0 && cValConvert.aircraftCarrier != 0.0) {
                     bonus["${MODIFIER}${param.toUpperCase()}_${AIRCARRIER.toUpperCase()}"] = "${getNumSym(
-                        if (cValConvert.aircraftCarrier >= 0.1) getBonusCoef(cValConvert.aircraftCarrier)
+                        if (param.contains("healthPerLevel")) cValConvert.aircraftCarrier
+                        else if (cValConvert.aircraftCarrier > 0.0) getBonusCoef(cValConvert.aircraftCarrier)
                         else getBonus(cValConvert.aircraftCarrier)
-                    )} %"
+                    )} ${if (param.contains("healthPerLevel")) "" else "%"}"
                 }
                 if (cValConvert.battleship != 1.0 && cValConvert.battleship != 0.0) {
                     bonus["${MODIFIER}${param.toUpperCase()}_${BATTLESHIP.toUpperCase()}"] = "${getNumSym(
-                        if (cValConvert.battleship >= 0.1) getBonusCoef(cValConvert.battleship)
+                        if (param.contains("healthPerLevel")) cValConvert.battleship
+                        else if (cValConvert.battleship > 0.0) getBonusCoef(cValConvert.battleship)
                         else getBonus(cValConvert.battleship)
-                    )} %"
+                    )} ${if (param.contains("healthPerLevel")) "" else "%"}"
                 }
                 if (cValConvert.cruiser != 1.0 && cValConvert.cruiser != 0.0) {
                     bonus["${MODIFIER}${param.toUpperCase()}_${CRUISER.toUpperCase()}"] = "${getNumSym(
-                        if (cValConvert.cruiser >= 0.1) getBonusCoef(cValConvert.cruiser)
+                        if (param.contains("healthPerLevel")) cValConvert.cruiser
+                        else if (cValConvert.cruiser > 0.0) getBonusCoef(cValConvert.cruiser)
                         else getBonus(cValConvert.cruiser)
-                    )} %"
+                    )} ${if (param.contains("healthPerLevel")) "" else "%"}"
                 }
                 if (cValConvert.destroyer != 1.0 && cValConvert.destroyer != 0.0) {
                     bonus["${MODIFIER}${param.toUpperCase()}_${DESTROYER.toUpperCase()}"] = "${getNumSym(
-                        if (cValConvert.destroyer >= 0.1) getBonusCoef(cValConvert.destroyer)
+                        if (param.contains("healthPerLevel")) cValConvert.destroyer
+                        else if (cValConvert.destroyer > 0.0) getBonusCoef(cValConvert.destroyer)
                         else getBonus(cValConvert.destroyer)
-                    )} %"
+                    )} ${if (param.contains("healthPerLevel")) "" else "%"}"
                 }
             } else if (param == "shootShift") {
                 bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoef(cVal as Double))} %"
