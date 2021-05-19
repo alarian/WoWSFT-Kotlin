@@ -228,7 +228,7 @@
 		],
 		[
 			{
-				"name": "TriggerGmAccuracy",
+				"name": "TriggerSpeedBb",
 				"tier": 4,
 				"column": 0
 			},

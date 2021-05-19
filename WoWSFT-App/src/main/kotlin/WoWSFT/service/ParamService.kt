@@ -308,7 +308,7 @@ class ParamService(
                     v.visibilityFactor = v.visibilityFactor * modifier.cruiserCoefficient
                     v.visibilityFactorByPlane = v.visibilityFactorByPlane * modifier.cruiserCoefficient
                 }
-                v.health = v.health + ship.level * modifier.healthPerLevel
+                v.health = v.health + ship.level * getShipTypeModifier(ship, modifier.healthPerLevel)
             }
         }
 

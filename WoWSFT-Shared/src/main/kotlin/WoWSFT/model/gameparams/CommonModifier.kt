@@ -140,7 +140,7 @@ open class CommonModifier
     var vitalityCoefficient = 1.0
     var fightersPassiveEfficiencyCoefficient = 1.0
     var additionalConsumables = 0
-    var healthPerLevel = 0.0
+    var healthPerLevel: CommonModifierShip? = null
     var torpedoRangeCoefficient = 1.0
     var torpedoSpeedBonus = 0.0
     var rangeCoefficient = 1.0
@@ -167,7 +167,7 @@ open class CommonModifier
     var squadronHealthStep = 1.0
     var squadronSpeedStep = 0.0
     var nearAuraDamageTakenCoefficient = 1.0
-    var planeHealthPerLevel = 0.0
+    var planeHealthPerLevel = 0
     var planeTorpedoRangeCoefficient = 1.0
     var planeTorpedoSpeedBonus = 0.0
     var planeRangeCoefficient = 1.0
@@ -332,7 +332,7 @@ open class CommonModifier
     var aaAuraReceiveDamageCoeff = 1.0
     @JsonProperty("AABubbleDamage")
     var aaBubbleDamage: CommonModifierShip? = null
-    var artilleryBurnChanceBonus = CommonModifierShip(0.0)
+    var artilleryBurnChanceBonus: CommonModifierShip? = null
     var prioritySectorStrengthBonus = 0
     @JsonProperty("GMAPDamageCoeff")
     var gmAPDamageCoeff = 1.0
