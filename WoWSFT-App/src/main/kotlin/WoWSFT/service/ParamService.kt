@@ -160,7 +160,7 @@ class ParamService(
                 v.maxDist = v.maxDist * modifier.gmMaxDist * if (v.barrelDiameter > smallGun) oneCoeff else modifier.smallGunRangeCoefficient
 
                 v.turrets.forEach { t ->
-                    t.rotationSpeed[0] = t.rotationSpeed[0] * getShipTypeModifier(ship, modifier.gmRotationSpeed) +
+                    t.rotationSpeed[0] = t.rotationSpeed[0] * getShipTypeModifier(ship, modifier.gmRotationSpeed, 1.0) +
                             if (t.barrelDiameter > smallGun) modifier.bigGunBonus else modifier.smallGunBonus
                     t.shotDelay = t.shotDelay * modifier.gmShotDelay *
                             (if (t.barrelDiameter > smallGun) oneCoeff else modifier.smallGunReloadCoefficient) *
@@ -170,7 +170,7 @@ class ParamService(
 
                 v.shells.forEach { (_, ammo) ->
                     if (HE.equals(ammo.ammoType, ignoreCase = true)) {
-                        ammo.burnProb = ammo.burnProb + modifier.probabilityBonus + getShipTypeModifier(ship, modifier.artilleryBurnChanceBonus) +
+                        ammo.burnProb = ammo.burnProb + modifier.probabilityBonus + getShipTypeModifier(ship, modifier.artilleryBurnChanceBonus, 0.0) +
                                 (ammo.burnProbReal * (if (ammo.bulletDiametr > smallGun) modifier.chanceToSetOnFireBonusBig else modifier.chanceToSetOnFireBonusSmall)) +
                                 (if (ammo.bulletDiametr > smallGunFlag) (modifier.burnChanceFactorBig - 1.0) else (modifier.burnChanceFactorSmall - 1.0)) +
                                 (ammo.burnProbReal * if (ammo.bulletDiametr > smallGunFlag) (modifier.burnChanceFactorHighLevel - 1.0) else (modifier.burnChanceFactorLowLevel - 1.0))
@@ -189,7 +189,7 @@ class ParamService(
         ship.components.torpedoes.forEach { (c, v) ->
             if (c.equals(ship.modules[torpedoes], ignoreCase = true)) {
                 v.launchers.forEach { l: Launcher ->
-                    l.rotationSpeed[0] = l.rotationSpeed[0] * modifier.gtRotationSpeed * getShipTypeModifier(ship, modifier.gmRotationSpeed)
+                    l.rotationSpeed[0] = l.rotationSpeed[0] * modifier.gtRotationSpeed * getShipTypeModifier(ship, modifier.gmRotationSpeed, 1.0)
                     l.shotDelay = l.shotDelay * modifier.gtShotDelay * modifier.launcherCoefficient *
                             (oneCoeff - ship.adrenaline * modifier.lastChanceReloadCoefficient)
                 }
@@ -300,15 +300,15 @@ class ParamService(
                 v.floodProtection = if (v.floodProtection > 0) v.floodProtection + modifier.uwCoeffBonus else v.floodProtection
                 v.maxSpeed = v.maxSpeed * modifier.speedCoef
                 v.rudderTime = v.rudderTime * modifier.sgRudderTime
-                v.visibilityFactor = v.visibilityFactor * getShipTypeModifier(ship, modifier.visibilityDistCoeff) * modifier.visibilityFactor *
+                v.visibilityFactor = v.visibilityFactor * getShipTypeModifier(ship, modifier.visibilityDistCoeff, 1.0) * modifier.visibilityFactor *
                         getModifierByBarrelDiameter(ship, 0.149, modifier.gmBigGunVisibilityCoeff)
-                v.visibilityFactorByPlane = v.visibilityFactorByPlane * getShipTypeModifier(ship, modifier.visibilityDistCoeff) * modifier.visibilityFactorByPlane *
+                v.visibilityFactorByPlane = v.visibilityFactorByPlane * getShipTypeModifier(ship, modifier.visibilityDistCoeff, 1.0) * modifier.visibilityFactorByPlane *
                         getModifierByBarrelDiameter(ship, 0.149, modifier.gmBigGunVisibilityCoeff)
                 if (!excludeShipSpecies.contains(ship.typeinfo.species)) {
                     v.visibilityFactor = v.visibilityFactor * modifier.cruiserCoefficient
                     v.visibilityFactorByPlane = v.visibilityFactorByPlane * modifier.cruiserCoefficient
                 }
-                v.health = v.health + ship.level * getShipTypeModifier(ship, modifier.healthPerLevel)
+                v.health = v.health + ship.level * getShipTypeModifier(ship, modifier.healthPerLevel, 0.0)
             }
         }
 
@@ -394,9 +394,10 @@ class ParamService(
             if (aura.innerBubbleCount > 0) {
                 aura.innerBubbleCount = aura.innerBubbleCount + modifier.aaExtraBubbles + modifier.aaInnerExtraBubbles
                 aura.bubbleDamage = aura.bubbleDamage * modifier.aaOuterDamage * modifier.advancedOuterAuraDamageCoefficient *
-                        getShipTypeModifier(ship, modifier.aaBubbleDamage)
+                        getShipTypeModifier(ship, modifier.aaBubbleDamage, 1.0)
             }
-            aura.areaDamage = aura.areaDamage * modifier.aaNearDamage * modifier.nearAuraDamageCoefficient * getShipTypeModifier(ship, modifier.aaAuraDamage)
+            aura.areaDamage = aura.areaDamage * modifier.aaNearDamage * modifier.nearAuraDamageCoefficient *
+                    getShipTypeModifier(ship, modifier.aaAuraDamage, 1.0)
         }
     }
 
@@ -446,15 +447,15 @@ class ParamService(
         }
     }
 
-    private fun getShipTypeModifier(ship: Ship, modifier: CommonModifierShip?): Double {
+    private fun getShipTypeModifier(ship: Ship, modifier: CommonModifierShip?, default: Double): Double {
         return when (ship.typeinfo.species) {
-            AIRCARRIER -> modifier?.aircraftCarrier ?: 1.0
-            AUXILIARY -> modifier?.auxiliary ?: 1.0
-            BATTLESHIP -> modifier?.battleship ?: 1.0
-            CRUISER -> modifier?.cruiser ?: 1.0
-            DESTROYER -> modifier?.destroyer ?: 1.0
-            SUBMARINE -> modifier?.submarine ?: 1.0
-            else -> 0.0
+            AIRCARRIER -> modifier?.aircraftCarrier ?: default
+            AUXILIARY -> modifier?.auxiliary ?: default
+            BATTLESHIP -> modifier?.battleship ?: default
+            CRUISER -> modifier?.cruiser ?: default
+            DESTROYER -> modifier?.destroyer ?: default
+            SUBMARINE -> modifier?.submarine ?: default
+            else -> default
         }
     }
 

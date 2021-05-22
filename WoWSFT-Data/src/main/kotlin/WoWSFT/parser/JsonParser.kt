@@ -9,6 +9,7 @@ import WoWSFT.model.gameparams.modernization.*
 import WoWSFT.model.gameparams.ship.*
 import WoWSFT.model.gameparams.ship.component.airarmament.AirArmament
 import WoWSFT.model.gameparams.ship.component.airdefense.AirDefense
+import WoWSFT.model.gameparams.ship.component.airsupport.AirSupport
 import WoWSFT.model.gameparams.ship.component.artillery.*
 import WoWSFT.model.gameparams.ship.component.atba.ATBA
 import WoWSFT.model.gameparams.ship.component.engine.Engine
@@ -189,6 +190,7 @@ class JsonParser
                         suo -> cValue.forEach { cVal -> ship.components.suo[cVal] = mapper.convertValue(ship.tempComponents[cVal], FireControl::class.java) }
                         hull -> cValue.forEach { cVal -> ship.components.hull[cVal] = mapper.convertValue(ship.tempComponents[cVal], Hull::class.java) }
                         torpedoes -> cValue.forEach { cVal -> ship.components.torpedoes[cVal] = mapper.convertValue(ship.tempComponents[cVal], Torpedo::class.java) }
+                        airSupport -> cValue.forEach { cVal -> ship.components.airSupport[cVal] = mapper.convertValue(ship.tempComponents[cVal], jacksonTypeRef<AirSupport>()) }
                         airArmament -> cValue.forEach { cVal -> ship.components.airArmament[cVal] = mapper.convertValue(ship.tempComponents[cVal], AirArmament::class.java) }
                         flightControl -> cValue.forEach { cVal -> ship.components.flightControl[cVal] = mapper.convertValue(ship.tempComponents[cVal], FlightControl::class.java) }
                         fighter, diveBomber, torpedoBomber, skipBomber -> cValue.forEach { cVal ->

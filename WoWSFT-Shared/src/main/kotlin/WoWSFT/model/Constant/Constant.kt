@@ -48,6 +48,7 @@ import java.math.BigDecimal
     const val artillery = "artillery"
     const val hull = "hull"
     const val torpedoes = "torpedoes"
+    const val airSupport = "airSupport"
     const val suo = "suo"
     const val fighter = "fighter"
     const val torpedoBomber = "torpedoBomber"
