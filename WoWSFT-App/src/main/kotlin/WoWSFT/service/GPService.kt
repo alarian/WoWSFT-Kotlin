@@ -107,6 +107,15 @@ class GPService(
             ship.components.torpedoes[ship.modules[torpedoes]]!!.ammo = commonUtils.zFetch(zFile, ammo, TorpedoAmmo::class.java) as TorpedoAmmo
         }
 
+        if (ship.components.airSupport.size > 0 && ship.components.airSupport[ship.modules[airSupport]] != null) {
+            val plane = commonUtils.zFetch(zFile, ship.components.airSupport[ship.modules[airSupport]]!!.planeName, Plane::class.java) as Plane?
+            if (plane != null) {
+                plane.bomb = commonUtils.zFetch(zFile, plane.bombName, Shell::class.java) as Shell
+
+                ship.components.airSupport[ship.modules[airSupport]!!]!!.plane = plane
+            }
+        }
+
         if (ship.components.atba.size > 0 && ship.components.atba[ship.modules[atba]] != null) {
             for ((_, value) in ship.components.atba[ship.modules[atba]]!!.secondaries) {
                 val ammo = commonUtils.zFetch(zFile, value.ammoList[0], Shell::class.java) as Shell?
