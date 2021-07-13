@@ -19,7 +19,7 @@ class Aura
     var guns = listOf<String>()
     var halfOuterBubbleZone = 0.0
     var hitChance = 0.0
-    var innerBubbleCount = 0.0
+    var innerBubbleCount = 0
     var innerBubbleSpawnTimeRange = listOf<Double>()
     var innerBubbleZone = 0.0
     @JsonAlias("isJoint")
