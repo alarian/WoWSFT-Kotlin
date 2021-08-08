@@ -9,7 +9,7 @@ plugins {
 
 allprojects {
     group = "WoWSFT"
-    version = "1.0"
+    version = "0.10.7.0-SNAPSHOT"
 
     repositories {
         jcenter()
