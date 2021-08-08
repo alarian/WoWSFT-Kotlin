@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 open class CommonModifier
 {
     @JsonProperty("AAExtraBubbles")
-    var aaExtraBubbles = 0.0
+    var aaExtraBubbles = 0
     @JsonProperty("AANearDamage")
     var aaNearDamage = 1.0
     @JsonProperty("AAOuterDamage")
@@ -333,7 +333,7 @@ open class CommonModifier
     @JsonProperty("AABubbleDamage")
     var aaBubbleDamage: CommonModifierShip? = null
     var artilleryBurnChanceBonus: CommonModifierShip? = null
-    var prioritySectorStrengthBonus = 0
+    var prioritySectorStrengthBonus = 0.0
     @JsonProperty("GMAPDamageCoeff")
     var gmAPDamageCoeff = 1.0
     @JsonProperty("GMHeavyCruiserCaliberDamageCoeff")

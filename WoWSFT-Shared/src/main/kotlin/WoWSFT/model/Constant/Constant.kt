@@ -78,18 +78,15 @@ import java.math.BigDecimal
     val excludeModernization = hashSetOf("extra", "aimingtime", "health")
     val specialFlags = hashSetOf("PCEF028", "PCEF029")
 
-    val coeff = hashSetOf("coef", "maxdist", "idealradius")
+    val coeffInverse = hashSetOf("drainRate")
+    val coeffPercent = hashSetOf("coeffBonus", "strengthBonus", "boostCoeff")
+    val extra = hashSetOf("count", "perLevel", "additional")
     val noUnit = hashSetOf("num")
-    val extra = hashSetOf("count", "level", "additional")
-    val meter = hashSetOf("radius", "height", "dist")
-    val rate = hashSetOf("regeneration", "probabilitybonus", "chancebonus")
-    val rateNoSym = hashSetOf("step")
-    val multiple = hashSetOf("multiplier")
-    val extraAngle = hashSetOf("gunbonus")
-    val angle = hashSetOf("angle")
-    val time = hashSetOf("time")
-    val consumableTime = hashSetOf("workTime", "reloadTime", "lifeTime")
-    val speed = hashSetOf("speedbonus")
+    val meter = hashSetOf("distShip", "distTorpedo", "radius")
+    val rate = hashSetOf("probabilityBonus", "chanceBonus")
+    val repair = hashSetOf("regeneration")
+    val time = hashSetOf("aimingTime")
+    val timeConsumables = hashSetOf("workTime", "reloadTime", "lifeTime")
 
     const val maxBitsToInt = 3766517952L
 

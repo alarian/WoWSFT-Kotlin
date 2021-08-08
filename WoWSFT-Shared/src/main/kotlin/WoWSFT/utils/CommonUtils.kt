@@ -12,18 +12,28 @@ import java.util.zip.ZipFile
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
-object CommonUtils
-{
+object CommonUtils {
     private val mapper = ObjectMapper()
 
-    fun getDistCoefWG(number: Number): Double
-    {
+    fun getDist(number: Number): Double {
+        return getDecimalRounded(number.toDouble() / 1000.0, 3)
+    }
+
+    fun getDistCoefWG(number: Number): Double {
         return getDecimalRounded(number.toDouble() / distCoefWG.toDouble(), 3)
     }
 
     fun getBonusCoef(number: Number): Double
     {
         return getDecimalRounded(number.toDouble() * 100.0, 3) - 100.0
+    }
+
+    fun getBonusCoeffInverse(number: Number): Double {
+        return getDecimalRounded((1.0 + 1.0 - number.toDouble()) * 100.0, 3) - 100.0
+    }
+
+    fun getBonusCoeffPercent(number: Number): Double {
+        return number.toDouble()
     }
 
     fun getBonus(number: Number): Double
@@ -54,92 +64,66 @@ object CommonUtils
         return if (zipEntry != null) mapper.readValue(zf.getInputStream(zipEntry), obj) else null
     }
 
-    fun getBonus(copy: LinkedHashMap<String, Any>): LinkedHashMap<String, String>
+    fun getBonus(copy: LinkedHashMap<String, Any>, isConsumable: Boolean = false): LinkedHashMap<String, String>
     {
         val bonus = LinkedHashMap<String, String>()
+
         copy.forEach { (param: String, cVal: Any) ->
             if (cVal is LinkedHashMap<*, *>) {
-                val cValConvert = mapper.convertValue(cVal, jacksonTypeRef<CommonModifierShip>())
-                if (cValConvert.aircraftCarrier != 1.0 && cValConvert.aircraftCarrier != 0.0) {
-                    bonus["${MODIFIER}${param.toUpperCase()}_${AIRCARRIER.toUpperCase()}"] = "${getNumSym(
-                        if (param.contains("healthPerLevel")) cValConvert.aircraftCarrier
-                        else if (cValConvert.aircraftCarrier > 0.0) getBonusCoef(cValConvert.aircraftCarrier)
-                        else getBonus(cValConvert.aircraftCarrier)
-                    )} ${if (param.contains("healthPerLevel")) "" else "%"}"
+                mapper.convertValue(cVal, jacksonTypeRef<CommonModifierShip>()).let { cValConvert ->
+                    if (cValConvert.aircraftCarrier != 1.0 && cValConvert.aircraftCarrier != 0.0) {
+                        getBonus(linkedMapOf<String, Any>(Pair(param, cValConvert.aircraftCarrier))).forEach { (convertKey, convertVal) ->
+                            bonus["${convertKey}_${AIRCARRIER.toUpperCase()}"] = convertVal
+                        }
+                    }
+
+                    if (cValConvert.battleship != 1.0 && cValConvert.battleship != 0.0) {
+                        getBonus(linkedMapOf<String, Any>(Pair(param, cValConvert.battleship))).forEach { (convertKey, convertVal) ->
+                            bonus["${convertKey}_${BATTLESHIP.toUpperCase()}"] = convertVal
+                        }
+                    }
+
+                    if (cValConvert.cruiser != 1.0 && cValConvert.cruiser != 0.0) {
+                        getBonus(linkedMapOf<String, Any>(Pair(param, cValConvert.cruiser))).forEach { (convertKey, convertVal) ->
+                            bonus["${convertKey}_${CRUISER.toUpperCase()}"] = convertVal
+                        }
+                    }
+
+                    if (cValConvert.destroyer != 1.0 && cValConvert.destroyer != 0.0) {
+                        getBonus(linkedMapOf<String, Any>(Pair(param, cValConvert.destroyer))).forEach { (convertKey, convertVal) ->
+                            bonus["${convertKey}_${DESTROYER.toUpperCase()}"] = convertVal
+                        }
+                    }
                 }
-                if (cValConvert.battleship != 1.0 && cValConvert.battleship != 0.0) {
-                    bonus["${MODIFIER}${param.toUpperCase()}_${BATTLESHIP.toUpperCase()}"] = "${getNumSym(
-                        if (param.contains("healthPerLevel")) cValConvert.battleship
-                        else if (cValConvert.battleship > 0.0) getBonusCoef(cValConvert.battleship)
-                        else getBonus(cValConvert.battleship)
-                    )} ${if (param.contains("healthPerLevel")) "" else "%"}"
-                }
-                if (cValConvert.cruiser != 1.0 && cValConvert.cruiser != 0.0) {
-                    bonus["${MODIFIER}${param.toUpperCase()}_${CRUISER.toUpperCase()}"] = "${getNumSym(
-                        if (param.contains("healthPerLevel")) cValConvert.cruiser
-                        else if (cValConvert.cruiser > 0.0) getBonusCoef(cValConvert.cruiser)
-                        else getBonus(cValConvert.cruiser)
-                    )} ${if (param.contains("healthPerLevel")) "" else "%"}"
-                }
-                if (cValConvert.destroyer != 1.0 && cValConvert.destroyer != 0.0) {
-                    bonus["${MODIFIER}${param.toUpperCase()}_${DESTROYER.toUpperCase()}"] = "${getNumSym(
-                        if (param.contains("healthPerLevel")) cValConvert.destroyer
-                        else if (cValConvert.destroyer > 0.0) getBonusCoef(cValConvert.destroyer)
-                        else getBonus(cValConvert.destroyer)
-                    )} ${if (param.contains("healthPerLevel")) "" else "%"}"
-                }
-            } else if (param == "shootShift") {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoef(cVal as Double))} %"
-            } else if (param.endsWith("multiplier", false)) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoef(cVal as Double))} %"
+            } else if (param.contains("visionXRay")) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getDist(cVal as Double)} km"
+            } else if (meter.any { param.contains(it, true) } && isConsumable) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getDistCoefWG(cVal as Double)} km"
+            } else if (time.any { param.endsWith(it, true) } || (timeConsumables.any { param.endsWith(it, true) } && isConsumable)) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} s"
             } else if (param.startsWith("lastChance")) {
                 bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} %"
-            } else if (param.contains("ChanceFactor")) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoef(cVal as Double))} %"
-            } else if (rate.stream().anyMatch { param.toLowerCase().contains(it) }) {
+            } else if (rate.any { param.contains(it, true) } || (repair.any { param.contains(it, true) } && isConsumable)) {
                 bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonus(cVal as Double))} %"
-            } else if (param.toLowerCase().endsWith("bonus")) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} %"
-            } else if (speed.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(cVal as Double)} kts"
-            } else if (param.toLowerCase().contains("boostcoeff")) {
-                if (cVal as Double >= 2.0) bonus["${MODIFIER}${param.toUpperCase()}"] = getNumSym(cVal)
-                else bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonus(cVal))} %"
-            } else if (multiple.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "X ${replaceZero(cVal.toString())}"
-            } else if (coeff.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoef(cVal as Double))} %"
-            } else if (noUnit.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = if (cVal as Double > 0) replaceZero(cVal.toString()) else "∞"
-            } else if (meter.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getDistCoefWG(cVal as Double)} km"
-            } else if (rateNoSym.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} %"
-            } else if (consumableTime.stream().anyMatch { param.contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} s"
-            } else if (param.toLowerCase().endsWith("time") && cVal is Double) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoef(cVal))} %"
-            } else if (time.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} s"
-            } else if (extraAngle.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(cVal as Double)} °"
-            } else if (angle.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${replaceZero(cVal.toString())} °"
-            } else if (extra.stream().anyMatch { param.toLowerCase().contains(it) }) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = getNumSym(cVal as Number)
+            } else if (coeffPercent.any { param.contains(it, true) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoeffPercent(cVal as Double))} %"
+            } else if (coeffInverse.any { param.contains(it, true) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoeffInverse(cVal as Double))} %"
             } else if (param.toLowerCase().equals("affectedClasses", true)) {
-                val tempList = mapper.convertValue(cVal, object : TypeReference<List<String>?>() {})
-                if (!tempList.isNullOrEmpty()) {
-                    var affected = ""
-                    for (tl in tempList) {
-                        affected = "${affected}${IDS_}${tl.toUpperCase()} "
+                mapper.convertValue(cVal, jacksonTypeRef<List<String>?>())
+                    .takeIf { it.isNullOrEmpty().not() }
+                    ?.let { list ->
+                        bonus["${MODIFIER}${param.toUpperCase()}"] = list.joinToString { affected -> "${IDS_}${affected.toUpperCase()} " }.trim()
                     }
-                    bonus["${MODIFIER}${param.toUpperCase()}"] = affected.trim()
-                }
-            } else if (param.toLowerCase().contains("delay")) {
-                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoef(cVal as Double))} %"
+            } else if (noUnit.any { param.contains(it, true) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = if (cVal as Double > 0) replaceZero(cVal.toString()) else "∞"
+            } else if (cVal is Int || extra.any { param.contains(it, true) }) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = getNumSym(cVal as Number)
+            } else if (cVal is Double) {
+                bonus["${MODIFIER}${param.toUpperCase()}"] = "${getNumSym(getBonusCoef(cVal))} %"
             }
         }
+
         return bonus
     }
 }

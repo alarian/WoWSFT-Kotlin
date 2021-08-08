@@ -35,4 +35,8 @@ tasks.getByName<BootWar>("bootWar") {
     from("src/main/ebextensions") {
         into(".ebextensions")
     }
+
+    from("src/main/platform") {
+        into(".platform")
+    }
 }

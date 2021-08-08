@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
+import org.springframework.stereotype.Component
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -40,10 +41,10 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
-class JsonParser
-{
-    @Autowired private lateinit var paramService: ParamService
-    @Autowired private lateinit var executor: ThreadPoolTaskExecutor
+@Component
+class JsonParser(
+    private val executor: ThreadPoolTaskExecutor
+) {
 
     private val nameToId = HashMap<String, String>()
     private val idToName = HashMap<String, String>()
@@ -113,7 +114,7 @@ class JsonParser
                 } else if (typeInfo.type.equals("Modernization", ignoreCase = true)) {
                     val modernization = mapper.convertValue(value, Modernization::class.java)
                     if (modernization.slot >= 0) {
-                        paramService.setBonusParams(key, mapper.convertValue(modernization, jacksonTypeRef<LinkedHashMap<String, Any>>()), modernization.bonus, false)
+                        modernization.bonus = CommonUtils.getBonus(mapper.convertValue(modernization.modifiers, jacksonTypeRef<java.util.LinkedHashMap<String, Any>>()))
                         upgrades[modernization.slot]!![modernization.name] = modernization
                     }
                 } else if (typeInfo.type.equals("Ability", ignoreCase = true) && !excludeShipNations.contains(typeInfo.nation) && !key.contains("Super")) {
@@ -134,7 +135,7 @@ class JsonParser
                     val flag = mapper.convertValue(value, Flag::class.java)
                     if (flag.group == 0) {
                         flag.identifier = "$IDS_${flag.name.toUpperCase()}"
-                        paramService.setBonusParams(key, mapper.convertValue(flag, object: TypeReference<LinkedHashMap<String, Any>>() {}), flag.bonus, specialFlags.any { flag.index == it })
+                        flag.bonus = CommonUtils.getBonus(mapper.convertValue(flag.modifiers, jacksonTypeRef<java.util.LinkedHashMap<String, Any>>()))
                         flags[flag.name] = flag
                     }
                 } else if (miscList.contains(typeInfo.type)) {
@@ -401,25 +402,14 @@ class JsonParser
         }
     }
 
-    private fun setCommanderParams()
-    {
+    private fun setCommanderParams() {
         commanders.forEach { (_, commander) ->
-            commander.crewSkills.forEach { r ->
-                val temp = mapper.readValue(mapper.writeValueAsString(r.value.modifiers), jacksonTypeRef<LinkedHashMap<String, Any?>>())
-                val logicTrigger = mapper.convertValue(r.value.logicTrigger, jacksonTypeRef<LinkedHashMap<String, Any>>())
-                val modifiers = mapper.convertValue(logicTrigger["modifiers"], jacksonTypeRef<LinkedHashMap<String, Any>>())
+            commander.crewSkills.forEach { (_, skill) ->
+                skill.bonus = CommonUtils.getBonus(mapper.convertValue(skill.modifiers, jacksonTypeRef<java.util.LinkedHashMap<String, Any>>()))
 
-                temp.forEach { t ->
-                    CommonUtils.getBonus(mapper.convertValue(t, object: TypeReference<LinkedHashMap<String, Any>>() {})).run {
-                        this.forEach { (x, y) ->
-                            r.value.bonus[x] = y
-                        }
-                    }
-                }
-
-                if (!modifiers.isNullOrEmpty()) {
-                    CommonUtils.getBonus(modifiers).forEach { (t, u) ->
-                        r.value.bonus[t] = u
+                mapper.convertValue(skill.logicTrigger, jacksonTypeRef<java.util.LinkedHashMap<String, Any>>()).let { logicTrigger ->
+                    mapper.convertValue(logicTrigger["modifiers"], jacksonTypeRef<java.util.LinkedHashMap<String, Any>>()).let { modifiers ->
+                        CommonUtils.getBonus(modifiers).forEach { (t, u) -> skill.bonus[t] = u }
                     }
                 }
             }

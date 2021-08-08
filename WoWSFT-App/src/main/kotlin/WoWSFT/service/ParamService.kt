@@ -10,10 +10,9 @@ import WoWSFT.model.gameparams.ship.component.airdefense.AAJoint
 import WoWSFT.model.gameparams.ship.component.airdefense.Aura
 import WoWSFT.model.gameparams.ship.component.planes.Plane
 import WoWSFT.model.gameparams.ship.component.torpedo.Launcher
-import WoWSFT.utils.CommonUtils.getBonus
-import WoWSFT.utils.CommonUtils.getDecimalRounded
-import com.fasterxml.jackson.core.type.TypeReference
+import WoWSFT.utils.CommonUtils
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.util.*
@@ -114,7 +113,7 @@ class ParamService(
         ship.consumables.forEach { slot ->
             slot.forEach { c ->
                 c.subConsumables.forEach { (_, sub) ->
-                    sub.bonus = getBonus(mapper.convertValue(sub, object : TypeReference<LinkedHashMap<String, Any>>() {}))
+                    sub.bonus = CommonUtils.getBonus(mapper.convertValue(sub, jacksonTypeRef<LinkedHashMap<String, Any>>()), true)
                 }
             }
         }
@@ -122,7 +121,7 @@ class ParamService(
         ship.components.fighter.forEach { (_, p) ->
             p.consumables.forEach { c ->
                 c.subConsumables.forEach { (_, sVal) ->
-                    sVal.bonus = getBonus(mapper.convertValue(sVal, object : TypeReference<LinkedHashMap<String, Any>>() {}))
+                    sVal.bonus = CommonUtils.getBonus(mapper.convertValue(sVal, jacksonTypeRef<LinkedHashMap<String, Any>>()), true)
                 }
             }
         }
@@ -130,7 +129,7 @@ class ParamService(
         ship.components.diveBomber.forEach { (_, p) ->
             p.consumables.forEach { c ->
                 c.subConsumables.forEach { (_, sVal) ->
-                    sVal.bonus = getBonus(mapper.convertValue(sVal, object : TypeReference<LinkedHashMap<String, Any>>() {}))
+                    sVal.bonus = CommonUtils.getBonus(mapper.convertValue(sVal, jacksonTypeRef<LinkedHashMap<String, Any>>()), true)
                 }
             }
         }
@@ -138,7 +137,7 @@ class ParamService(
         ship.components.skipBomber.forEach { (_, p) ->
             p.consumables.forEach { c ->
                 c.subConsumables.forEach { (_, sVal) ->
-                    sVal.bonus = getBonus(mapper.convertValue(sVal, object : TypeReference<LinkedHashMap<String, Any>>() {}))
+                    sVal.bonus = CommonUtils.getBonus(mapper.convertValue(sVal, jacksonTypeRef<LinkedHashMap<String, Any>>()), true)
                 }
             }
         }
@@ -146,7 +145,7 @@ class ParamService(
         ship.components.torpedoBomber.forEach { (_, p) ->
             p.consumables.forEach { c ->
                 c.subConsumables.forEach { (_, sVal) ->
-                    sVal.bonus = getBonus(mapper.convertValue(sVal, object : TypeReference<LinkedHashMap<String, Any>>() {}))
+                    sVal.bonus = CommonUtils.getBonus(mapper.convertValue(sVal, jacksonTypeRef<LinkedHashMap<String, Any>>()), true)
                 }
             }
         }
@@ -363,7 +362,7 @@ class ParamService(
                         sC.reloadTime = sC.reloadTime * modifier.rlsReloadCoeff
                     } else if ("smokeGenerator".equals(sC.consumableType, ignoreCase = true)) {
                         sC.workTime = sC.workTime * modifier.smokeGeneratorWorkTime * modifier.smokeGeneratorWorkTimeCoeff
-                        sC.lifeTime = getDecimalRounded(sC.lifeTime * modifier.smokeGeneratorLifeTime, 3)
+                        sC.lifeTime = CommonUtils.getDecimalRounded(sC.lifeTime * modifier.smokeGeneratorLifeTime, 3)
                         sC.radius = sC.radius * modifier.radiusCoefficient
                         sC.reloadTime = sC.reloadTime * modifier.smokeGeneratorReloadCoeff
                     } else if ("regenCrew".equals(sC.consumableType, ignoreCase = true)) {
