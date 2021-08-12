@@ -79,11 +79,11 @@ import java.math.BigDecimal
     val specialFlags = hashSetOf("PCEF028", "PCEF029")
 
     val coeffInverse = hashSetOf("drainRate")
-    val coeffPercent = hashSetOf("coeffBonus", "strengthBonus", "boostCoeff")
+    val coeffPercent = hashSetOf("coeffBonus", "strengthBonus")
     val extra = hashSetOf("count", "perLevel", "additional")
     val noUnit = hashSetOf("num")
     val meter = hashSetOf("distShip", "distTorpedo", "radius")
-    val rate = hashSetOf("probabilityBonus", "chanceBonus")
+    val rate = hashSetOf("probabilityBonus", "chanceBonus", "boostCoeff")
     val repair = hashSetOf("regeneration")
     val time = hashSetOf("aimingTime")
     val timeConsumables = hashSetOf("workTime", "reloadTime", "lifeTime")

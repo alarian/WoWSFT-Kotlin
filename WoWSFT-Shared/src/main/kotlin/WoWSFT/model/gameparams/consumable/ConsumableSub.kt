@@ -52,6 +52,16 @@ class ConsumableSub
     var maxDepth = 0.0
     var newWaterline = 0
     var ammo = ""
+    var acousticWaveLifetime = 0.0
+    var acousticWaveSpeed = 0
+    var updateFrequency = 0.0
+    var visionDistance = 0.0
+    var zoneLifetime = 0.0
+    var buoyancyRudderResetTimeCoeff = 1.0
+    var buoyancyRudderTimeCoeff = 1.0
+    var maxBuoyancySpeedCoeff = 1.0
+    var underwaterMaxRudderAngleCoeff = 1.0
+    var canUseOnEmpty = false
 
     // Effects. Ignore.
     @JsonIgnore var livePointEffect = ""
