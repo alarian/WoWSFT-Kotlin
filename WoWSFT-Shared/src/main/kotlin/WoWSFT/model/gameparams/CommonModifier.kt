@@ -242,7 +242,7 @@ open class CommonModifier
     @JsonProperty("AAMaxHP")
     var aaMaxHP = 1.0
     @JsonProperty("ConsumableReloadTime")
-    var consumableReloadTime = 1.0
+    var consumableReloadTime: CommonModifierShip? = null
     @JsonProperty("ConsumablesWorkTime")
     var consumablesWorkTime = 1.0
     @JsonProperty("SGRudderPower")

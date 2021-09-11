@@ -380,7 +380,7 @@ class ParamService(
                         sC.numConsumables = sC.numConsumables + modifier.additionalConsumables
                     }
 
-                    sC.reloadTime = sC.reloadTime * modifier.consumableReloadTime
+                    sC.reloadTime = sC.reloadTime * getShipTypeModifier(ship, modifier.consumableReloadTime, 1.0)
                     sC.workTime = sC.workTime * modifier.consumablesWorkTime
                 }
             }

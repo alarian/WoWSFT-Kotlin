@@ -93,6 +93,10 @@
                             <td th:text="${global.get('IDS_RIBBON_SUBRIBBON_MAIN_CALIBER_RICOCHET')}"></td>
                             <td th:text="${#numbers.formatDecimal(ammo.bulletRicochetAt, 1, 1) + (ammo.bulletAlwaysRicochetAt > ammo.bulletRicochetAt ? ' ~ ' + #numbers.formatDecimal(ammo.bulletAlwaysRicochetAt, 1, 1) : '')} + ' °'"></td>
                         </tr>
+                        <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
+                            <td th:text="${'Depth Explosion'}"></td>
+                            <td th:text="${#numbers.formatInteger(ammo.depthSplashRadius, 1, 'COMMA')} + ' m'"></td>
+                        </tr>
                         <th:block th:if="${ammo.ammoType == 'CS'}">
                             <tr class="toggle" th:classappend="${ammo.index} + ' hide'">
                                 <td th:text="${'SAP Penetration'}"></td>
@@ -306,6 +310,10 @@
                         <td th:text="${#numbers.formatDecimal(airSupport.plane.bomb.alphaPiercingHE, 1, 1)} + ' mm'"></td>
                     </tr>
                     <tr class="toggle strike">
+                        <td th:text="${'Depth Explosion'}"></td>
+                        <td th:text="${#numbers.formatInteger(airSupport.plane.bomb.depthSplashRadius, 1, 'COMMA')} + ' m'"></td>
+                    </tr>
+                    <tr class="toggle strike">
                         <td th:text="${global.get('IDS_SHIP_PARAM_AIR_SUPPORT_BOMB_BURN_PROB_HE')}"></td>
                         <td th:text="${#numbers.formatDecimal(airSupport.plane.bomb.burnProb * 100, 1, 1)} + ' %'"></td>
                     </tr>
@@ -316,6 +324,14 @@
                     <tr class="toggle strike">
                         <td th:text="${global.get('IDS_SHIP_PARAM_AIR_SUPPORT_RELOAD_TIME')}"></td>
                         <td th:text="${#numbers.formatDecimal(airSupport.reloadTime, 1, 2)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle strike">
+                        <td th:text="${'Delay'}"></td>
+                        <td th:text="${#numbers.formatDecimal(airSupport.flyAwayTime, 1, 1)} + ' s'"></td>
+                    </tr>
+                    <tr class="toggle strike" th:if="${airSupport.plane.bomb.timer > 0}">
+                        <td th:text="${'Timer'}"></td>
+                        <td th:text="${#numbers.formatDecimal(airSupport.plane.bomb.timer, 1, 1)} + ' s'"></td>
                     </tr>
                 </tbody>
             </table>

@@ -174,7 +174,7 @@
 				"column": 1
 			},
 			{
-				"name": "ConsumablesDuration",
+				"name": "TriggerSpeedBb",
 				"tier": 2,
 				"column": 2
 			},
@@ -228,7 +228,7 @@
 		],
 		[
 			{
-				"name": "TriggerSpeedBb",
+				"name": "TriggerBurnGmReload",
 				"tier": 4,
 				"column": 0
 			},

@@ -41,6 +41,7 @@ class Shell
     var burnProbReal = 0.0
     var costCR = 0
     var damage = 0.0
+    var depthSplashRadius = 0
     var directDamage = 0.0
     var id = 0L
     var index = ""
@@ -72,6 +73,7 @@ class Shell
     var impactAtFifteen = 0.0
     var impactAtTwenty = 0.0
     var impactAtMax = 0.0
+    var timer = 0.0
     var vertPlusAtFive = 0.0
     var vertPlusAtTen = 0.0
     var vertPlusAtFifteen = 0.0
