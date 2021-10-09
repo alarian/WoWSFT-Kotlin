@@ -35,6 +35,7 @@ class ConsumableSub
     var planeType = ""
     var radius = 0.0
     var regenerationHPSpeed = 0.0
+    var regenerationHPSpeedUnits = 0.0
     var regenerationRate = 0.0
     var reloadTime = 0.0
         get() = if (field > 0) CommonUtils.getDecimalRounded(field, 1) else field

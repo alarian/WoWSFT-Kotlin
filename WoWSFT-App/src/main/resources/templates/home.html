@@ -16,18 +16,6 @@
     <script src="https://cdn.wowsft.com/js/jquery/jquery-3.4.1.min.js"></script>
     <script th:if="${adStatus}" data-ad-client="ca-pub-2111375563174258" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <title>WoWS Fitting Tool</title>
-    <style>
-        body {
-            background-color: rgba(0, 0, 0, 0.6);
-        }
-        main, footer {
-            color: white;
-        }
-        #letsgamble {
-            width: 35%;
-            max-width: 620px;
-        }
-    </style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -39,12 +27,10 @@
     </div>
 </header>
 <main>
-    <br /><h1>World of Warships<br /><br />A TERRIBLE GAME BY A TERRIBLE COMPANY</h1><br />
     <th:block th:replace="Joint/adToggle :: adToggle"></th:block><br />
     <div id="notification">
-        <img id="letsgamble" src="https://cdn.wowsft.com/misc/letsgamble.png" alt="Image courtesy of Jimmy_Tanks_Gaming from Reddit" /><br />
         <img id="logo" src="https://cdn.wowsft.com/images/Icon/WoWSFT_Icon.png" alt="Logo courtesy of ReptorPi from DCInside" /><br />
-        <h2>WoWS 0.10.8.0</h2><br />
+        <h2>WoWS 0.10.9.0</h2><br />
         <br />
         <ul>
             <li th:if="${5 > noticeStat.index}" th:each="notice : ${notification}">
