@@ -176,8 +176,8 @@ open class CommonModifier
     var prioSectorStartPhaseStrengthCoefficient = 1.0
     var prioSectorStrengthCoefficient = 1.0
 
-    var burnChanceFactorBig = 1.0
-    var burnChanceFactorSmall = 1.0
+    var burnChanceFactorBig = 0.0
+    var burnChanceFactorSmall = 0.0
     var collisionDamageApply = 1.0
     var collisionDamageNerf = 1.0
     var damageCoeffGM = 1.0

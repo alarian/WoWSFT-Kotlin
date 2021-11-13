@@ -171,7 +171,7 @@ class ParamService(
                     if (HE.equals(ammo.ammoType, ignoreCase = true)) {
                         ammo.burnProb = ammo.burnProb + modifier.probabilityBonus + getShipTypeModifier(ship, modifier.artilleryBurnChanceBonus, 0.0) +
                                 (ammo.burnProbReal * (if (ammo.bulletDiametr > smallGun) modifier.chanceToSetOnFireBonusBig else modifier.chanceToSetOnFireBonusSmall)) +
-                                (if (ammo.bulletDiametr > smallGunFlag) (modifier.burnChanceFactorBig - 1.0) else (modifier.burnChanceFactorSmall - 1.0)) +
+                                (if (ammo.bulletDiametr > smallGunFlag) modifier.burnChanceFactorBig else modifier.burnChanceFactorSmall) +
                                 (ammo.burnProbReal * if (ammo.bulletDiametr > smallGunFlag) (modifier.burnChanceFactorHighLevel - 1.0) else (modifier.burnChanceFactorLowLevel - 1.0))
                         ammo.alphaPiercingHE = ammo.alphaPiercingHE * modifier.penetrationCoeffHE *
                                 if (ammo.bulletDiametr > smallGun) modifier.thresholdPenetrationCoefficientBig else modifier.thresholdPenetrationCoefficientSmall
@@ -207,7 +207,7 @@ class ParamService(
                 setPlanes(ship, v, modifier)
                 v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.fighterHealth * modifier.planeHealth).toInt()
                 if (HE.equals(v.rocket.ammoType, ignoreCase = true)) {
-                    v.rocket.burnProb = v.rocket.burnProb + modifier.rocketProbabilityBonus + (modifier.burnChanceFactorSmall - 1.0) + modifier.rocketBurnChanceBonus
+                    v.rocket.burnProb = v.rocket.burnProb + modifier.rocketProbabilityBonus + modifier.burnChanceFactorSmall + modifier.rocketBurnChanceBonus
                 } else if (AP.equals(v.rocket.ammoType, ignoreCase = true)) {
                     v.rocket.alphaDamage = v.rocket.alphaDamage * modifier.rocketApAlphaDamageMultiplier
                 }
@@ -219,7 +219,7 @@ class ParamService(
                 setPlanes(ship, v, modifier)
                 v.maxHealth = ((v.maxHealth + ship.level * modifier.planeHealthPerLevel) * modifier.diveBomberHealth * modifier.planeHealth).toInt()
                 if (HE.equals(v.bomb.ammoType, ignoreCase = true)) {
-                    v.bomb.burnProb = v.bomb.burnProb + modifier.bombProbabilityBonus + (modifier.burnChanceFactorBig - 1.0) + modifier.bombBurnChanceBonus
+                    v.bomb.burnProb = v.bomb.burnProb + modifier.bombProbabilityBonus + modifier.burnChanceFactorBig + modifier.bombBurnChanceBonus
                     v.bomb.alphaDamage = v.bomb.alphaDamage * modifier.bombAlphaDamageMultiplier
                 } else if (AP.equals(v.bomb.ammoType, ignoreCase = true)) {
                     v.bomb.alphaDamage = v.bomb.alphaDamage * modifier.bombApAlphaDamageMultiplier
@@ -234,7 +234,7 @@ class ParamService(
             if (c.equals(ship.modules[skipBomber], ignoreCase = true)) {
                 setPlanes(ship, v, modifier)
                 if (HE.equals(v.bomb.ammoType, ignoreCase = true)) {
-                    v.bomb.burnProb = v.bomb.burnProb + modifier.bombProbabilityBonus + (modifier.burnChanceFactorBig - 1.0)
+                    v.bomb.burnProb = v.bomb.burnProb + modifier.bombProbabilityBonus + modifier.burnChanceFactorBig
                     v.bomb.alphaDamage = v.bomb.alphaDamage * modifier.bombAlphaDamageMultiplier
                 }
                 v.speedMoveWithBomb = v.speedMoveWithBomb * modifier.skipBomberSpeedMultiplier
@@ -270,7 +270,7 @@ class ParamService(
                     sec.idealRadiusModifier = sec.idealRadiusModifier * modifier.gsIdealRadius *
                             (if (ship.level >= 7) modifier.atbaIdealRadiusHi else modifier.atbaIdealRadiusLo) * modifier.gsPriorityTargetIdealRadius
                     if (HE.equals(sec.ammoType, ignoreCase = true)) {
-                        sec.burnProb = sec.burnProb + modifier.probabilityBonus + (sec.burnProbReal * modifier.chanceToSetOnFireBonusSmall) + (modifier.burnChanceFactorSmall - 1.0)
+                        sec.burnProb = sec.burnProb + modifier.probabilityBonus + (sec.burnProbReal * modifier.chanceToSetOnFireBonusSmall) + modifier.burnChanceFactorSmall
                         sec.alphaPiercingHE = sec.alphaPiercingHE * modifier.thresholdPenetrationCoefficientSmall * modifier.penetrationCoeffHE
                     }
                 }
