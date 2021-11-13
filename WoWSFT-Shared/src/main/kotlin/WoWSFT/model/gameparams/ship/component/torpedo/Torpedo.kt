@@ -19,6 +19,8 @@ class Torpedo
     var useGroups = false
     var useOneShot = false
     var ammo = TorpedoAmmo()
+    var timeToChangeAmmo = 0.0
+
     companion object {
         @JsonIgnore
         private val mapper = ObjectMapper()
