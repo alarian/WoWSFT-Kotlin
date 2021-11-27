@@ -103,8 +103,9 @@ class GPService(
         }
 
         if (ship.components.torpedoes.size > 0 && ship.components.torpedoes[ship.modules[torpedoes]] != null) {
-            val ammo = ship.components.torpedoes[ship.modules[torpedoes]]!!.launchers[0].ammoList[0]
-            ship.components.torpedoes[ship.modules[torpedoes]]!!.ammo = commonUtils.zFetch(zFile, ammo, TorpedoAmmo::class.java) as TorpedoAmmo
+            ship.components.torpedoes[ship.modules[torpedoes]]!!.launchers[0].ammoList.forEach { ammo ->
+                ship.components.torpedoes[ship.modules[torpedoes]]!!.ammo.add(commonUtils.zFetch(zFile, ammo, TorpedoAmmo::class.java) as TorpedoAmmo)
+            }
         }
 
         if (ship.components.airSupport.size > 0 && ship.components.airSupport[ship.modules[airSupport]] != null) {

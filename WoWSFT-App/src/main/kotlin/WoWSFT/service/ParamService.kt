@@ -193,12 +193,14 @@ class ParamService(
                             (oneCoeff - ship.adrenaline * modifier.lastChanceReloadCoefficient)
                 }
 
-                v.ammo.maxDist = v.ammo.maxDist * modifier.torpedoRangeCoefficient
-                v.ammo.speed = (v.ammo.speed + modifier.torpedoSpeedBonus) * modifier.torpedoSpeedMultiplier
-                v.ammo.uwCritical = v.ammo.uwCritical * modifier.floodChanceFactor
-                v.ammo.visibilityFactor = v.ammo.visibilityFactor * modifier.torpedoVisibilityFactor
-                v.ammo.alphaDamage = v.ammo.alphaDamage * modifier.torpedoDamageCoeff
-                v.ammo.damage = v.ammo.damage * modifier.torpedoDamageCoeff
+                v.ammo.forEach {
+                    it.maxDist = it.maxDist * modifier.torpedoRangeCoefficient
+                    it.speed = (it.speed + modifier.torpedoSpeedBonus) * modifier.torpedoSpeedMultiplier
+                    it.uwCritical = it.uwCritical * modifier.floodChanceFactor
+                    it.visibilityFactor = it.visibilityFactor * modifier.torpedoVisibilityFactor
+                    it.alphaDamage = it.alphaDamage * modifier.torpedoDamageCoeff
+                    it.damage = it.damage * modifier.torpedoDamageCoeff
+                }
             }
         }
 

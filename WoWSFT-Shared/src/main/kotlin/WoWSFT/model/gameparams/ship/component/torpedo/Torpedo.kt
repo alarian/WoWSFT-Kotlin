@@ -18,7 +18,7 @@ class Torpedo
     var oneShotWaitTime = 0.0
     var useGroups = false
     var useOneShot = false
-    var ammo = TorpedoAmmo()
+    var ammo = mutableListOf<TorpedoAmmo>()
     var timeToChangeAmmo = 0.0
 
     companion object {
