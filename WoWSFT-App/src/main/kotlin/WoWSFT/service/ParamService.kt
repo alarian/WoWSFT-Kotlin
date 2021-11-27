@@ -182,6 +182,12 @@ class ParamService(
                         ammo.alphaDamage = ammo.alphaDamage * modifier.gmHECSDamageCoeff
                     }
                 }
+
+                v.burstArtilleryModule?.let {
+                    it.fullReloadTime = it.fullReloadTime * modifier.gmShotDelay *
+                            (if (v.barrelDiameter > smallGun) oneCoeff else modifier.smallGunReloadCoefficient) *
+                            (oneCoeff - ship.adrenaline * modifier.lastChanceReloadCoefficient)
+                }
             }
         }
 
