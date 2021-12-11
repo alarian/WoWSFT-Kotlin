@@ -235,7 +235,7 @@ class JsonParser(
             }
             premiumShipGroups.contains(ship.group) -> { ship.realShipType = "Premium" }
             supertestShipGroups.contains(ship.group) -> { ship.realShipType = "Test_Sample" }
-            legendaryBattle.contains(ship.group) -> { ship.realShipType = "Battleship_Legendary" }
+            legendaryBattle.contains(ship.group) -> { ship.realShipType = "${ship.typeinfo.species}_Legendary" }
         }
     }
 

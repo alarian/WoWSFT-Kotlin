@@ -83,7 +83,7 @@ import java.math.BigDecimal
     val extra = hashSetOf("count", "perLevel", "additional")
     val noUnit = hashSetOf("num")
     val meter = hashSetOf("distShip", "distTorpedo", "radius")
-    val rate = hashSetOf("probabilityBonus", "chanceBonus", "boostCoeff")
+    val rate = hashSetOf("probabilityBonus", "chanceBonus", "boostCoeff", "burnChanceFactorBig", "burnChanceFactorSmall")
     val repair = hashSetOf("regeneration")
     val time = hashSetOf("aimingTime")
     val timeConsumables = hashSetOf("workTime", "reloadTime", "lifeTime")

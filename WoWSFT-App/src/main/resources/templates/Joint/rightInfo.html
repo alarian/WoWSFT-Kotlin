@@ -68,6 +68,31 @@
                         <td th:text="'- ' + ${global.get('IDS_SHIP_PARAM_DISPERSION')} + ' Verti'"></td>
                         <td th:text="${#numbers.formatInteger(T(Math).ceil(((turret0.idealRadius * artillery.GMIdealRadius - turret0.minRadius) / turret0.idealDistance * (artillery.maxDist * suo.maxDistCoef / 30.0) + turret0.minRadius) * (turret0.radiusOnDelim + (turret0.radiusOnMax - turret0.radiusOnDelim)) * 30.0 * turret0.idealRadiusModifier), 1, 'COMMA')} + ' m'"></td>
                     </tr>
+                    <th:block th:if="${artillery.burstArtilleryModule != null}">
+                        <tr class="subsystem switch" data-type="guns_burst">
+                            <td colspan="2" th:text="${global.get('IDS_DOCK_FIRE_MODE_TITLE_BURST_FIRE')}"></td>
+                        </tr>
+                        <tr class="toggle guns_burst">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_BURST_FIRE_SALVO_SHOT_DELAY')}"></td>
+                            <td th:text="${#numbers.formatDecimal(artillery.burstArtilleryModule.burstReloadTime, 1, 2)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle guns_burst">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_BURST_FIRE_RELOAD_TIME')}"></td>
+                            <td th:text="${#numbers.formatDecimal(artillery.burstArtilleryModule.fullReloadTime, 1, 2)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle guns_burst">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_BURST_FIRE_SALVO_COUNT')}"></td>
+                            <td th:text="${#numbers.formatInteger(artillery.burstArtilleryModule.shotsCount, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle guns_burst" th:if="${artillery.burstArtilleryModule.modifiers.gmIdealRadius != 1.0}">
+                            <td th:text="${'Dispersion Modifier'}"></td>
+                            <td th:text="${#numbers.formatInteger(artillery.burstArtilleryModule.modifiers.gmIdealRadius * 100 - 100, 1, 'COMMA')} + ' %'"></td>
+                        </tr>
+                        <tr class="toggle guns_burst" th:if="${artillery.burstArtilleryModule.modifiers.penetrationCoeffHE != 1.0}">
+                            <td th:text="${'HE Penetration Bonus'}"></td>
+                            <td th:text="${#numbers.formatInteger(artillery.burstArtilleryModule.modifiers.penetrationCoeffHE * 100 - 100, 1, 'COMMA')} + ' %'"></td>
+                        </tr>
+                    </th:block>
                     <th:block th:each="shell : ${artillery.shells}" th:with="ammo=${shell.value}">
                         <tr class="subsystem switch" th:attr="data-type=${ammo.index}">
                             <td><u th:text="${global.get('IDS_' + ammo.name.toUpperCase())}"></u></td>
@@ -223,41 +248,16 @@
             <table class="toggle torpedo">
                 <tbody th:with="torp0=${torpedoes.launchers.get(0)}">
                     <tr class="subsystem switch" data-type="torps">
-                        <td>
+                        <td colspan="2">
                             <th:block th:each="launcherType : ${torpedoes.launcherTypes}">
                                 <br th:if="${launcherTypeStat.index > 0}"/>
                                 <u th:text="${launcherType.value.get(0) + ' X ' + launcherType.key + ' ' + global.get(IDS + launcherType.value.get(1).toUpperCase())}"></u>
                             </th:block>
                         </td>
-                        <td th:text="${#numbers.formatDecimal(torpedoes.ammo.maxDist / (100.0 / 3.0), 1, 2)} + ' km'"></td>
                     </tr>
-                    <tr class="toggle torps">
-                        <td th:text="${global.get('IDS_SHIP_PARAM_TORPEDO_AMMO')}"></td>
-                        <td th:text="${torpedoes.ammo.deepWater ? global.get('IDS_DOCK_AMMO_TITLE_TORPEDO_DEEPWATER') : global.get('IDS_DOCK_AMMO_TITLE_TORPEDO')}"></td>
-                    </tr>
-                    <tr class="toggle torps">
-                        <td th:text="${global.get('IDS_SHIP_PARAM_TORPEDO_DAMAGE')}"></td>
-                        <td th:text="${#numbers.formatInteger(torpedoes.ammo.alphaDamage / 3.0 + torpedoes.ammo.damage, 1, 'COMMA')}"></td>
-                    </tr>
-                    <tr class="toggle torps">
-                        <td th:text="${global.get('IDS_SHIP_PARAM_SHOT_DELAY')}"></td>
-                        <td th:text="${#numbers.formatDecimal(torp0.shotDelay, 1, 1)} + ' s'"></td>
-                    </tr>
-                    <tr class="toggle torps">
-                        <td th:text="${global.get('IDS_SHIP_PARAM_TORPEDO_MAIN_SPEED')}"></td>
-                        <td th:text="${#numbers.formatInteger(torpedoes.ammo.speed, 1, 'COMMA')} + ' kts'"></td>
-                    </tr>
-                    <tr class="toggle torps">
-                        <td th:text="${global.get('IDS_SHIP_TOOLTIP_VISIBILITY')}"></td>
-                        <td th:text="${#numbers.formatDecimal(torpedoes.ammo.visibilityFactor, 1, 2)} + ' km'"></td>
-                    </tr>
-                    <tr class="toggle torps">
-                        <td th:text="${'Reaction Time'}"></td>
-                        <td th:text="${#numbers.formatDecimal(torpedoes.ammo.visibilityFactor / torpedoes.ammo.speed / 2.6 * 1000, 1, 1)} + ' s'"></td>
-                    </tr>
-                    <tr class="toggle torps">
-                        <td th:text="${global.get('IDS_PARAMS_MODIFIER_FLOODCHANCEFACTOR')}"></td>
-                        <td th:text="${#numbers.formatInteger(torpedoes.ammo.uwCritical * 100.0, 1, 'COMMA')} + ' %'"></td>
+                    <tr class="toggle torps" th:if="${torpedoes.timeToChangeAmmo > 0}">
+                        <td th:text="'Mode Switch'"></td>
+                        <td th:text="${torpedoes.timeToChangeAmmo} + ' s'"></td>
                     </tr>
                     <tr class="toggle torps">
                         <td th:text="${global.get('IDS_SHIP_PARAM_ROTATION_TIME')}"></td>
@@ -267,6 +267,40 @@
                         <td th:text="${global.get('IDS_SHIP_PARAM_ROTATION_SPEED')}"></td>
                         <td th:text="${#numbers.formatDecimal(torp0.rotationSpeed.get(0), 1, 1)} + ' °/s'"></td>
                     </tr>
+                    <th:block th:each="ammo : ${torpedoes.ammo}">
+                        <tr class="subsystem switch" th:attr="data-type=${ammo.index}">
+                            <td th:text="${global.get(IDS + ammo.name.toUpperCase())}"></td>
+                            <td th:text="${#numbers.formatDecimal(ammo.maxDist / (100.0 / 3.0), 1, 2)} + ' km'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index}">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_TORPEDO_AMMO')}"></td>
+                            <td th:text="${ammo.deepWater ? global.get('IDS_DOCK_AMMO_TITLE_TORPEDO_DEEPWATER') : global.get('IDS_DOCK_AMMO_TITLE_TORPEDO')}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index}">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_TORPEDO_DAMAGE')}"></td>
+                            <td th:text="${#numbers.formatInteger(ammo.alphaDamage / 3.0 + ammo.damage, 1, 'COMMA')}"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index}">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_SHOT_DELAY')}"></td>
+                            <td th:text="${#numbers.formatDecimal(torp0.shotDelay, 1, 1)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index}">
+                            <td th:text="${global.get('IDS_SHIP_PARAM_TORPEDO_MAIN_SPEED')}"></td>
+                            <td th:text="${#numbers.formatInteger(ammo.speed, 1, 'COMMA')} + ' kts'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index}">
+                            <td th:text="${global.get('IDS_SHIP_TOOLTIP_VISIBILITY')}"></td>
+                            <td th:text="${#numbers.formatDecimal(ammo.visibilityFactor, 1, 2)} + ' km'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index}">
+                            <td th:text="${'Reaction Time'}"></td>
+                            <td th:text="${#numbers.formatDecimal(ammo.visibilityFactor / ammo.speed / 2.6 * 1000, 1, 1)} + ' s'"></td>
+                        </tr>
+                        <tr class="toggle" th:classappend="${ammo.index}">
+                            <td th:text="${global.get('IDS_PARAMS_MODIFIER_FLOODCHANCEFACTOR')}"></td>
+                            <td th:text="${#numbers.formatInteger(ammo.uwCritical * 100.0, 1, 'COMMA')} + ' %'"></td>
+                        </tr>
+                    </th:block>
                     <tr class="subsystem switch" data-type="torpSector"><td colspan="2"><u>Sector</u></td></tr>
                     <tr class="toggle torpSector hide" style="text-align: center">
                         <td colspan="2" th:include="Joint/angleSectorTorp :: angleSectorTorp"></td>
