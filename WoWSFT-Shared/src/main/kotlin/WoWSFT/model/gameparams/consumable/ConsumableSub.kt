@@ -63,6 +63,8 @@ class ConsumableSub
     var maxBuoyancySpeedCoeff = 1.0
     var underwaterMaxRudderAngleCoeff = 1.0
     var canUseOnEmpty = false
+    var preparationTime = 0.0
+    var acousticWaveRadius = 0.0
 
     // Effects. Ignore.
     @JsonIgnore var livePointEffect = ""
